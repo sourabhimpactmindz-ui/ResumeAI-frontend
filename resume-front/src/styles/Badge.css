@@ -1,0 +1,36 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #2563eb;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+.badge--pill {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #16a34a;
+}
+
+.badge--skill {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #4338ca;
+  font-size: 11px;
+  padding: 3px 10px;
+}
+
+.badge--missing {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  color: #c2410c;
+  font-size: 11px;
+  padding: 3px 10px;
+}

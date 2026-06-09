@@ -1,0 +1,123 @@
+.upload-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  background: #fff;
+  border: 1px solid #e8eaf0;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 850px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.upload-box__dropzone {
+  border: 2px dashed #bfdbfe;
+  border-radius: 16px;
+  padding: 60px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 220px;
+}
+
+.upload-box__dropzone:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.upload-box__dropzone-icon {
+  font-size: 42px;
+}
+
+.upload-box__dropzone-label {
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+}
+
+.upload-box__dropzone-sub {
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.upload-box__desc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-box__desc-label {
+  font-family: "DM Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.upload-box__textarea {
+  width: 100%;
+  min-height: 220px;
+  resize: none;
+  border: 1px solid #e8eaf0;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  color: #374151;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.upload-box__textarea:focus {
+  border-color: #2563eb;
+}
+
+.upload-box__textarea::placeholder {
+  color: #c4c9d4;
+}
+
+.upload-box__footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .upload-box {
+    grid-template-columns: 1fr;
+    max-width: 95%;
+    padding: 24px;
+  }
+
+  .upload-box__dropzone,
+  .upload-box__textarea {
+    min-height: 180px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .upload-box {
+    padding: 18px;
+  }
+
+  .upload-box__dropzone {
+    padding: 40px 16px;
+  }
+
+  .upload-box__dropzone-icon {
+    font-size: 32px;
+  }
+}

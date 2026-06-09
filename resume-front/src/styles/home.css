@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f5f6fa;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.app {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 48px 48px;
+  text-align: center;
+}
+
+.hero__title {
+  font-family: 'Sora', sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: -1px;
+  line-height: 1.15;
+}
+
+.hero__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: #6b7280;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+/* ── Stats ────────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  max-width: 1400px;
+  margin: 24px auto;        /* ← 5px se 24px */
+  padding: 0 48px;          /* ← padding add karo */
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* ── Generic section ──────────────────────────────────── */
+.section {
+  padding: 48px 48px 0;
+}
+
+/* ── Precision Engine ─────────────────────────────────── */
+.precision-section {
+  background: none;
+}
+
+.precision-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 35px;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: -0.5px;
+}
+
+.section-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #9ca3af;
+  margin-top: 8px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* ── Footer ───────────────────────────────────────────── */
+.footer {
+  margin: 48px 48px 0;
+  padding: 20px 0;
+  border-top: 1px solid #e8eaf0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer__brand {
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.footer__links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer__link {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer__link:hover {
+  color: #2563eb;
+}
+
+.footer__copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  color: #c4c9d4;
+  width: 100%;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 700px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero__title {
+    font-size: 28px;
+  }
+
+  .hero {
+    padding: 40px 24px 32px;
+  }
+
+  .stats-row {
+    margin: 0 24px;
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 40px 24px 0;
+  }
+
+  .analysis-panel__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .analysis-panel__ats {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .footer {
+    margin: 40px 24px 0;
+  }
+}
