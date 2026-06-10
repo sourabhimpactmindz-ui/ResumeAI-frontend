@@ -1,5 +1,6 @@
 import { useState } from "react";
-import "../styles/UploadBox.css";
+// import "../styles/UploadBox.css";
+import "../styles/UploadBox.css"
 import Button from "./Button";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
