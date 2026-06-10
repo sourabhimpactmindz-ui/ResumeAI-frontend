@@ -6,6 +6,47 @@
   overflow: hidden;
 }
 
+.dark-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 1;
+}
+
+.dark-logo-icon {
+  width: 36px;
+  height: 36px;
+  /* background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.dark-logo-text {
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+}
+
+.dark-content {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 48px;
+}
+
+.dark-heading {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 48px;
+  color: white;
+}
+
 /* LEFT SECTION */
 .left-section {
   flex: 1;

@@ -78,10 +78,10 @@ export default function ResumeAILogin() {
     <div className="login-wrapper">
       {/* LEFT SECTION */}
       <div className="left-section">
-        <div className="logo">
-          <div className="logo-icon">⚡</div>
-          <span className="logo-text">ResumeAI</span>
-        </div>
+        <div className="dark-logo">
+            <div className="dark-logo-icon">⚡</div>
+            <span className="dark-logo-text">ResumeAI</span>
+          </div>
 
         <div className="left-center">
           <div className="left-badge">✦ Trusted by 50,000+ professionals</div>
