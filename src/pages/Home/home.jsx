@@ -1,12 +1,12 @@
 import { useState } from "react";
 import AnalysisPanel from "../../components/AnalysisPanel";
 import Badge from "../../components/Badge";
-import CTABanner from "../../components/CTABanner";
 import FeatureCard from "../../components/FeatureCard";
 import Navbar from "../../components/Navbar";
 import StatCard from "../../components/StatCard";
 import UploadBox from "../../components/UploadBox";
 import "../../styles/home.css";
+import CTABanner from "../../components/CTABanner";
 import { useUplodeResumeMutation } from "../../Apis/resumeApi";
 import { Settings2, Target, BarChart3, ShieldCheck } from 'lucide-react';
 
