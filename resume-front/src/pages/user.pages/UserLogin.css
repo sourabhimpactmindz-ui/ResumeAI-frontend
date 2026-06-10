@@ -408,6 +408,8 @@
   text-decoration: underline;
 }
 
+
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
   .login-wrapper {
@@ -551,6 +553,167 @@
 
 .right-section::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
+}
+
+/* ===========================
+   INPUT ERROR STATE
+=========================== */
+.form-input.input-error {
+  border-color: #ef4444;
+  background: #fff5f5;
+}
+
+.form-input.input-error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* ===========================
+   ERROR MESSAGE
+=========================== */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: #dc2626;
+  font-weight: 500;
+  margin-top: 0.15rem;
+  animation: shake 0.3s ease-in-out;
+}
+
+.error-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: #dc2626;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-4px); }
+  75%       { transform: translateX(4px); }
+}
+
+/* ===========================
+   PASSWORD STRENGTH BAR
+=========================== */
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.strength-bars {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.strength-bar {
+  flex: 1;
+  height: 4px;
+  border-radius: 100px;
+  background: #e2e8f0;
+  transition: background 0.3s ease;
+}
+
+.strength-bar.strength-weak   { background: #ef4444; }
+.strength-bar.strength-fair   { background: #f97316; }
+.strength-bar.strength-good   { background: #eab308; }
+.strength-bar.strength-strong { background: #22c55e; }
+
+.strength-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-width: 44px;
+  text-align: right;
+}
+
+.strength-label.strength-weak   { color: #ef4444; }
+.strength-label.strength-fair   { color: #f97316; }
+.strength-label.strength-good   { color: #eab308; }
+.strength-label.strength-strong { color: #22c55e; }
+
+/* ===========================
+   PASSWORD HINTS
+=========================== */
+.password-hints {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem 0.5rem;
+  padding: 0.6rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 0.4rem;
+}
+
+.password-hints li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+.hint-pass { color: #16a34a; }
+.hint-fail  { color: #94a3b8; }
+
+.hint-icon {
+  font-size: 0.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+
+/* ===========================
+   SIGNIN BUTTON LOADER
+=========================== */
+.signin-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.signin-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 768px) {
+  .password-hints {
+    grid-template-columns: 1fr;
+  }
 }
 /* Hidden on tablet and below */
 @media (max-width: 1024px) {

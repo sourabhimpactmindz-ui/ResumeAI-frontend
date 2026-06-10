@@ -6,17 +6,37 @@ import { useForm } from 'react-hook-form';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
-import { GoogleAuthProvider , signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
+import { validateLogin } from '../../Validation/form.validation';
+
+
+function getPasswordStrength(password) {
+  if (!password) return { score: 0, label: '', color: '' };
+  let score = 0;
+  if (password.length >= 8) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[a-z]/.test(password)) score++;
+  if (/\d/.test(password)) score++;
+  if (/[@$!%*?&]/.test(password)) score++;
+
+  if (score <= 2) return { score, label: 'Weak', color: 'strength-weak' };
+  if (score === 3) return { score, label: 'Fair', color: 'strength-fair' };
+  if (score === 4) return { score, label: 'Good', color: 'strength-good' };
+  return { score, label: 'Strong', color: 'strength-strong' };
+}
+
 export default function ResumeAILogin() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [user , setuser] = useState(null);
+  const [passwordValue, setPasswordValue] = useState('');
   const [LoginUser, { isLoading }] = useLoginUserMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -24,6 +44,9 @@ export default function ResumeAILogin() {
       password: '',
     },
   });
+
+  const watchedPassword = watch('password', '');
+  const strength = getPasswordStrength(watchedPassword);
 
   const handleSignIn = async (data) => {
     try {
@@ -38,19 +61,17 @@ export default function ResumeAILogin() {
     }
   };
 
-  const handleGoogleSignIn = async() => {
-    try{
-    const Provider = new GoogleAuthProvider()
-    const result = await signInWithPopup(auth , Provider)
-      const token = await result.user.getIdToken()
-      localStorage.setItem("accessToken",token)
-    toast.success('Login successful!');
-    setuser(result.user)
-    navigate('/home');
-    }catch(error){
+  const handleGoogleSignIn = async () => {
+    try {
+      const Provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, Provider);
+      const token = await result.user.getIdToken();
+      localStorage.setItem("accessToken", token);
+      toast.success('Login successful!');
+      navigate('/home');
+    } catch (error) {
       toast.error(error.message || 'Login failed. Please try again.');
     }
- 
   };
 
   return (
@@ -133,16 +154,11 @@ export default function ResumeAILogin() {
                 id="email"
                 placeholder="Enter your email"
                 className={`form-input ${errors.email ? 'input-error' : ''}`}
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Please enter a valid email address',
-                  },
-                })}
+                {...register('email', validateLogin.email)}
               />
               {errors.email && (
                 <span className="error-message" role="alert">
+                  <span className="error-icon">!</span>
                   {errors.email.message}
                 </span>
               )}
@@ -159,13 +175,7 @@ export default function ResumeAILogin() {
                   id="password"
                   placeholder="••••••••"
                   className={`form-input ${errors.password ? 'input-error' : ''}`}
-                  {...register('password', {
-                    required: 'Password is required',
-                    minLength: {
-                      value: 6,
-                      message: 'Password must be at least 6 characters',
-                    },
-                  })}
+                  {...register('password', validateLogin.password)}
                 />
                 <button
                   type="button"
@@ -181,8 +191,51 @@ export default function ResumeAILogin() {
                   )}
                 </button>
               </div>
+
+              {/* Password Strength Indicator */}
+              {watchedPassword && !errors.password && (
+                <div className="password-strength">
+                  <div className="strength-bars">
+                    {[1, 2, 3, 4, 5].map((bar) => (
+                      <div
+                        key={bar}
+                        className={`strength-bar ${strength.score >= bar ? strength.color : ''}`}
+                      />
+                    ))}
+                  </div>
+                  <span className={`strength-label ${strength.color}`}>{strength.label}</span>
+                </div>
+              )}
+
+              {/* Password Requirements Hints */}
+              {watchedPassword && (
+                <ul className="password-hints" aria-live="polite">
+                  <li className={watchedPassword.length >= 8 ? 'hint-pass' : 'hint-fail'}>
+                    <span className="hint-icon">{watchedPassword.length >= 8 ? '✓' : '✗'}</span>
+                    At least 8 characters
+                  </li>
+                  <li className={/[A-Z]/.test(watchedPassword) ? 'hint-pass' : 'hint-fail'}>
+                    <span className="hint-icon">{/[A-Z]/.test(watchedPassword) ? '✓' : '✗'}</span>
+                    One uppercase letter
+                  </li>
+                  <li className={/[a-z]/.test(watchedPassword) ? 'hint-pass' : 'hint-fail'}>
+                    <span className="hint-icon">{/[a-z]/.test(watchedPassword) ? '✓' : '✗'}</span>
+                    One lowercase letter
+                  </li>
+                  <li className={/\d/.test(watchedPassword) ? 'hint-pass' : 'hint-fail'}>
+                    <span className="hint-icon">{/\d/.test(watchedPassword) ? '✓' : '✗'}</span>
+                    One number
+                  </li>
+                  <li className={/[@$!%*?&]/.test(watchedPassword) ? 'hint-pass' : 'hint-fail'}>
+                    <span className="hint-icon">{/[@$!%*?&]/.test(watchedPassword) ? '✓' : '✗'}</span>
+                    One special character (@$!%*?&)
+                  </li>
+                </ul>
+              )}
+
               {errors.password && (
                 <span className="error-message" role="alert">
+                  <span className="error-icon">!</span>
                   {errors.password.message}
                 </span>
               )}

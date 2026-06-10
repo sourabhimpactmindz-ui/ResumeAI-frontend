@@ -420,3 +420,169 @@ body {
     margin-bottom: 32px;
   }
 }
+/* Password Requirements Styles */
+.password-requirements {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.requirement-item {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.requirement-item:last-child {
+  margin-bottom: 0;
+}
+
+.requirement-item span {
+  transition: all 0.3s ease;
+  padding-left: 6px;
+}
+
+.requirement-item span.met {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.requirement-item span.unmet {
+  color: #9ca3af;
+}
+
+/* Password Strength Bar */
+.password-strength-bar {
+  margin-top: 10px;
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Error Styles */
+.light-form-group input.error {
+  border-color: #ef4444;
+  background-color: #fff5f5;
+}
+
+.error-text {
+  display: block;
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* Form Group Focus Styles */
+.light-form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.light-form-group input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Button Disabled State */
+.create-light-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.google-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Form Group Spacing */
+.light-form-group {
+  margin-bottom: 16px;
+}
+
+.light-form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+  font-size: 14px;
+}
+
+.light-form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.light-form-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* Password Wrapper */
+.light-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.light-password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.light-toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.light-toggle-password:hover {
+  color: #374151;
+}
+
+.light-toggle-password:focus {
+  outline: none;
+  color: #3b82f6;
+}
+
+/* Success State */
+.light-form-group input.success {
+  border-color: #22c55e;
+  background-color: #f0fdf4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .password-requirements {
+    font-size: 12px;
+  }
+
+  .requirement-item {
+    margin-bottom: 6px;
+  }
+
+  .light-form-group {
+    margin-bottom: 12px;
+  }
+}

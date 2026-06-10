@@ -8,51 +8,84 @@ import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
+import { validateSignup } from '../../Validation/form.validation';
 
 export default function ResumeAISignUp2() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [SignupUser , {isLoading}] = useSignupUserMutation();
-  const [user , setuser] = useState(null);
+  const [SignupUser, { isLoading }] = useSignupUserMutation();
+  const [user, setuser] = useState(null);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors, isValid },
+    watch,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
 
-  } = useForm()
+  const password = watch("password");
 
-  const handleSignUp = async(data) => {
-    try{
-      const res = await SignupUser(data).unwrap();
-      if(res?.status){
-        toast.success('OTP Sent Successful');
-        navigate('/verifyOTP',{
-          state : {
-            email : data.email,
-          }
-        });
-      }
-    }catch(err){
-        toast.error(err?.data?.message || 'Signup failed. Please try again.');
-      }
+  // Password strength indicator
+  const getPasswordStrength = (pwd) => {
+    if (!pwd) return 0;
+    let strength = 0;
+    if (pwd.length >= 8) strength++;
+    if (/[a-z]/.test(pwd)) strength++;
+    if (/[A-Z]/.test(pwd)) strength++;
+    if (/\d/.test(pwd)) strength++;
+    if (/[@$!%*?&]/.test(pwd)) strength++;
+    return strength;
   };
 
-  const handleGoogleSignUp = async() => {
-    try{
-      const Provider = new GoogleAuthProvider()
-          const result = await signInWithPopup(auth , Provider)
-            const token = await result.user.getIdToken()
-            localStorage.setItem("accessToken",token)
-          toast.success('Login successful!');
-          setuser(result.user)
-          navigate('/home'); 
-    }catch(error){
-      toast.error(error.message || 'Login failed. Please try again.');
+  const passwordStrength = getPasswordStrength(password);
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength <= 1) return "#ef4444";
+    if (passwordStrength <= 2) return "#f97316";
+    if (passwordStrength <= 3) return "#eab308";
+    if (passwordStrength <= 4) return "#84cc16";
+    return "#22c55e";
+  };
+
+  const handleSignUp = async (data) => {
+    try {
+      const res = await SignupUser(data).unwrap();
+      if (res?.status) {
+        toast.success('OTP sent successfully');
+        navigate('/verifyOTP', {
+          state: {
+            email: data.email,
+          },
+        });
+      }
+    } catch (err) {
+      toast.error(err?.data?.message || 'Signup failed. Please try again.');
     }
   };
 
-  
+  const handleGoogleSignUp = async () => {
+    setIsGoogleLoading(true);
+    try {
+      const Provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, Provider);
+      const token = await result.user.getIdToken();
+      localStorage.setItem("accessToken", token);
+      toast.success('Login successful!');
+      setuser(result.user);
+      navigate('/home');
+    } catch (error) {
+      toast.error(error.message || 'Login failed. Please try again.');
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
 
   return (
     <div className="signup-main-container">
@@ -107,11 +140,12 @@ export default function ResumeAISignUp2() {
 
         {/* Testimonial */}
         <div className="dark-testimonial">
-          <div className="stars" style={{color: '#fbbf24'}}>★★★★★</div>
+          <div className="stars" style={{ color: '#fbbf24' }}>
+            ★★★★★
+          </div>
           <p className="testimonial-text">
             "This tool is a total game changer for candidates. The resumes I see coming through discussions are consistently better structured and more aligned with what we're looking for."
           </p>
-         
         </div>
       </div>
 
@@ -125,14 +159,15 @@ export default function ResumeAISignUp2() {
 
           <form className="signup-light-form" onSubmit={handleSubmit(handleSignUp)}>
             {/* Google Button */}
-             <button
-  type="button"
-  className="google-btn"
-  onClick={handleGoogleSignUp}
->
-  <FcGoogle size={22} />
-  Sign in with Google
-</button>
+            <button
+              type="button"
+              className="google-btn"
+              onClick={handleGoogleSignUp}
+              disabled={isGoogleLoading}
+            >
+              <FcGoogle size={22} />
+              {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
+            </button>
 
             {/* Divider */}
             <div className="light-divider">
@@ -145,11 +180,13 @@ export default function ResumeAISignUp2() {
               <input
                 type="text"
                 id="fullName"
-                name="name"
-                placeholder="enter your full name"
-                {...register('name' , {required : 'Full name is required'})}
-                required
+                placeholder="Enter your full name"
+                className={errors.name ? "error" : ""}
+                {...register("name", validateSignup.name)}
               />
+              {errors.name && (
+                <span className="error-text">{errors.name.message}</span>
+              )}
             </div>
 
             {/* Email */}
@@ -158,11 +195,13 @@ export default function ResumeAISignUp2() {
               <input
                 type="email"
                 id="email"
-                name="email"
-                placeholder="enter your email"
-                {...register('email' , {required : 'Email is required'})}
-                required
+                placeholder="Enter your email"
+                className={errors.email ? "error" : ""}
+                {...register("email", validateSignup.email)}
               />
+              {errors.email && (
+                <span className="error-text">{errors.email.message}</span>
+              )}
             </div>
 
             {/* Password */}
@@ -170,30 +209,77 @@ export default function ResumeAISignUp2() {
               <label htmlFor="password">Password</label>
               <div className="light-password-wrapper">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   id="password"
-                  name="password"
                   placeholder="••••••••"
-                  {...register('password' , {required : 'Password is required'})}
-                  required
+                  className={errors.password ? "error" : ""}
+                  {...register("password", validateSignup.password)}
                 />
                 <button
                   type="button"
                   className="light-toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                 </button>
               </div>
+
+              {/* Password Requirements */}
+              {password && (
+                <div className="password-requirements">
+                  <div className="requirement-item">
+                    <span className={password.length >= 8 ? "met" : "unmet"}>
+                      ✓ At least 8 characters
+                    </span>
+                  </div>
+                  <div className="requirement-item">
+                    <span className={/[a-z]/.test(password) ? "met" : "unmet"}>
+                      ✓ Lowercase letter
+                    </span>
+                  </div>
+                  <div className="requirement-item">
+                    <span className={/[A-Z]/.test(password) ? "met" : "unmet"}>
+                      ✓ Uppercase letter
+                    </span>
+                  </div>
+                  <div className="requirement-item">
+                    <span className={/\d/.test(password) ? "met" : "unmet"}>
+                      ✓ Number
+                    </span>
+                  </div>
+                  <div className="requirement-item">
+                    <span
+                      className={/[@$!%*?&]/.test(password) ? "met" : "unmet"}
+                    >
+                      ✓ Special character (@$!%*?&)
+                    </span>
+                  </div>
+
+                  {/* Password Strength Bar */}
+                  <div className="password-strength-bar">
+                    <div
+                      className="strength-fill"
+                      style={{
+                        width: `${(passwordStrength / 5) * 100}%`,
+                        backgroundColor: getPasswordStrengthColor(),
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {errors.password && (
+                <span className="error-text">{errors.password.message}</span>
+              )}
             </div>
 
-            {/* Password Requirement */}
-            <p className="password-requirement">
-              Must be at least 8 characters.
-            </p>
-
             {/* Create Button */}
-            <button type="submit" disabled={isLoading} className="create-light-btn">
+            <button
+              type="submit"
+              disabled={isLoading || !isValid}
+              className="create-light-btn"
+            >
               {isLoading ? 'Creating account...' : 'Create Account →'}
             </button>
           </form>
