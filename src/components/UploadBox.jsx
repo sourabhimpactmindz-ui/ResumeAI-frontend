@@ -3,23 +3,11 @@ import { useState } from "react";
 import "../styles/UploadBox.css"
 import Button from "./Button";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 export default function UploadBox({ onAnalyze , isLoading }) {
-  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState("");
 const handleClick = () => {
-  const token = localStorage.getItem("accessToken");
-
-  if (!token) {
-    toast.error("Please login first");
-    setTimeout(() => {
-      navigate("/");
-    }, 500);
-    return;
-  }
-
   if (!file) {
     toast.error("Please upload your resume");
     return;

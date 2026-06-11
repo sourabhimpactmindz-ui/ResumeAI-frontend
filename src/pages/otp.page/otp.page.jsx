@@ -67,24 +67,16 @@ const OTPPage = () => {
         otp: finalOtp,
       }).unwrap();
 
-      const token =
-        res?.accessToken ||
-        res?.token ||
-        res?.data?.accessToken ||
-        res?.data?.token;
+      toast.success(res.message);
 
-      if (!token) {
-        throw new Error(
-          "Server did not return a valid access token"
-        );
-      }
+      localStorage.setItem("accessToken", res.accessToken);
 
-      localStorage.setItem("accessToken", token);
-      toast.success(res.message || "OTP verified successfully");
-      navigate("/home");
+      setTimeout(() => {
+        navigate("/home");
+      }, 1000);
     } catch (error) {
       toast.error(
-        error?.data?.message || error.message || "OTP verification failed"
+        error?.data?.message || "OTP verification failed"
       );
     }
   };
