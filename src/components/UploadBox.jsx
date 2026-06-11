@@ -12,15 +12,14 @@ export default function UploadBox({ onAnalyze , isLoading }) {
 const handleClick = () => {
   const token = localStorage.getItem("accessToken");
 
-  if(!token){
+  if (!token) {
     toast.error("Please login first");
 
     setTimeout(() => {
-      navigate("/login")
-    },1500)
+      navigate("/");
+    }, 1500);
 
     return;
-    
   }
   if (!file) {
     toast.error("Please upload your resume");
