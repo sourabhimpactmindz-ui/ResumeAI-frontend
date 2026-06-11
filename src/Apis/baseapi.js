@@ -28,7 +28,8 @@ const baseQueryWithRefresh = async (args, api, extraOptions) => {
       result = await baseQuery(args, api, extraOptions);
     } else {
       localStorage.removeItem("accessToken");
-      window.location.href = "/";
+      // Return the unauthorized result and let the UI decide how to redirect.
+      return result;
     }
   }
 

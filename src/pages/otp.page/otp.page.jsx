@@ -62,27 +62,31 @@ const OTPPage = () => {
     }
 
     try {
-  const res = await verifyOtp({
-    email,
-    otp: finalOtp,
-  }).unwrap();
+      const res = await verifyOtp({
+        email,
+        otp: finalOtp,
+      }).unwrap();
 
-  if (res?.status) {
-    localStorage.setItem(
-      "accessToken",
-      res.accessToken
-    );
+      const token =
+        res?.accessToken ||
+        res?.token ||
+        res?.data?.accessToken ||
+        res?.data?.token;
 
-    toast.success(res.message);
+      if (!token) {
+        throw new Error(
+          "Server did not return a valid access token"
+        );
+      }
 
-    navigate("/home");
-  }
-} catch (error) {
-  toast.error(
-    error?.data?.message ||
-      "OTP verification failed"
-  );
-}
+      localStorage.setItem("accessToken", token);
+      toast.success(res.message || "OTP verified successfully");
+      navigate("/home");
+    } catch (error) {
+      toast.error(
+        error?.data?.message || error.message || "OTP verification failed"
+      );
+    }
   };
 
   const handleResend = async () => {

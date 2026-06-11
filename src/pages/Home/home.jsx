@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AnalysisPanel from "../../components/AnalysisPanel"
 import FeatureCard from "../../components/FeatureCard";
 import Navbar from "../../components/Navbar";
@@ -9,6 +10,7 @@ import { useUplodeResumeMutation } from "../../Apis/resumeApi";
 import { Settings2, Target, BarChart3, ShieldCheck } from 'lucide-react';
 import UploadBox from "../../components/UploadBox";
 import Badge from "../../components/Badge";
+import { toast } from "react-toastify";
 
 
 const STATS = [
@@ -45,19 +47,34 @@ export default function Home() {
 
   const [UplodeResume, { isLoading }] = useUplodeResumeMutation();
 
+  const navigate = useNavigate();
+
   const handleAnalze = async (file, jobDescription) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      toast.error("Please login before analyzing your resume.");
+      return;
+    }
+
     try {
       const formData = new FormData();
-
       formData.append("resume", file);
       formData.append("jobDescription", jobDescription);
 
       const result = await UplodeResume(formData).unwrap();
-
-
       setAnalysis(result.data);
     } catch (error) {
       console.error(error);
+      toast.error(
+        error?.data?.message ||
+          error?.error ||
+          "Upload failed. Please login again."
+      );
+
+      if (error?.status === 401) {
+        navigate("/");
+      }
     }
   };
 
