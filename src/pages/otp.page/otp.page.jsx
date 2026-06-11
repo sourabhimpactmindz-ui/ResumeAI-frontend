@@ -70,7 +70,7 @@ const OTPPage = () => {
   if (res?.status) {
     localStorage.setItem(
       "accessToken",
-      res.token
+      res.accessToken
     );
 
     toast.success(res.message);
