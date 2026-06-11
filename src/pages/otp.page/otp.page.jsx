@@ -62,23 +62,27 @@ const OTPPage = () => {
     }
 
     try {
-      const res = await verifyOtp({
-        email,
-        otp: finalOtp,
-      }).unwrap();
+  const res = await verifyOtp({
+    email,
+    otp: finalOtp,
+  }).unwrap();
 
-      toast.success(res.message);
+  if (res?.status) {
+    localStorage.setItem(
+      "accessToken",
+      res.token
+    );
 
-      localStorage.setItem("accessToken", res.accessToken);
+    toast.success(res.message);
 
-      setTimeout(() => {
-        navigate("/home");
-      }, 1000);
-    } catch (error) {
-      toast.error(
-        error?.data?.message || "OTP verification failed"
-      );
-    }
+    navigate("/home");
+  }
+} catch (error) {
+  toast.error(
+    error?.data?.message ||
+      "OTP verification failed"
+  );
+}
   };
 
   const handleResend = async () => {
