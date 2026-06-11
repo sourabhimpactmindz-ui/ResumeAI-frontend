@@ -68,9 +68,9 @@ const OTPPage = () => {
       }).unwrap();
 
       toast.success(res.message);
-
-      localStorage.setItem("accessToken", res.accessToken);
-
+   if (res.accessToken) { 
+    localStorage.setItem("accessToken", res.accessToken);
+}
       setTimeout(() => {
         navigate("/home");
       }, 1000);
