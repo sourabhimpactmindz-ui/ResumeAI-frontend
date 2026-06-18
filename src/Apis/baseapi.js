@@ -17,7 +17,7 @@ const baseQueryWithRefresh = async (args, api, extraOptions) => {
 
   if (result?.error?.status === 401) {
     const refreshResult = await baseQuery(
-      { url: "/refresh", method: 'GET' },
+      { url: "/refresh", method: 'POST' },
       api,
       extraOptions
     );
