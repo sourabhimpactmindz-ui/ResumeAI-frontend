@@ -24,7 +24,7 @@ const baseQueryWithRefresh = async (args, api, extraOptions) => {
     console.log("refresh calling", refreshResult)
 
     if (refreshResult?.data?.token) {
-      localStorage.setItem("accessToken", refreshResult.data.token);
+      localStorage.setItem("accessToken", refreshResult.data.accessToken);
       result = await baseQuery(args, api, extraOptions);
     } else {
       localStorage.removeItem("accessToken");
