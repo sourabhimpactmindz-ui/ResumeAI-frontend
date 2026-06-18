@@ -23,10 +23,14 @@ const baseQueryWithRefresh = async (args, api, extraOptions) => {
     );
     console.log("refresh calling", refreshResult)
 
-    if (refreshResult?.data?.token) {
-      localStorage.setItem("accessToken", refreshResult.data.accessToken);
-      result = await baseQuery(args, api, extraOptions);
-    } else {
+   if (refreshResult?.data?.accessToken) {
+  localStorage.setItem(
+    "accessToken",
+    refreshResult.data.accessToken
+  );
+
+  result = await baseQuery(args, api, extraOptions);
+} else {
       localStorage.removeItem("accessToken");
       window.location.href = "/";
     }
