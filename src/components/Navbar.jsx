@@ -7,6 +7,7 @@ export default function Navbar() {
 
     const Logout = () => {
         localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
         navigate('/')
     }
 

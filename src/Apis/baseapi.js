@@ -17,7 +17,9 @@ const baseQueryWithRefresh = async (args, api, extraOptions) => {
 
   if (result?.error?.status === 401) {
     const refreshResult = await baseQuery(
-      { url: "/refresh", method: 'POST' },
+      { url: "/refresh", method: 'POST' , body : {
+        refreshToken: localStorage.getItem("refreshToken"),
+      }},
       api,
       extraOptions
     );
@@ -25,7 +27,7 @@ const baseQueryWithRefresh = async (args, api, extraOptions) => {
 
    if (refreshResult?.data?.accessToken) {
   localStorage.setItem(
-    "accessToken",
+    "accessToken"
     refreshResult.data.accessToken
   );
 
