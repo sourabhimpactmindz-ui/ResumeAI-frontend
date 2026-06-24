@@ -54,8 +54,8 @@ export default function ResumeAILogin() {
       localStorage.setItem('accessToken', res.accessToken);
       if (res?.status) {
         toast.success('Login successful!');
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("accessToken", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
         navigate('/home');
       }
     } catch (err) {

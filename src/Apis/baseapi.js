@@ -3,37 +3,75 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_PUBLIC_BACKEND_URL}/api`,
   credentials: "include",
+
   prepareHeaders: (headers) => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
+
     if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
+      headers.set("Authorization", `Bearer ${token}`);
     }
+
     return headers;
   },
 });
 
-const baseQueryWithRefresh = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
+const baseQueryWithRefresh = async (
+  args,
+  api,
+  extraOptions
+) => {
+  let result = await baseQuery(
+    args,
+    api,
+    extraOptions
+  );
 
   if (result?.error?.status === 401) {
+
     const refreshResult = await baseQuery(
-      { url: "/refresh", method: 'POST' , body : {
-        refreshToken: localStorage.getItem("refreshToken"),
-      }},
+      {
+        url: "/refresh",
+        method: "POST",
+        body: {
+          refreshToken:
+            localStorage.getItem("refreshToken"),
+        },
+      },
       api,
       extraOptions
     );
-    console.log("refresh calling", refreshResult)
 
-   if (refreshResult?.data?.accessToken) {
-  localStorage.setItem(
-    "accessToken",
-    refreshResult.data.accessToken
-  );
+    console.log(
+      "Refresh Response:",
+      refreshResult
+    );
 
-  result = await baseQuery(args, api, extraOptions);
-} else {
+    if (refreshResult?.data?.accessToken) {
+
+      localStorage.setItem(
+        "accessToken",
+        refreshResult.data.accessToken
+      );
+
+      if (refreshResult?.data?.refreshToken) {
+        localStorage.setItem(
+          "refreshToken",
+          refreshResult.data.refreshToken
+        );
+      }
+
+      // Retry original request
+      result = await baseQuery(
+        args,
+        api,
+        extraOptions
+      );
+
+    } else {
+
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
       window.location.href = "/";
     }
   }
@@ -42,7 +80,7 @@ const baseQueryWithRefresh = async (args, api, extraOptions) => {
 };
 
 const baseApi = createApi({
-  reducerPath: 'api',
+  reducerPath: "api",
   baseQuery: baseQueryWithRefresh,
   endpoints: () => ({}),
 });
