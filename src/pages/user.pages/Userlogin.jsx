@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './UserLogin.css';
 import { FcGoogle } from "react-icons/fc";
-import { useLoginUserMutation } from '../../Apis/user.api';
+import { useGoogleLoginMutation, useLoginUserMutation } from '../../Apis/user.api';
 import { useForm } from 'react-hook-form';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,7 @@ function getPasswordStrength(password) {
 export default function ResumeAILogin() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordValue, setPasswordValue] = useState('');
+  const [GoogleLogin] = useGoogleLoginMutation();
   const [LoginUser, { isLoading }] = useLoginUserMutation();
 
   const {
@@ -63,28 +63,30 @@ export default function ResumeAILogin() {
     }
   };
 
-const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = async () => {
   try {
-    const provider =
-      new GoogleAuthProvider();
+    const provider = new GoogleAuthProvider();
 
-    const result =
-      await signInWithPopup(
-        auth,
-        provider
-      );
+    const result = await signInWithPopup(
+      auth,
+      provider
+    );
 
-    const token =
+    const firebaseToken =
       await result.user.getIdToken();
+
+    const res = await GoogleLogin({
+      token: firebaseToken,
+    }).unwrap();
 
     localStorage.setItem(
       "accessToken",
-      token
+      res.accessToken
     );
 
     localStorage.setItem(
-      "authProvider",
-      "google"
+      "refreshToken",
+      res.refreshToken
     );
 
     toast.success(
@@ -94,9 +96,10 @@ const handleGoogleSignIn = async () => {
     navigate("/home");
 
   } catch (error) {
+    console.error(error);
     toast.error(
-      error.message ||
-      "Login failed. Please try again."
+      error?.data?.message ||
+      error.message
     );
   }
 };

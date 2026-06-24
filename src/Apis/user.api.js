@@ -32,10 +32,19 @@ export const userApi = baseApi.injectEndpoints({
                 url : "/resend-otp",
                 method : "POST",
                 body : data
+            }),
+        }),
+
+        GoogleLogin : builder.mutation({
+            query : (data) => ({
+                url : "//google-login",
+                method : "POST",
+                body : data
             })
         })
+
     })
 
 })
 
-export const {useLoginUserMutation , useSignupUserMutation , useVerifyOtpMutation , useResendOtpMutation} = userApi;
+export const {useLoginUserMutation , useSignupUserMutation , useVerifyOtpMutation , useResendOtpMutation , useGoogleLoginMutation} = userApi;
