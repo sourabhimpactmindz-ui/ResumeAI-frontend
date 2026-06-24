@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
-// import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import { validateLogin } from '../../Validation/form.validation';
 
@@ -63,19 +63,43 @@ export default function ResumeAILogin() {
     }
   };
 
-  // const handleGoogleSignIn = async () => {
-  //   try {
-  //     const Provider = new GoogleAuthProvider();
-  //     const result = await signInWithPopup(auth, Provider);
-  //     const token = await result.user.getIdToken();
-  //     localStorage.setItem("accessToken", token);
-  //     localStorage.setItem("refreshToken", result.user.refreshToken);
-  //     toast.success('Login successful!');
-  //     navigate('/home');
-  //   } catch (error) {
-  //     toast.error(error.message || 'Login failed. Please try again.');
-  //   }
-  // };
+const handleGoogleSignIn = async () => {
+  try {
+    const provider =
+      new GoogleAuthProvider();
+
+    const result =
+      await signInWithPopup(
+        auth,
+        provider
+      );
+
+    const token =
+      await result.user.getIdToken();
+
+    localStorage.setItem(
+      "accessToken",
+      token
+    );
+
+    localStorage.setItem(
+      "authProvider",
+      "google"
+    );
+
+    toast.success(
+      "Login successful!"
+    );
+
+    navigate("/home");
+
+  } catch (error) {
+    toast.error(
+      error.message ||
+      "Login failed. Please try again."
+    );
+  }
+};
 
   return (
     <div className="login-wrapper">
