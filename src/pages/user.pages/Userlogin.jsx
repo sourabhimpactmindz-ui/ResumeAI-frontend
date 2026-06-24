@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+// import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import { validateLogin } from '../../Validation/form.validation';
 
