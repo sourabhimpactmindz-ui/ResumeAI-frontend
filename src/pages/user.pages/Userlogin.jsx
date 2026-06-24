@@ -63,19 +63,19 @@ export default function ResumeAILogin() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const Provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, Provider);
-      const token = await result.user.getIdToken();
-      localStorage.setItem("accessToken", token);
-      localStorage.setItem("refreshToken", result.user.refreshToken);
-      toast.success('Login successful!');
-      navigate('/home');
-    } catch (error) {
-      toast.error(error.message || 'Login failed. Please try again.');
-    }
-  };
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     const Provider = new GoogleAuthProvider();
+  //     const result = await signInWithPopup(auth, Provider);
+  //     const token = await result.user.getIdToken();
+  //     localStorage.setItem("accessToken", token);
+  //     localStorage.setItem("refreshToken", result.user.refreshToken);
+  //     toast.success('Login successful!');
+  //     navigate('/home');
+  //   } catch (error) {
+  //     toast.error(error.message || 'Login failed. Please try again.');
+  //   }
+  // };
 
   return (
     <div className="login-wrapper">

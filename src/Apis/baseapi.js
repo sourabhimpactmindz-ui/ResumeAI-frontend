@@ -1,14 +1,23 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {
+  createApi,
+  fetchBaseQuery
+} from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${import.meta.env.VITE_PUBLIC_BACKEND_URL}/api`,
-  credentials: "include",
+  baseUrl:
+    `${import.meta.env.VITE_PUBLIC_BACKEND_URL}/api`,
 
   prepareHeaders: (headers) => {
-    const token = localStorage.getItem("accessToken");
+    const token =
+      localStorage.getItem(
+        "accessToken"
+      );
 
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      headers.set(
+        "Authorization",
+        `Bearer ${token}`
+      );
     }
 
     return headers;
@@ -20,47 +29,76 @@ const baseQueryWithRefresh = async (
   api,
   extraOptions
 ) => {
+
   let result = await baseQuery(
     args,
     api,
     extraOptions
   );
 
-  if (result?.error?.status === 401) {
+  if (
+    result?.error?.status === 401
+  ) {
 
-    const refreshResult = await baseQuery(
-      {
-        url: "/refresh",
-        method: "POST",
-        body: {
-          refreshToken:
-            localStorage.getItem("refreshToken"),
+    const provider =
+      localStorage.getItem(
+        "authProvider"
+      );
+
+    // Google Login
+    if (provider === "google") {
+
+      localStorage.removeItem(
+        "accessToken"
+      );
+
+      localStorage.removeItem(
+        "authProvider"
+      );
+
+      window.location.href = "/";
+
+      return result;
+    }
+
+    // Local Login
+    const refreshResult =
+      await baseQuery(
+        {
+          url: "/refresh",
+          method: "POST",
+          body: {
+            refreshToken:
+              localStorage.getItem(
+                "refreshToken"
+              ),
+          },
         },
-      },
-      api,
-      extraOptions
-    );
+        api,
+        extraOptions
+      );
 
-    console.log(
-      "Refresh Response:",
-      refreshResult
-    );
-
-    if (refreshResult?.data?.accessToken) {
+    if (
+      refreshResult?.data?.accessToken
+    ) {
 
       localStorage.setItem(
         "accessToken",
-        refreshResult.data.accessToken
+        refreshResult.data
+          .accessToken
       );
 
-      if (refreshResult?.data?.refreshToken) {
+      if (
+        refreshResult?.data
+          ?.refreshToken
+      ) {
         localStorage.setItem(
           "refreshToken",
-          refreshResult.data.refreshToken
+          refreshResult.data
+            .refreshToken
         );
       }
 
-      // Retry original request
       result = await baseQuery(
         args,
         api,
@@ -69,8 +107,7 @@ const baseQueryWithRefresh = async (
 
     } else {
 
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      localStorage.clear();
 
       window.location.href = "/";
     }
@@ -81,7 +118,8 @@ const baseQueryWithRefresh = async (
 
 const baseApi = createApi({
   reducerPath: "api",
-  baseQuery: baseQueryWithRefresh,
+  baseQuery:
+    baseQueryWithRefresh,
   endpoints: () => ({}),
 });
 
