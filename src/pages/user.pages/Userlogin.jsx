@@ -79,6 +79,8 @@ export default function ResumeAILogin() {
       token: firebaseToken,
     }).unwrap();
 
+    console.log(res)
+
     localStorage.setItem(
       "accessToken",
       res.accessToken
