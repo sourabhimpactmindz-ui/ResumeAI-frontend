@@ -3,33 +3,38 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_PUBLIC_BACKEND_URL}/api`,
   credentials: "include",
-  // When using httpOnly cookies for authentication, do not set Authorization headers
-  // here or attempt to read tokens from `localStorage` — the server will read cookies.
-  prepareHeaders: (headers) => headers,
+  prepareHeaders: (headers) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+  },
 });
 
 const baseQueryWithRefresh = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
-    // Attempt silent refresh using httpOnly refresh cookie. The server should
-    // set new auth cookies if refresh succeeds. No refresh token is sent from
-    // JS when using httpOnly cookies — `credentials: 'include'` ensures cookies
-    // are sent along with this request.
     const refreshResult = await baseQuery(
-      { url: "/refresh", method: 'POST' },
+      { url: "/refresh", method: 'POST' , body : {
+        refreshToken: localStorage.getItem("refreshToken"),
+      }},
       api,
       extraOptions
     );
+    console.log("refresh calling", refreshResult)
 
-    console.log("refresh calling", refreshResult);
+   if (refreshResult?.data?.accessToken) {
+  localStorage.setItem(
+    "accessToken"
+    refreshResult.data.accessToken
+  );
 
-    // If refresh failed, clear any client-side tokens and let UI handle logout.
-    if (refreshResult?.error) {
+  result = await baseQuery(args, api, extraOptions);
+} else {
       localStorage.removeItem("accessToken");
-    } else {
-      // Retry the original request after successful refresh.
-      result = await baseQuery(args, api, extraOptions);
+      window.location.href = "/";
     }
   }
 
