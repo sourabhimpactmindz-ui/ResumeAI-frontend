@@ -69,6 +69,7 @@ export default function ResumeAILogin() {
       const result = await signInWithPopup(auth, Provider);
       const token = await result.user.getIdToken();
       localStorage.setItem("accessToken", token);
+      localStorage.setItem("refreshToken", token);
       toast.success('Login successful!');
       navigate('/home');
     } catch (error) {
