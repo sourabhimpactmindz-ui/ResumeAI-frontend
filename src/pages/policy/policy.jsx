@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './PolicyPages.css';
+import './Policypages.css';
 
 export default function PolicyPages() {
   const [currentPage, setCurrentPage] = useState('privacy');
