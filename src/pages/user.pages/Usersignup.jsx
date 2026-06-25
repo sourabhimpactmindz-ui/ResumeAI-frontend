@@ -189,7 +189,7 @@ export default function ResumeAISignUp2() {
             <button
               type="button"
               className="google-btn"
-              onClick={handleGoogleSignUp}
+              onClick={handleGoogleSignIn}
               disabled={isGoogleLoading}
             >
               <FcGoogle size={22} />
