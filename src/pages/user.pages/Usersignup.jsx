@@ -3,7 +3,7 @@ import { Zap, KeySquare, PenTool, Eye, EyeOff } from 'lucide-react';
 import './signup.css';
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from 'react-hook-form';
-import { useSignupUserMutation } from '../../Apis/user.api';
+import { useGoogleLoginMutation, useSignupUserMutation } from '../../Apis/user.api';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
