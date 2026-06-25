@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { ChevronDown, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import './PolicyPages.css';
 
 export default function PolicyPages() {
   const [currentPage, setCurrentPage] = useState('privacy');
   const [expandedSections, setExpandedSections] = useState({});
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const toggleSection = (id) => {
     setExpandedSections(prev => ({
@@ -11,6 +12,19 @@ export default function PolicyPages() {
       [id]: !prev[id]
     }));
   };
+
+  const handleScroll = () => {
+    setShowScrollTop(window.scrollY > 300);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const privacyContent = [
     {
@@ -138,26 +152,20 @@ export default function PolicyPages() {
   const content = currentPage === 'privacy' ? privacyContent : termsContent;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="policy-container">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-4xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-slate-900">ResumeAI</h1>
-          </div>
+      <header className="policy-header">
+        <div className="header-content">
+          <h1 className="header-title">ResumeAI</h1>
 
           {/* Tabs */}
-          <div className="flex gap-2 border-b border-slate-200">
+          <div className="tabs-container">
             <button
               onClick={() => {
                 setCurrentPage('privacy');
                 setExpandedSections({});
               }}
-              className={`px-6 py-3 font-medium text-sm transition-all border-b-2 ${
-                currentPage === 'privacy'
-                  ? 'text-blue-600 border-blue-600'
-                  : 'text-slate-600 border-transparent hover:text-slate-900'
-              }`}
+              className={`tab-button ${currentPage === 'privacy' ? 'active' : ''}`}
             >
               Privacy Policy
             </button>
@@ -166,11 +174,7 @@ export default function PolicyPages() {
                 setCurrentPage('terms');
                 setExpandedSections({});
               }}
-              className={`px-6 py-3 font-medium text-sm transition-all border-b-2 ${
-                currentPage === 'terms'
-                  ? 'text-blue-600 border-blue-600'
-                  : 'text-slate-600 border-transparent hover:text-slate-900'
-              }`}
+              className={`tab-button ${currentPage === 'terms' ? 'active' : ''}`}
             >
               Terms of Service
             </button>
@@ -179,19 +183,19 @@ export default function PolicyPages() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="policy-main">
         {/* Table of Contents */}
-        <div className="mb-12">
-          <div className="bg-white rounded-lg border border-slate-200 p-8 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900 mb-6">Contents</h2>
-            <nav className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="toc-section">
+          <div className="toc-card">
+            <h2 className="toc-title">Contents</h2>
+            <nav className="toc-grid">
               {content.map(section => (
                 <button
                   key={section.id}
                   onClick={() => {
                     document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="text-left px-4 py-2 rounded-md text-blue-600 hover:bg-blue-50 transition-colors text-sm font-medium"
+                  className="toc-link"
                 >
                   {section.title}
                 </button>
@@ -201,62 +205,61 @@ export default function PolicyPages() {
         </div>
 
         {/* Sections */}
-        <div className="space-y-6">
+        <div className="sections-container">
           {content.map(section => (
             <div
               key={section.id}
               id={section.id}
-              className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden"
+              className="section-card"
             >
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full px-8 py-6 flex items-center justify-between hover:bg-slate-50 transition-colors"
+                className="section-header"
               >
-                <h2 className="text-xl font-semibold text-slate-900 text-left">
+                <h2 className="section-title">
                   {section.title}
                 </h2>
-                <ChevronDown
-                  size={20}
-                  className={`text-slate-400 flex-shrink-0 transition-transform ${
-                    expandedSections[section.id] ? 'rotate-180' : ''
-                  }`}
-                />
+                <span
+                  className={`chevron-icon ${expandedSections[section.id] ? 'rotated' : ''}`}
+                >
+                  ⌄
+                </span>
               </button>
 
-              {expandedSections[section.id] && (
-                <div className="border-t border-slate-200 px-8 py-6 bg-slate-50">
-                  {section.content && (
-                    <p className="text-slate-700 leading-relaxed mb-4">
-                      {section.content}
-                    </p>
-                  )}
+              <div
+                className={`section-content ${expandedSections[section.id] ? 'expanded' : ''}`}
+              >
+                {section.content && (
+                  <p className="section-text">
+                    {section.content}
+                  </p>
+                )}
 
-                  {section.subsections && (
-                    <div className="space-y-4">
-                      {section.subsections.map((sub, idx) => (
-                        <div key={idx}>
-                          <h3 className="font-semibold text-slate-900 mb-2">
-                            {sub.subtitle}
-                          </h3>
-                          <p className="text-slate-700 leading-relaxed text-sm">
-                            {sub.text}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+                {section.subsections && (
+                  <div>
+                    {section.subsections.map((sub, idx) => (
+                      <div key={idx} className="subsection">
+                        <h3 className="subsection-title">
+                          {sub.subtitle}
+                        </h3>
+                        <p className="subsection-text">
+                          {sub.text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
 
         {/* Footer Info */}
-        <div className="mt-12 pt-8 border-t border-slate-200">
-          <p className="text-sm text-slate-600">
+        <div className="policy-footer">
+          <p className="footer-text">
             Last updated: June 2024 | Version 1.0
           </p>
-          <p className="text-xs text-slate-500 mt-2">
+          <p className="footer-subtext">
             These policies are effective immediately and apply to all users of ResumeAI.
           </p>
         </div>
@@ -264,8 +267,8 @@ export default function PolicyPages() {
 
       {/* Scroll to top button */}
       <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 transition-colors opacity-0 hover:opacity-100 focus:opacity-100"
+        onClick={scrollToTop}
+        className={`scroll-to-top ${showScrollTop ? 'visible' : ''}`}
         aria-label="Scroll to top"
       >
         ↑
