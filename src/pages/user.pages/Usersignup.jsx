@@ -16,6 +16,8 @@ export default function ResumeAISignUp2() {
   const [SignupUser, { isLoading }] = useSignupUserMutation();
   const [user, setuser] = useState(null);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [GoogleLogin] = useGoogleLoginMutation();
+  
 
   const {
     register,
@@ -70,23 +72,48 @@ export default function ResumeAISignUp2() {
     }
   };
 
-  const handleGoogleSignUp = async () => {
-    setIsGoogleLoading(true);
+    const handleGoogleSignIn = async () => {
     try {
-      const Provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, Provider);
-      const token = await result.user.getIdToken();
-      localStorage.setItem("accessToken", token);
-      toast.success('Login successful!');
-      setuser(result.user);
-      navigate('/home');
+      const provider = new GoogleAuthProvider();
+  
+      const result = await signInWithPopup(
+        auth,
+        provider
+      );
+  
+      const firebaseToken =
+        await result.user.getIdToken();
+  
+      const res = await GoogleLogin({
+        token: firebaseToken,
+      }).unwrap();
+  
+      console.log(res)
+  
+      localStorage.setItem(
+        "accessToken",
+        res.accessToken
+      );
+  
+      localStorage.setItem(
+        "refreshToken",
+        res.refreshToken
+      );
+  
+      toast.success(
+        "Login successful!"
+      );
+  
+      navigate("/home");
+  
     } catch (error) {
-      toast.error(error.message || 'Login failed. Please try again.');
-    } finally {
-      setIsGoogleLoading(false);
+      console.error(error);
+      toast.error(
+        error?.data?.message ||
+        error.message
+      );
     }
   };
-
   return (
     <div className="signup-main-container">
       <div className="signup-dark-section">
