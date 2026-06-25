@@ -11,6 +11,7 @@ import { Settings2, Target, BarChart3, ShieldCheck } from 'lucide-react';
 import UploadBox from "../../components/UploadBox";
 import Badge from "../../components/Badge";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 
 const STATS = [
@@ -156,22 +157,23 @@ export default function Home() {
           ResumeAI
         </span>
 
-        <div className="footer__links">
-          {[
-            "Privacy Policy",
-            "Contact",
-            "Terms of Service",
-            "All Items",
-          ].map((l) => (
-            <a
-              key={l}
-              href="#"
-              className="footer__link"
-            >
-              {l}
-            </a>
-          ))}
-        </div>
+
+<div className="footer__links">
+  {[
+    { label: "Privacy Policy", path: "/policy" },
+    { label: "Contact", path: "/contact" },
+    { label: "Terms of Service", path: "/terms" },
+    { label: "All Items", path: "/items" },
+  ].map((item) => (
+    <Link
+      key={item.label}
+      to={item.path}
+      className="footer__link"
+    >
+      {item.label}
+    </Link>
+  ))}
+</div>
 
         <span className="footer__copy">
           © 2025 ResumeAI. Made globally for

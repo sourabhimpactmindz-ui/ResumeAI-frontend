@@ -5,6 +5,7 @@ import PrivateRouter from "../protectedRouter/privateRouter";
 import Home from "../pages/Home/home";
 import SignUp from "../pages/user.pages/Usersignup";
 import OTPPage from "../pages/otp.page/otp.page";
+import PolicyPages from "../pages/policy/policy";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         {
             path : "/home",
             element : <Home />
+        },
+        {
+            path : "/policy",
+            element : <PolicyPages />
         }
        
     ]

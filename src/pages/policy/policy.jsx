@@ -1,0 +1,275 @@
+import React, { useState } from 'react';
+import { ChevronDown, X } from 'lucide-react';
+
+export default function PolicyPages() {
+  const [currentPage, setCurrentPage] = useState('privacy');
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (id) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  const privacyContent = [
+    {
+      id: 'intro',
+      title: 'Introduction',
+      content: 'ResumeAI ("we," "us," "our," or "Company") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our resume analysis and generation platform.'
+    },
+    {
+      id: 'information',
+      title: 'Information We Collect',
+      subsections: [
+        {
+          subtitle: 'Personal Information',
+          text: 'When you create an account, we collect your name, email address, and password. If you upload documents or input resume content, we process and store that information to provide our services.'
+        },
+        {
+          subtitle: 'Usage Data',
+          text: 'We automatically collect information about how you interact with our platform, including IP address, browser type, pages visited, and time spent on features.'
+        },
+        {
+          subtitle: 'Device Information',
+          text: 'We collect information about the device you use to access our service, including device model, operating system, and unique device identifiers.'
+        }
+      ]
+    },
+    {
+      id: 'usage',
+      title: 'How We Use Your Information',
+      content: 'Your information is used to: (1) Provide and improve our resume AI services; (2) Personalize your experience; (3) Communicate with you about updates and support; (4) Analyze usage patterns to enhance functionality; (5) Ensure security and prevent fraud; (6) Comply with legal obligations.'
+    },
+    {
+      id: 'security',
+      title: 'Data Security',
+      content: 'We implement industry-standard security measures including SSL encryption, secure databases, and access controls to protect your personal information. However, no method of transmission over the internet is 100% secure. While we strive to protect your data, we cannot guarantee absolute security.'
+    },
+    {
+      id: 'sharing',
+      title: 'Data Sharing',
+      content: 'We do not sell your personal information. We may share information with: (1) Service providers who assist in operating our platform; (2) Legal authorities when required by law; (3) Business partners with your consent; (4) Successors in case of merger or acquisition.'
+    },
+    {
+      id: 'retention',
+      title: 'Data Retention',
+      content: 'We retain your personal information for as long as your account is active or as needed to provide services. You can request deletion of your account and associated data at any time by contacting us. Some information may be retained for legal or business purposes.'
+    },
+    {
+      id: 'cookies',
+      title: 'Cookies and Tracking',
+      content: 'We use cookies and similar tracking technologies to enhance your experience. You can control cookie settings through your browser. Disabling cookies may affect certain features of our platform.'
+    },
+    {
+      id: 'rights',
+      title: 'Your Privacy Rights',
+      content: 'Depending on your location, you may have the right to: (1) Access your personal data; (2) Correct inaccurate information; (3) Request deletion of your data; (4) Opt-out of marketing communications; (5) Data portability. Contact us to exercise these rights.'
+    },
+    {
+      id: 'contact',
+      title: 'Contact Us',
+      content: 'If you have questions about this Privacy Policy, please contact us at privacy@resumeai.com or write to us at: ResumeAI, Privacy Department, [Your Address]'
+    }
+  ];
+
+  const termsContent = [
+    {
+      id: 'intro',
+      title: 'Terms of Service',
+      content: 'These Terms of Service ("Terms") govern your access to and use of the ResumeAI platform and services. By accessing our platform, you agree to be bound by these Terms.'
+    },
+    {
+      id: 'use',
+      title: 'Acceptable Use',
+      subsections: [
+        {
+          subtitle: 'Permitted Use',
+          text: 'You agree to use ResumeAI only for lawful purposes and in a way that does not infringe upon the rights of others or restrict their use and enjoyment of the service.'
+        },
+        {
+          subtitle: 'Prohibited Conduct',
+          text: 'You agree not to: (1) Harass or cause distress or inconvenience; (2) Transmit malicious code or viruses; (3) Attempt unauthorized access; (4) Interfere with service operation; (5) Reverse engineer our software.'
+        }
+      ]
+    },
+    {
+      id: 'account',
+      title: 'User Accounts',
+      content: 'You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. You agree to provide accurate information and notify us immediately of unauthorized access.'
+    },
+    {
+      id: 'content',
+      title: 'User Content',
+      content: 'You retain ownership of content you upload (resumes, cover letters, etc.). By using our service, you grant us a license to use this content solely for providing and improving our services. We do not claim ownership of your content.'
+    },
+    {
+      id: 'warranty',
+      title: 'Disclaimers',
+      content: 'Our platform is provided "as is" without warranties of any kind. We do not guarantee error-free operation, continuous availability, or that defects will be corrected. ResumeAI does not provide professional legal or career advice.'
+    },
+    {
+      id: 'limitation',
+      title: 'Limitation of Liability',
+      content: 'To the maximum extent permitted by law, ResumeAI shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our service, even if advised of the possibility of such damages.'
+    },
+    {
+      id: 'intellectual',
+      title: 'Intellectual Property',
+      content: 'All content, features, and functionality of ResumeAI, including software, text, graphics, and logos, are the exclusive property of ResumeAI or its content providers and are protected by international copyright and trademark laws.'
+    },
+    {
+      id: 'termination',
+      title: 'Termination',
+      content: 'We may terminate your account and access to ResumeAI at any time, with or without cause. You may terminate your account anytime. Upon termination, your right to use the service ceases immediately.'
+    },
+    {
+      id: 'changes',
+      title: 'Changes to Terms',
+      content: 'We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting to the platform. Your continued use of ResumeAI constitutes acceptance of modified Terms.'
+    },
+    {
+      id: 'contact',
+      title: 'Contact Us',
+      content: 'For questions about these Terms, please contact us at legal@resumeai.com or write to us at: ResumeAI, Legal Department, [Your Address]'
+    }
+  ];
+
+  const content = currentPage === 'privacy' ? privacyContent : termsContent;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div className="max-w-4xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold text-slate-900">ResumeAI</h1>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex gap-2 border-b border-slate-200">
+            <button
+              onClick={() => {
+                setCurrentPage('privacy');
+                setExpandedSections({});
+              }}
+              className={`px-6 py-3 font-medium text-sm transition-all border-b-2 ${
+                currentPage === 'privacy'
+                  ? 'text-blue-600 border-blue-600'
+                  : 'text-slate-600 border-transparent hover:text-slate-900'
+              }`}
+            >
+              Privacy Policy
+            </button>
+            <button
+              onClick={() => {
+                setCurrentPage('terms');
+                setExpandedSections({});
+              }}
+              className={`px-6 py-3 font-medium text-sm transition-all border-b-2 ${
+                currentPage === 'terms'
+                  ? 'text-blue-600 border-blue-600'
+                  : 'text-slate-600 border-transparent hover:text-slate-900'
+              }`}
+            >
+              Terms of Service
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-6 py-12">
+        {/* Table of Contents */}
+        <div className="mb-12">
+          <div className="bg-white rounded-lg border border-slate-200 p-8 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-900 mb-6">Contents</h2>
+            <nav className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {content.map(section => (
+                <button
+                  key={section.id}
+                  onClick={() => {
+                    document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="text-left px-4 py-2 rounded-md text-blue-600 hover:bg-blue-50 transition-colors text-sm font-medium"
+                >
+                  {section.title}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+
+        {/* Sections */}
+        <div className="space-y-6">
+          {content.map(section => (
+            <div
+              key={section.id}
+              id={section.id}
+              className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden"
+            >
+              <button
+                onClick={() => toggleSection(section.id)}
+                className="w-full px-8 py-6 flex items-center justify-between hover:bg-slate-50 transition-colors"
+              >
+                <h2 className="text-xl font-semibold text-slate-900 text-left">
+                  {section.title}
+                </h2>
+                <ChevronDown
+                  size={20}
+                  className={`text-slate-400 flex-shrink-0 transition-transform ${
+                    expandedSections[section.id] ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {expandedSections[section.id] && (
+                <div className="border-t border-slate-200 px-8 py-6 bg-slate-50">
+                  {section.content && (
+                    <p className="text-slate-700 leading-relaxed mb-4">
+                      {section.content}
+                    </p>
+                  )}
+
+                  {section.subsections && (
+                    <div className="space-y-4">
+                      {section.subsections.map((sub, idx) => (
+                        <div key={idx}>
+                          <h3 className="font-semibold text-slate-900 mb-2">
+                            {sub.subtitle}
+                          </h3>
+                          <p className="text-slate-700 leading-relaxed text-sm">
+                            {sub.text}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Footer Info */}
+        <div className="mt-12 pt-8 border-t border-slate-200">
+          <p className="text-sm text-slate-600">
+            Last updated: June 2024 | Version 1.0
+          </p>
+          <p className="text-xs text-slate-500 mt-2">
+            These policies are effective immediately and apply to all users of ResumeAI.
+          </p>
+        </div>
+      </main>
+
+      {/* Scroll to top button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 transition-colors opacity-0 hover:opacity-100 focus:opacity-100"
+        aria-label="Scroll to top"
+      >
+        ↑
+      </button>
+    </div>
+  );
+}
