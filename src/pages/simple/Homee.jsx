@@ -151,7 +151,9 @@ export default function Homee() {
           <div className="hero-actions">
             {/* <a className="btn" href="/home">Check it free</a>
              */}
-             <Link className="btn" href="/home">Check it free</Link>
+             <Link className="btn" to="/home">
+  Check it free
+</Link>
             <a className="btn btn-ghost" href="#how">See how it works</a>
           </div>
         </div>

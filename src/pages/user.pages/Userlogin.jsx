@@ -56,7 +56,7 @@ export default function ResumeAILogin() {
         toast.success('Login successful!');
         localStorage.setItem("accessToken", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);
-        navigate('/home');
+        navigate('/home' , {replace : true});
       }
     } catch (err) {
       toast.error(err?.data?.message || 'Login failed. Please try again.');
