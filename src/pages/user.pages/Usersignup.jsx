@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { Eye, EyeOff, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import { useGoogleLoginMutation, useSignupUserMutation } from '../../Apis/user.api';
 import { validateSignup } from '../../Validation/form.validation';
@@ -32,6 +32,30 @@ export default function ResumeAISignUp() {
   });
 
   const password = watch('password', '');
+
+  // Handle redirect result (if user was redirected to Google login)
+  useEffect(() => {
+    let isMounted = true;
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (!isMounted || !result?.user) return;
+        const firebaseToken = await result.user.getIdToken();
+        const res = await GoogleLogin({ token: firebaseToken }).unwrap();
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+        toast.success('Login successful!');
+        navigate('/home', { replace: true });
+      })
+      .catch((error) => {
+        if (error && error.code !== 'auth/credential-already-in-use') {
+          console.error('Redirect sign-in error:', error);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [GoogleLogin, navigate]);
 
   // Password strength calculation
   const getPasswordStrength = (pwd) => {
@@ -68,9 +92,11 @@ export default function ResumeAISignUp() {
   };
 
   const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+
     try {
       setIsGoogleLoading(true);
-      const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const firebaseToken = await result.user.getIdToken();
 
@@ -84,8 +110,20 @@ export default function ResumeAISignUp() {
       toast.success('Login successful!');
       navigate('/home', { replace: true });
     } catch (error) {
-      console.error(error);
-      toast.error(error?.data?.message || error.message || 'Google sign in failed.');
+      console.error('Google Sign-in error:', error);
+      if (error?.code === 'auth/popup-blocked') {
+        toast.info('Popup blocked by browser. Redirecting to Google Sign-in...');
+        try {
+          await signInWithRedirect(auth, provider);
+        } catch (redirectErr) {
+          console.error('Redirect error:', redirectErr);
+          toast.error('Browser ne popup block kar diya hai. Kripya address bar se popups allow karein.');
+        }
+      } else if (error?.code === 'auth/popup-closed-by-user') {
+        toast.warn('Sign-in popup was closed.');
+      } else {
+        toast.error(error?.data?.message || error.message || 'Google sign in failed.');
+      }
     } finally {
       setIsGoogleLoading(false);
     }
