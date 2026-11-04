@@ -10,16 +10,15 @@ import About from "../pages/about/about";
 import Terms from "../pages/terms/terms";
 import Contact from "../pages/contact/contact";
 import Disclaimer from "../pages/Disclaimer/Disclaimer";
-import Simplepage from "../pages/simple/simplepage";
-// import Simplepage from "../pages/simple/simplepage";
+import Homee from "../pages/simple/Homee";
+
 
 const router = createBrowserRouter([
-    
     {
-        path : "/",
-        element : <Simplepage />
-    }
-    ,{
+        path : '/',
+        element : <Homee />
+    },
+   {
         path : "/login",    
         element : <UserLogin />
     },
