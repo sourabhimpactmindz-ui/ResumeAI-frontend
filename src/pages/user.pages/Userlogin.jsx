@@ -109,7 +109,7 @@ export default function ResumeAILogin() {
           await signInWithRedirect(auth, provider);
         } catch (redirectErr) {
           console.error('Redirect error:', redirectErr);
-          toast.error('Browser ne popup block kar diya hai. Kripya address bar me popups allow karein.');
+          toast.error('Popup blocked by browser. Please allow popups in your address bar to continue.');
         }
       } else if (error?.code === 'auth/popup-closed-by-user') {
         toast.warn('Sign-in popup was closed.');
