@@ -136,7 +136,7 @@ export default function Simplepage() {
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
         </nav>
-        <a className="btn btn-sm" href="#cta">Check my resume</a>
+        {/* <a className="btn btn-sm" href="#cta">Check my resume</a> */}
       </header>
 
       {/* HERO */}
@@ -148,7 +148,7 @@ export default function Simplepage() {
             ATS score and shows exactly why a line might get you rejected.
           </p>
           <div className="hero-actions">
-            <a className="btn" href="#cta">Check it free</a>
+            <a className="btn" href="/home">Check it free</a>
             <a className="btn btn-ghost" href="#how">See how it works</a>
           </div>
         </div>
@@ -342,13 +342,13 @@ export default function Simplepage() {
       </section>
 
       {/* CTA */}
-      <section className="cta" id="cta">
+      {/* <section className="cta" id="cta">
         <Reveal>
           <h2>See your score before your next application</h2>
           <p className="lead">No sign-up needed. Upload your resume and get your result in 30 seconds.</p>
           <a className="btn btn-lg" href="#top">Upload your resume</a>
         </Reveal>
-      </section>
+      </section> */}
 
       <footer className="footer">
         <div>
