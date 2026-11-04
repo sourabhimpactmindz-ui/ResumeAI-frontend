@@ -87,7 +87,11 @@ export default function ResumeAISignUp() {
         });
       }
     } catch (err) {
-      toast.error(err?.data?.message || 'Signup failed. Please try again.');
+      if (err?.status === 'FETCH_ERROR' || err?.error?.includes('Failed to fetch')) {
+        toast.error('Unable to connect to the backend server. Please verify your backend server is running and reachable.');
+      } else {
+        toast.error(err?.data?.message || err?.error || 'Signup failed. Please try again.');
+      }
     }
   };
 
@@ -121,6 +125,8 @@ export default function ResumeAISignUp() {
         }
       } else if (error?.code === 'auth/popup-closed-by-user') {
         toast.warn('Sign-in popup was closed.');
+      } else if (error?.status === 'FETCH_ERROR' || error?.message?.includes('Failed to fetch') || error?.error?.includes('Failed to fetch')) {
+        toast.error('Unable to connect to the backend server. Please verify your backend server is running and reachable.');
       } else {
         toast.error(error?.data?.message || error.message || 'Google sign in failed.');
       }
