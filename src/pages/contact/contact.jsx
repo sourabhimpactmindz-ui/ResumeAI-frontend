@@ -46,9 +46,9 @@ function Contact() {
       <Navbar />
 
       <div className="legal-container legal-container-wide">
-        <Link to="/home" className="legal-back-nav">
+        {/* <Link to="/home" className="legal-back-nav">
           <ArrowLeft size={14} /> Back to Dashboard
-        </Link>
+        </Link> */}
 
         <div className="legal-header">
           <span className="legal-badge">✦ Direct Support</span>
@@ -149,7 +149,7 @@ function Contact() {
                       name="name"
                       value={form.name}
                       onChange={handleChange}
-                      placeholder="e.g. Rohit Sharma"
+                      placeholder="e.g. ABCZX"
                       className="contact-input"
                       required
                     />
@@ -162,7 +162,7 @@ function Contact() {
                       name="email"
                       value={form.email}
                       onChange={handleChange}
-                      placeholder="e.g. rohit@example.com"
+                      placeholder="e.g. ABC@example.com"
                       className="contact-input"
                       required
                     />
