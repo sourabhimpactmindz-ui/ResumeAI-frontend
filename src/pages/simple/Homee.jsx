@@ -109,6 +109,7 @@ const faqs = [
 ];
 
 export default function Homee() {
+  const token = localStorage.getItem("accessToken");
   const [scoreRef, scoreSeen] = useInView(0.4);
   const [barsRef, barsSeen] = useInView(0.3);
   const [statsRef, statsSeen] = useInView(0.4);
@@ -137,7 +138,9 @@ export default function Homee() {
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
         </nav>
-        {/* <a className="btn btn-sm" href="#cta">Check my resume</a> */}
+        <Link className="btn btn-sm" to={token ? "/home" : "/login"}>
+          {token ? "Dashboard" : "Sign In"}
+        </Link>
       </header>
 
       {/* HERO */}
@@ -151,7 +154,7 @@ export default function Homee() {
           <div className="hero-actions">
             {/* <a className="btn" href="/home">Check it free</a>
              */}
-             <Link className="btn" to="/home">
+             <Link className="btn" to={token ? "/home" : "/login"}>
   Check it free
 </Link>
             <a className="btn btn-ghost" href="#how">See how it works</a>
@@ -325,7 +328,7 @@ export default function Homee() {
               <strong className="price">{x.p}</strong>
               <p>{x.d}</p>
               <ul>{x.f.map((t) => <li key={t}>{t}</li>)}</ul>
-              <a className={`btn ${x.hot ? "" : "btn-ghost"}`} href="#cta">Get started</a>
+              <Link className={`btn ${x.hot ? "" : "btn-ghost"}`} to={token ? "/home" : "/login"}>Get started</Link>
             </Reveal>
           ))}
         </div>
