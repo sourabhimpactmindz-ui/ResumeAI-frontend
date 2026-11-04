@@ -28,6 +28,12 @@
   display: none;
 }
 
+@media (max-width: 860px) {
+  .stat-card::after {
+    display: none !important;
+  }
+}
+
 .stat-card__icon {
   display: flex;
   align-items: center;

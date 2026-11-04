@@ -109,22 +109,10 @@ export default function Homee() {
   const [scoreRef, scoreSeen] = useInView(0.4);
   const [barsRef, barsSeen] = useInView(0.3);
   const [statsRef, statsSeen] = useInView(0.4);
-  const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement;
-      setProgress(h.scrollTop / (h.scrollHeight - h.clientHeight || 1));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <div className="landing-page">
-      <div className="progress" style={{ transform: `scaleX(${progress})` }} />
-
       {/* Unified Global Navbar */}
       <Navbar />
 

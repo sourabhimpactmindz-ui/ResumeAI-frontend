@@ -30,17 +30,6 @@
   position: relative;
 }
 
-/* TOP PROGRESS LINE */
-.auth-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--ink);
-  z-index: 50;
-}
-
 /* HEADER BRANDING */
 .auth-brand-header {
   display: flex;

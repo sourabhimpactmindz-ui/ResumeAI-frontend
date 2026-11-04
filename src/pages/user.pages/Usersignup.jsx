@@ -137,8 +137,6 @@ export default function ResumeAISignUp() {
 
   return (
     <div className="auth-page-centered">
-      <div className="auth-progress" />
-
       {/* Brand Header */}
       <div className="auth-brand-header">
         <Link to="/" className="auth-logo">

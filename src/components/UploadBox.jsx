@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "../styles/UploadBox.css";
 import { toast } from "react-toastify";
 import { UploadCloud, FileText, X, Sparkles } from "lucide-react";
@@ -7,6 +7,7 @@ export default function UploadBox({ onAnalyze, isLoading }) {
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState("");
   const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -29,14 +30,18 @@ export default function UploadBox({ onAnalyze, isLoading }) {
   };
 
   const handleFileChange = (e) => {
-    if (e.target.files[0]) {
+    if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
   };
 
   const handleRemoveFile = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     setFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleClick = () => {
@@ -64,6 +69,7 @@ export default function UploadBox({ onAnalyze, isLoading }) {
   return (
     <div className="upload-box">
       <input
+        ref={fileInputRef}
         type="file"
         id="resume-upload"
         accept=".pdf"
@@ -83,24 +89,32 @@ export default function UploadBox({ onAnalyze, isLoading }) {
           onDrop={handleDrop}
         >
           {file ? (
-            <div className="upload-box__file-selected">
-              <div className="upload-box__file-icon">
-                <FileText size={32} />
+            <div className="upload-box__file-selected-wrapper">
+              <div className="upload-box__file-selected">
+                <div className="upload-box__file-icon">
+                  <FileText size={28} />
+                </div>
+                <div className="upload-box__file-details">
+                  <span className="upload-box__file-name" title={file.name}>
+                    {file.name}
+                  </span>
+                  <span className="upload-box__file-size">
+                    {(file.size / 1024 / 1024).toFixed(2)} MB · PDF Ready
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="upload-box__remove-btn"
+                  onClick={handleRemoveFile}
+                  title="Remove resume"
+                  aria-label="Remove resume"
+                >
+                  <X size={16} />
+                </button>
               </div>
-              <div className="upload-box__file-details">
-                <span className="upload-box__file-name">{file.name}</span>
-                <span className="upload-box__file-size">
-                  {(file.size / 1024 / 1024).toFixed(2)} MB · PDF Ready
-                </span>
-              </div>
-              <button
-                type="button"
-                className="upload-box__remove-btn"
-                onClick={handleRemoveFile}
-                title="Remove resume"
-              >
-                <X size={16} />
-              </button>
+              <span className="upload-box__replace-hint">
+                Click box to replace file
+              </span>
             </div>
           ) : (
             <>

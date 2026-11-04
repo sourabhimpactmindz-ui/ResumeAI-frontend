@@ -345,6 +345,10 @@ html, body, #root {
 }
 
 @media (max-width: 480px) {
+  .dash-hero {
+    padding: 24px 14px 16px !important;
+  }
+
   .dash-hero__badge {
     font-size: 10px !important;
     padding: 4px 10px !important;
