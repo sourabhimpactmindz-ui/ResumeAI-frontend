@@ -10,9 +10,9 @@ function PrivacyPolicy() {
       <Navbar />
 
       <div className="legal-container">
-        <Link to="/home" className="legal-back-nav">
+        {/* <Link to="/home" className="legal-back-nav">
           <ArrowLeft size={14} /> Back to Dashboard
-        </Link>
+        </Link> */}
 
         <div className="legal-header">
           <span className="legal-badge">✦ Privacy & Protection</span>

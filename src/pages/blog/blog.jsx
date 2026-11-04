@@ -77,9 +77,9 @@ export default function Blog() {
       <Navbar />
 
       <div className="legal-container legal-container-wide">
-        <Link to="/home" className="legal-back-nav">
+        {/* <Link to="/home" className="legal-back-nav">
           <ArrowLeft size={14} /> Back to Dashboard
-        </Link>
+        </Link> */}
 
         <div className="legal-header">
           <span className="legal-badge">✦ Career Intelligence</span>

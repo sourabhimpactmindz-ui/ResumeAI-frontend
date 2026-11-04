@@ -76,7 +76,11 @@ export default function Navbar() {
             <Link to="/login" className="navbar__signin-btn">
               Sign In
             </Link>
-            <Link to="/signup" className="navbar__signup-btn">
+            <Link
+              to="/signup"
+              className="navbar__signup-btn"
+              style={{ color: "#ffffff", backgroundColor: "#000000" }}
+            >
               Get Started
             </Link>
           </>
@@ -180,7 +184,13 @@ export default function Navbar() {
                 <Link
                   to="/signup"
                   className="navbar__signup-btn"
-                  style={{ flex: 1, textAlign: "center", display: "inline-block" }}
+                  style={{
+                    flex: 1,
+                    textAlign: "center",
+                    display: "inline-block",
+                    color: "#ffffff",
+                    backgroundColor: "#000000",
+                  }}
                   onClick={closeMenu}
                 >
                   Get Started

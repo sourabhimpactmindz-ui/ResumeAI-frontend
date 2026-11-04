@@ -13,6 +13,8 @@
   line-height: 1.6;
   overflow-x: hidden;
   width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 .landing-page a { color: inherit; text-decoration: none; }
@@ -41,6 +43,7 @@
 .landing-page .hero {
   display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 6vw;
   align-items: center; padding: 9vh 6vw 12vh; min-height: 88vh;
+  box-sizing: border-box;
 }
 .landing-page h1 {
   font-size: clamp(38px, 5.6vw, 76px); line-height: 1.02;
@@ -88,7 +91,7 @@
 }
 
 /* sections */
-.landing-page .section { padding: 14vh 6vw; border-top: 1px solid var(--line); }
+.landing-page .section { padding: 14vh 6vw; border-top: 1px solid var(--line); box-sizing: border-box; }
 .landing-page h2 { font-size: clamp(30px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.08; max-width: 18ch; margin-bottom: 56px; font-weight: 800; }
 .landing-page h3 { font-size: 22px; letter-spacing: -0.01em; margin-bottom: 10px; }
 .landing-page p { color: var(--muted); }
@@ -165,237 +168,196 @@
 .landing-page .faq-item.open .faq-a { grid-template-rows: 1fr; }
 .landing-page .faq-item.open .faq-a p { padding-bottom: 24px; }
 
-/* mobile slide hint */
-.landing-page .mobile-slide-hint {
-  display: none;
-}
-
 /* ============================================================
-   MOBILE RESPONSIVENESS & HORIZONTAL SLIDERS (Cards to Slides)
+   MOBILE RESPONSIVENESS: CLEAN VERTICAL STACKING (NO HORIZONTAL SLIDING)
    ============================================================ */
 @media (max-width: 860px) {
-  .landing-page .mobile-slide-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    background: var(--soft);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 3px 10px;
-    margin-bottom: 18px;
+  .landing-page {
+    overflow-x: hidden !important;
   }
 
   .landing-page .hero {
     grid-template-columns: 1fr;
-    padding: 40px 5vw 50px;
-    gap: 32px;
+    padding: 36px 5vw 44px;
+    gap: 28px;
     min-height: auto;
   }
 
   .landing-page h1 {
-    font-size: clamp(30px, 8.5vw, 44px);
+    font-size: clamp(28px, 8vw, 42px);
   }
 
   .landing-page .lead {
     font-size: 16px;
-    margin-top: 16px;
+    margin-top: 14px;
   }
 
   .landing-page .doc {
-    padding: 20px;
-    box-shadow: 6px 6px 0 var(--ink);
+    padding: 18px;
+    box-shadow: 5px 5px 0 var(--ink);
   }
 
   .landing-page .score-grid {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 32px;
   }
 
   .landing-page .section {
-    padding: 50px 5vw;
+    padding: 48px 5vw;
   }
 
   .landing-page h2 {
     font-size: clamp(26px, 6.5vw, 36px);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     max-width: 100%;
   }
 
-  /* Reveal fix for horizontal sliders */
   .landing-page .reveal {
     opacity: 1 !important;
     transform: none !important;
   }
 
-  /* 1. STATS SLIDER */
+  /* 1. STATS: 2x2 Clean Grid */
   .landing-page .stats {
-    display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
-    gap: 14px !important;
-    padding: 20px 5vw !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    scrollbar-width: none;
-  }
-  .landing-page .stats::-webkit-scrollbar {
-    display: none;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
   .landing-page .stat {
-    flex: 0 0 74% !important;
-    min-width: 210px !important;
-    scroll-snap-align: start !important;
+    padding: 24px 16px !important;
+    border-right: 1px solid var(--line) !important;
+    border-bottom: 1px solid var(--line) !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    min-width: auto !important;
+    flex: none !important;
+    box-sizing: border-box !important;
+  }
+  .landing-page .stat:nth-child(2n) {
+    border-right: none !important;
+  }
+  .landing-page .stat strong {
+    font-size: 32px !important;
+  }
+  .landing-page .stat p {
+    font-size: 13px !important;
+  }
+
+  /* 2. STEPS: Vertical Stacked Cards */
+  .landing-page .steps {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    border: none !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+  .landing-page .steps .step,
+  .landing-page .step {
     border: 1.5px solid var(--ink) !important;
     border-radius: 10px !important;
     box-shadow: 4px 4px 0 var(--ink) !important;
     background: #fff !important;
-    padding: 20px 18px !important;
-    flex-shrink: 0 !important;
-  }
-  .landing-page .stat strong {
-    font-size: 38px !important;
-  }
-
-  /* 2. STEPS SLIDER */
-  .landing-page .steps {
-    display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
-    gap: 16px !important;
-    padding: 8px 5vw 24px !important;
-    margin: 0 -5vw !important;
-    border: none !important;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ink) var(--line);
-  }
-  .landing-page .steps .step,
-  .landing-page .step {
-    flex: 0 0 82% !important;
-    min-width: 270px !important;
-    scroll-snap-align: start !important;
-    border: 1.5px solid var(--ink) !important;
-    border-radius: 10px !important;
-    box-shadow: 5px 5px 0 var(--ink) !important;
-    background: #fff !important;
-    padding: 26px 20px !important;
-    border-right: 1.5px solid var(--ink) !important;
-    flex-shrink: 0 !important;
+    padding: 24px 20px !important;
+    width: 100% !important;
+    min-width: auto !important;
+    flex: none !important;
+    box-sizing: border-box !important;
   }
 
-  /* 3. FEATURES SLIDER */
+  /* 3. FEATURES: Vertical Stacked Cards */
   .landing-page .features {
     display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
+    flex-direction: column !important;
     gap: 16px !important;
-    padding: 8px 5vw 24px !important;
-    margin: 0 -5vw !important;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ink) var(--line);
+    overflow: visible !important;
+    width: 100% !important;
   }
   .landing-page .features .feature,
   .landing-page .feature {
-    flex: 0 0 82% !important;
-    min-width: 270px !important;
-    scroll-snap-align: start !important;
     border: 1.5px solid var(--ink) !important;
     border-radius: 10px !important;
-    box-shadow: 5px 5px 0 var(--ink) !important;
+    box-shadow: 4px 4px 0 var(--ink) !important;
     background: #fff !important;
-    padding: 26px 20px !important;
-    flex-shrink: 0 !important;
+    padding: 24px 20px !important;
+    width: 100% !important;
+    min-width: auto !important;
+    flex: none !important;
+    box-sizing: border-box !important;
   }
 
-  /* 4. BEFORE / AFTER COMPARE SLIDER */
+  /* 4. BEFORE / AFTER: Vertical Stacked Cards */
   .landing-page .compare {
     display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
+    flex-direction: column !important;
     gap: 16px !important;
-    padding: 8px 5vw 24px !important;
-    margin: 0 -5vw !important;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ink) var(--line);
+    overflow: visible !important;
+    width: 100% !important;
   }
   .landing-page .compare .cmp,
   .landing-page .cmp {
-    flex: 0 0 82% !important;
-    min-width: 270px !important;
-    scroll-snap-align: start !important;
-    border: 1.5px solid var(--ink) !important;
     border-radius: 10px !important;
-    box-shadow: 5px 5px 0 var(--ink) !important;
-    background: #fff !important;
-    padding: 26px 20px !important;
-    flex-shrink: 0 !important;
+    padding: 24px 20px !important;
+    width: 100% !important;
+    min-width: auto !important;
+    flex: none !important;
+    box-sizing: border-box !important;
   }
   .landing-page .cmp-before {
     background: var(--soft) !important;
-    box-shadow: 5px 5px 0 var(--line) !important;
+    box-shadow: 4px 4px 0 var(--line) !important;
+    border: 1.5px solid var(--line) !important;
   }
 
-  /* 5. MYTHS SLIDER */
+  /* 5. MYTHS: Vertical Stacked Cards */
   .landing-page .myths {
     display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
-    gap: 16px !important;
-    padding: 8px 5vw 24px !important;
-    margin: 0 -5vw !important;
+    flex-direction: column !important;
+    gap: 14px !important;
     border-top: none !important;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ink) var(--line);
+    overflow: visible !important;
+    width: 100% !important;
   }
   .landing-page .myths .myth,
   .landing-page .myth {
-    flex: 0 0 82% !important;
-    min-width: 270px !important;
-    scroll-snap-align: start !important;
-    border: 1.5px solid var(--ink) !important;
-    border-radius: 10px !important;
-    box-shadow: 5px 5px 0 var(--ink) !important;
-    background: #fff !important;
-    padding: 24px 20px !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 10px !important;
-    border-bottom: none !important;
-    flex-shrink: 0 !important;
+    gap: 8px !important;
+    border: 1.5px solid var(--ink) !important;
+    border-radius: 10px !important;
+    box-shadow: 4px 4px 0 var(--ink) !important;
+    background: #fff !important;
+    padding: 20px !important;
+    width: 100% !important;
+    min-width: auto !important;
+    flex: none !important;
+    box-sizing: border-box !important;
   }
 
-  /* 6. REVIEWS SLIDER */
+  /* 6. REVIEWS: Vertical Stacked Cards */
   .landing-page .reviews {
     display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
+    flex-direction: column !important;
     gap: 16px !important;
-    padding: 8px 5vw 24px !important;
-    margin: 0 -5vw !important;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ink) var(--line);
+    overflow: visible !important;
+    width: 100% !important;
   }
   .landing-page .reviews .review,
   .landing-page .review {
-    flex: 0 0 82% !important;
-    min-width: 270px !important;
-    scroll-snap-align: start !important;
     border: 1.5px solid var(--ink) !important;
     border-radius: 10px !important;
-    box-shadow: 5px 5px 0 var(--ink) !important;
+    box-shadow: 4px 4px 0 var(--ink) !important;
     background: #fff !important;
-    padding: 26px 20px !important;
-    flex-shrink: 0 !important;
+    padding: 24px 20px !important;
+    width: 100% !important;
+    min-width: auto !important;
+    flex: none !important;
+    box-sizing: border-box !important;
   }
 }
 

@@ -186,7 +186,6 @@ export default function Homee() {
       <section className="section" id="how">
         <Reveal>
           <h2>Three steps to an ATS-ready resume</h2>
-          <span className="mobile-slide-hint">← Swipe steps →</span>
         </Reveal>
         <div className="steps">
           {steps.map((s, i) => (
@@ -244,7 +243,6 @@ export default function Homee() {
       <section className="section" id="features">
         <Reveal>
           <h2>Not just a score, the fixes too</h2>
-          <span className="mobile-slide-hint">← Swipe fixes →</span>
         </Reveal>
         <div className="features">
           {features.map((f, i) => (
@@ -260,7 +258,6 @@ export default function Homee() {
       <section className="section">
         <Reveal>
           <h2>One line, two very different results</h2>
-          <span className="mobile-slide-hint">← Swipe comparison →</span>
         </Reveal>
         <div className="compare">
           <Reveal className="cmp cmp-before">
@@ -288,7 +285,6 @@ export default function Homee() {
       <section className="section">
         <Reveal>
           <h2>Common myths about the ATS</h2>
-          <span className="mobile-slide-hint">← Swipe myths →</span>
         </Reveal>
         <div className="myths">
           {myths.map((x, i) => (
@@ -304,7 +300,6 @@ export default function Homee() {
       <section className="section">
         <Reveal>
           <h2>In the words of people who raised their score</h2>
-          <span className="mobile-slide-hint">← Swipe reviews →</span>
         </Reveal>
         <div className="reviews">
           {reviews.map((r, i) => (
