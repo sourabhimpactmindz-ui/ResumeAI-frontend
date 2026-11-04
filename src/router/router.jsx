@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         element : <Simplepage />
     }
     ,{
-        path : "/login",
+        path : "/login",    
         element : <UserLogin />
     },
     {
