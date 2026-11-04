@@ -104,11 +104,15 @@
   transform: translateY(-1px);
 }
 
+.navbar__signup-btn {
+  color: #ffff;
+}
+
 .navbar__signup-btn,
 .navbar__logout-btn {
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: #ffff;
   background: #000;
   border: 1.5px solid #000;
   border-radius: 8px;
@@ -153,15 +157,19 @@
   .navbar {
     padding: 0 4vw;
   }
+
   .navbar__links {
     display: none;
   }
+
   .navbar__user-pill {
     display: none;
   }
+
   .navbar__signin-btn {
     display: none;
   }
+
   .navbar__mobile-toggle {
     display: flex;
   }
@@ -185,8 +193,15 @@
   }
 
   @keyframes drawerSlide {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .navbar__mobile-link {
@@ -216,6 +231,7 @@
   .navbar__logo {
     font-size: 18px;
   }
+
   .navbar__signup-btn,
   .navbar__logout-btn {
     font-size: 13px;
