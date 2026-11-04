@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./simplepage.css";
+import { Link } from "react-router-dom";
 
 /* Returns true once the element has scrolled into view */
 function useInView(threshold = 0.25) {
@@ -148,7 +149,9 @@ export default function Homee() {
             ATS score and shows exactly why a line might get you rejected.
           </p>
           <div className="hero-actions">
-            <a className="btn" href="/home">Check it free</a>
+            {/* <a className="btn" href="/home">Check it free</a>
+             */}
+             <Link className="btn" href="/home">Check it free</Link>
             <a className="btn btn-ghost" href="#how">See how it works</a>
           </div>
         </div>
