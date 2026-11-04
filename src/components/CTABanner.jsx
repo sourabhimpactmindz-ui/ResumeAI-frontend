@@ -11,9 +11,7 @@ export default function CTABanner({
     <div className="cta-banner">
       <h2 className="cta-banner__title">{title}</h2>
       <p className="cta-banner__sub">{subtitle}</p>
-      <div className="cta-banner__actions">
-        <Button label="Get Started Free" variant="outline" size="lg" onClick={onGetStarted} />
-      </div>
+     
     </div>
   );
 }
