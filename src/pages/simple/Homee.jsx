@@ -201,7 +201,10 @@ export default function Homee() {
 
       {/* HOW */}
       <section className="section" id="how">
-        <Reveal><h2>Three steps to an ATS-ready resume</h2></Reveal>
+        <Reveal>
+          <h2>Three steps to an ATS-ready resume</h2>
+          <span className="mobile-slide-hint">← Swipe steps →</span>
+        </Reveal>
         <div className="steps">
           {steps.map((s, i) => (
             <Reveal key={s.t} delay={i * 120} className="step">
@@ -256,7 +259,10 @@ export default function Homee() {
 
       {/* FEATURES */}
       <section className="section" id="features">
-        <Reveal><h2>Not just a score, the fixes too</h2></Reveal>
+        <Reveal>
+          <h2>Not just a score, the fixes too</h2>
+          <span className="mobile-slide-hint">← Swipe fixes →</span>
+        </Reveal>
         <div className="features">
           {features.map((f, i) => (
             <Reveal key={f.t} delay={i * 100} className="feature">
@@ -269,7 +275,10 @@ export default function Homee() {
 
       {/* BEFORE / AFTER */}
       <section className="section">
-        <Reveal><h2>One line, two very different results</h2></Reveal>
+        <Reveal>
+          <h2>One line, two very different results</h2>
+          <span className="mobile-slide-hint">← Swipe comparison →</span>
+        </Reveal>
         <div className="compare">
           <Reveal className="cmp cmp-before">
             <h3>Before · Score 52</h3>
@@ -294,7 +303,10 @@ export default function Homee() {
 
       {/* MYTHS */}
       <section className="section">
-        <Reveal><h2>Common myths about the ATS</h2></Reveal>
+        <Reveal>
+          <h2>Common myths about the ATS</h2>
+          <span className="mobile-slide-hint">← Swipe myths →</span>
+        </Reveal>
         <div className="myths">
           {myths.map((x, i) => (
             <Reveal key={x.m} delay={i * 90} className="myth">
@@ -307,7 +319,10 @@ export default function Homee() {
 
       {/* REVIEWS */}
       <section className="section">
-        <Reveal><h2>In the words of people who raised their score</h2></Reveal>
+        <Reveal>
+          <h2>In the words of people who raised their score</h2>
+          <span className="mobile-slide-hint">← Swipe reviews →</span>
+        </Reveal>
         <div className="reviews">
           {reviews.map((r, i) => (
             <Reveal key={r.a} delay={i * 120} className="review">
@@ -320,7 +335,10 @@ export default function Homee() {
 
       {/* PRICING */}
       <section className="section" id="pricing">
-        <Reveal><h2>Simple, transparent pricing</h2></Reveal>
+        <Reveal>
+          <h2>Simple, transparent pricing</h2>
+          <span className="mobile-slide-hint">← Swipe plans →</span>
+        </Reveal>
         <div className="plans">
           {plans.map((x, i) => (
             <Reveal key={x.n} delay={i * 120} className={`plan ${x.hot ? "plan-hot" : ""}`}>

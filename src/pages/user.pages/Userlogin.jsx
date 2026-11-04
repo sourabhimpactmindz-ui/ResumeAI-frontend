@@ -82,239 +82,176 @@ export default function ResumeAILogin() {
   };
 
   return (
-    <div className="auth-page">
+    <div className="auth-page-centered">
       <div className="auth-progress" />
 
-      {/* LEFT EDITORIAL SHOWCASE (Homee Style) */}
-      <div className="auth-showcase">
-        <div className="auth-showcase-top">
-          <Link to="/" className="auth-logo">
-            resumeAI
-          </Link>
-          <span className="auth-pill">✦ ATS Resume Checker</span>
-        </div>
-
-        <div className="auth-showcase-body">
-          <h1 className="auth-showcase-title">
-            An ATS reads your resume before any recruiter does.
-          </h1>
-          <p className="auth-showcase-desc">
-            Sign in to check your ATS score, review keyword gaps, and tailor your resume for top roles in 30 seconds.
-          </p>
-
-          {/* Interactive Resume Mock from Homee */}
-          <div className="auth-doc" aria-hidden="true">
-            <div className="auth-scan-line" />
-            <div className="auth-doc-head">
-              <div className="auth-doc-name" />
-              <div className="auth-doc-sub" />
-            </div>
-            <div className="auth-doc-block">
-              <span className="auth-doc-h">Skills Match</span>
-              <p>
-                <mark className="auth-hit">React</mark>, <mark className="auth-hit">JavaScript</mark>,{' '}
-                <mark className="auth-hit">REST API</mark>, Git, <mark className="auth-miss">TypeScript</mark>
-              </p>
-            </div>
-            <div className="auth-doc-block">
-              <span className="auth-doc-h">Experience</span>
-              <div className="auth-line auth-w90" />
-              <div className="auth-line auth-w75" />
-            </div>
-            <div className="auth-doc-tag">TypeScript is in the job post, not in your resume</div>
-          </div>
-
-          {/* Stats Bar */}
-          <div className="auth-stats-grid">
-            <div className="auth-stat-box">
-              <strong>75%</strong>
-              <p>rejected by ATS before human review</p>
-            </div>
-            <div className="auth-stat-box">
-              <strong>40+</strong>
-              <p>format & keyword checks in every scan</p>
-            </div>
-            <div className="auth-stat-box">
-              <strong>30s</strong>
-              <p>to get full score & actionable fixes</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="auth-showcase-footer">
-          <p className="auth-showcase-quote">
-            "My score went from 48 to 86 and I got two interview calls within three weeks."
-          </p>
-          <span className="auth-showcase-author">Rohit S., Frontend Developer</span>
-        </div>
+      {/* Brand Header */}
+      <div className="auth-brand-header">
+        <Link to="/" className="auth-logo">
+          resumeAI
+        </Link>
+        <span className="auth-pill">✦ ATS Resume Checker</span>
       </div>
 
-      {/* RIGHT AUTH FORM PANEL */}
-      <div className="auth-form-panel">
-        <div className="auth-form-container">
-          {/* Mobile Header */}
-          <div className="auth-mobile-header">
-            <Link to="/" className="auth-logo">
-              resumeAI
-            </Link>
-            <span className="auth-pill">ATS Score</span>
+      {/* Main Single-Column Auth Card */}
+      <div className="auth-card">
+        <div className="auth-card-header">
+          <h2>Welcome back</h2>
+          <p>Sign in to access your ATS scanner dashboard</p>
+        </div>
+
+        {/* Google Sign In */}
+        <button
+          type="button"
+          className="auth-google-btn"
+          onClick={handleGoogleSignIn}
+          disabled={isLoading || isGoogleLoading}
+        >
+          <FcGoogle size={20} />
+          <span>{isGoogleLoading ? 'Connecting...' : 'Continue with Google'}</span>
+        </button>
+
+        <div className="auth-divider">
+          <span>OR CONTINUE WITH EMAIL</span>
+        </div>
+
+        {/* Login Form */}
+        <form className="auth-form" onSubmit={handleSubmit(handleSignIn)}>
+          {/* Email Address */}
+          <div className="auth-group">
+            <label htmlFor="email" className="auth-label">
+              Email Address
+            </label>
+            <div className="auth-input-wrapper">
+              <input
+                type="email"
+                id="email"
+                placeholder="name@example.com"
+                className={`auth-input ${errors.email ? 'has-error' : ''}`}
+                {...register('email', validateLogin.email)}
+              />
+            </div>
+            {errors.email && (
+              <div className="auth-error-msg" role="alert">
+                <AlertCircle size={14} />
+                <span>{errors.email.message}</span>
+              </div>
+            )}
           </div>
 
-          <div className="auth-form-header">
-            <h2>Welcome back</h2>
-            <p>Sign in with your email or Google account to continue.</p>
-          </div>
-
-          {/* Google Sign In */}
-          <button
-            type="button"
-            className="auth-google-btn"
-            onClick={handleGoogleSignIn}
-            disabled={isLoading || isGoogleLoading}
-          >
-            <FcGoogle size={20} />
-            <span>{isGoogleLoading ? 'Connecting...' : 'Sign in with Google'}</span>
-          </button>
-
-          <div className="auth-divider">
-            <span>OR CONTINUE WITH EMAIL</span>
-          </div>
-
-          {/* Login Form */}
-          <form className="auth-form" onSubmit={handleSubmit(handleSignIn)}>
-            {/* Email Field */}
-            <div className="auth-group">
-              <label htmlFor="email" className="auth-label">
-                Email Address
+          {/* Password */}
+          <div className="auth-group">
+            <div className="auth-label-row">
+              <label htmlFor="password" className="auth-label">
+                Password
               </label>
-              <div className="auth-input-wrapper">
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="name@example.com"
-                  className={`auth-input ${errors.email ? 'has-error' : ''}`}
-                  {...register('email', validateLogin.email)}
-                />
-              </div>
-              {errors.email && (
-                <div className="auth-error-msg" role="alert">
-                  <AlertCircle size={14} />
-                  <span>{errors.email.message}</span>
-                </div>
-              )}
+              <a href="#forgot" className="auth-forgot-link">
+                Forgot password?
+              </a>
+            </div>
+            <div className="auth-input-wrapper">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                placeholder="••••••••"
+                className={`auth-input ${errors.password ? 'has-error' : ''}`}
+                {...register('password', validateLogin.password)}
+              />
+              <button
+                type="button"
+                className="auth-toggle-pwd"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+              </button>
             </div>
 
-            {/* Password Field */}
-            <div className="auth-group">
-              <div className="auth-label-row">
-                <label htmlFor="password" className="auth-label">
-                  Password
-                </label>
-                <a href="#forgot" className="auth-forgot-link">
-                  Forgot password?
-                </a>
-              </div>
-              <div className="auth-input-wrapper">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  placeholder="••••••••"
-                  className={`auth-input ${errors.password ? 'has-error' : ''}`}
-                  {...register('password', validateLogin.password)}
-                />
-                <button
-                  type="button"
-                  className="auth-toggle-pwd"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-                </button>
-              </div>
-
-              {/* Password Strength Indicator */}
-              {watchedPassword && !errors.password && (
-                <div className="auth-strength-container">
-                  <div className="auth-strength-top">
-                    <span>Password Strength</span>
-                    <span style={{ textTransform: 'capitalize' }}>{strength.label}</span>
-                  </div>
-                  <div className="auth-strength-meter">
-                    {[1, 2, 3, 4, 5].map((seg) => (
-                      <div
-                        key={seg}
-                        className={`auth-strength-segment ${
-                          strength.score >= seg ? `active-${strength.type}` : ''
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  <ul className="auth-requirements-list">
-                    <li className={`auth-req-item ${watchedPassword.length >= 8 ? 'met' : ''}`}>
-                      <span className="auth-req-icon">{watchedPassword.length >= 8 ? '✓' : '•'}</span>
-                      8+ characters
-                    </li>
-                    <li className={`auth-req-item ${/[A-Z]/.test(watchedPassword) ? 'met' : ''}`}>
-                      <span className="auth-req-icon">{/[A-Z]/.test(watchedPassword) ? '✓' : '•'}</span>
-                      Uppercase letter
-                    </li>
-                    <li className={`auth-req-item ${/[a-z]/.test(watchedPassword) ? 'met' : ''}`}>
-                      <span className="auth-req-icon">{/[a-z]/.test(watchedPassword) ? '✓' : '•'}</span>
-                      Lowercase letter
-                    </li>
-                    <li className={`auth-req-item ${/\d/.test(watchedPassword) ? 'met' : ''}`}>
-                      <span className="auth-req-icon">{/\d/.test(watchedPassword) ? '✓' : '•'}</span>
-                      Number
-                    </li>
-                    <li className={`auth-req-item ${/[@$!%*?&]/.test(watchedPassword) ? 'met' : ''}`}>
-                      <span className="auth-req-icon">{/[@$!%*?&]/.test(watchedPassword) ? '✓' : '•'}</span>
-                      Special char (@$!%*?&)
-                    </li>
-                  </ul>
+            {/* Password Strength Indicator */}
+            {watchedPassword && !errors.password && (
+              <div className="auth-strength-container">
+                <div className="auth-strength-top">
+                  <span>Password Strength</span>
+                  <span style={{ textTransform: 'capitalize' }}>{strength.label}</span>
                 </div>
-              )}
-
-              {errors.password && (
-                <div className="auth-error-msg" role="alert">
-                  <AlertCircle size={14} />
-                  <span>{errors.password.message}</span>
+                <div className="auth-strength-meter">
+                  {[1, 2, 3, 4, 5].map((seg) => (
+                    <div
+                      key={seg}
+                      className={`auth-strength-segment ${
+                        strength.score >= seg ? `active-${strength.type}` : ''
+                      }`}
+                    />
+                  ))}
                 </div>
-              )}
-            </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading || isGoogleLoading}
-              className="auth-submit-btn"
-            >
-              {isLoading ? (
-                <>
-                  <span className="auth-spinner" />
-                  <span>Signing in...</span>
-                </>
-              ) : (
-                'Sign In →'
-              )}
-            </button>
-          </form>
+                <ul className="auth-requirements-list">
+                  <li className={`auth-req-item ${watchedPassword.length >= 8 ? 'met' : ''}`}>
+                    <span className="auth-req-icon">{watchedPassword.length >= 8 ? '✓' : '•'}</span>
+                    8+ characters
+                  </li>
+                  <li className={`auth-req-item ${/[A-Z]/.test(watchedPassword) ? 'met' : ''}`}>
+                    <span className="auth-req-icon">{/[A-Z]/.test(watchedPassword) ? '✓' : '•'}</span>
+                    Uppercase letter
+                  </li>
+                  <li className={`auth-req-item ${/[a-z]/.test(watchedPassword) ? 'met' : ''}`}>
+                    <span className="auth-req-icon">{/[a-z]/.test(watchedPassword) ? '✓' : '•'}</span>
+                    Lowercase letter
+                  </li>
+                  <li className={`auth-req-item ${/\d/.test(watchedPassword) ? 'met' : ''}`}>
+                    <span className="auth-req-icon">{/\d/.test(watchedPassword) ? '✓' : '•'}</span>
+                    Number
+                  </li>
+                  <li className={`auth-req-item ${/[@$!%*?&]/.test(watchedPassword) ? 'met' : ''}`}>
+                    <span className="auth-req-icon">{/[@$!%*?&]/.test(watchedPassword) ? '✓' : '•'}</span>
+                    Special (@$!%*?&)
+                  </li>
+                </ul>
+              </div>
+            )}
 
-          {/* Switch to Signup */}
-          <div className="auth-switch-text">
-            Don't have an account?{' '}
-            <Link to="/signup" className="auth-switch-link">
-              Sign up
-            </Link>
+            {errors.password && (
+              <div className="auth-error-msg" role="alert">
+                <AlertCircle size={14} />
+                <span>{errors.password.message}</span>
+              </div>
+            )}
           </div>
 
-          <div style={{ textAlign: 'center' }}>
-            <Link to="/" className="auth-back-home">
-              <ArrowLeft size={15} /> Back to home
-            </Link>
-          </div>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading || isGoogleLoading}
+            className="auth-submit-btn"
+          >
+            {isLoading ? (
+              <>
+                <span className="auth-spinner" />
+                <span>Signing in...</span>
+              </>
+            ) : (
+              'Sign In →'
+            )}
+          </button>
+        </form>
+
+        {/* Switch Link */}
+        <div className="auth-switch-text">
+          Don't have an account?{' '}
+          <Link to="/signup" className="auth-switch-link">
+            Sign up
+          </Link>
         </div>
       </div>
+
+      {/* Back to Home Link */}
+      <Link to="/" className="auth-back-home">
+        <ArrowLeft size={15} /> Back to home
+      </Link>
+
+      <p className="auth-trust-note">
+        ✦ Safe & secure · Your resume is encrypted and private.
+      </p>
     </div>
   );
 }
