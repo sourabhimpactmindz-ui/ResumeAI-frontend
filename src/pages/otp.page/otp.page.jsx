@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   useVerifyOtpMutation,
@@ -19,14 +19,7 @@ const OTPPage = () => {
   const [timer, setTimer] = useState(60);
   const [isActive, setIsActive] = useState(true);
 
-  const [otp, setOtp] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
   useEffect(() => {
     let interval = null;
@@ -54,6 +47,12 @@ const OTPPage = () => {
     }
   };
 
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      document.getElementById(`otp-${index - 1}`)?.focus();
+    }
+  };
+
   const handleVerify = async () => {
     const finalOtp = otp.join("");
 
@@ -67,18 +66,16 @@ const OTPPage = () => {
         otp: finalOtp,
       }).unwrap();
 
-      toast.success(res.message);
-   if (res.accessToken) { 
-    localStorage.setItem("accessToken", res.accessToken);
-    localStorage.setItem("refreshToken", res.refreshToken);
-}
+      toast.success(res.message || "OTP verified successfully!");
+      if (res.accessToken) {
+        localStorage.setItem("accessToken", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
+      }
       setTimeout(() => {
         navigate("/home");
       }, 1000);
     } catch (error) {
-      toast.error(
-        error?.data?.message || "OTP verification failed"
-      );
+      toast.error(error?.data?.message || "OTP verification failed");
     }
   };
 
@@ -86,37 +83,28 @@ const OTPPage = () => {
     try {
       const res = await ResendOtp({ email }).unwrap();
 
-      toast.success(res.message);
+      toast.success(res.message || "New OTP sent to your email!");
 
       setTimer(60);
       setIsActive(true);
-
       setOtp(["", "", "", "", "", ""]);
     } catch (error) {
-      toast.error(
-        error?.data?.message || "Failed to resend OTP"
-      );
+      toast.error(error?.data?.message || "Failed to resend OTP");
     }
   };
 
   return (
     <div className="otp-container">
       <div className="otp-card">
-
         <div className="otp-header">
-          <h1 className="otp-title">
-            Verify your identity
-          </h1>
-
+          <h1 className="otp-title">Verify your identity</h1>
           <p className="otp-subtitle">
-            OTP sent to {email}
+            Enter the 6-digit verification code sent to <strong>{email || "your email"}</strong>
           </p>
         </div>
 
         <div className="otp-input-section">
-          <label className="otp-label">
-            Enter code
-          </label>
+          <label className="otp-label">Security Code</label>
 
           <div className="otp-input-container">
             {otp.map((digit, index) => (
@@ -127,9 +115,9 @@ const OTPPage = () => {
                 className="otp-input"
                 maxLength="1"
                 value={digit}
-                onChange={(e) =>
-                  handleChange(index, e.target.value)
-                }
+                onChange={(e) => handleChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                autoFocus={index === 0}
               />
             ))}
           </div>
@@ -139,28 +127,37 @@ const OTPPage = () => {
           className="otp-submit-btn enabled"
           onClick={handleVerify}
           disabled={isLoading}
+          type="button"
         >
-          <span>
-            {isLoading
-              ? "Verifying..."
-              : "Verify Code"}
-          </span>
+          <span>{isLoading ? "Verifying..." : "Verify & Continue →"}</span>
         </button>
 
         <div className="otp-footer">
-          <p className="otp-footer-text">
-            Didn't receive the code?
-          </p>
+          <p className="otp-footer-text">Didn't receive the code?</p>
 
           <button
             className="otp-resend-btn"
             onClick={handleResend}
             disabled={isActive}
+            type="button"
           >
-            {isActive
-              ? `Resend in ${timer}s`
-              : "Resend Code"}
+            {isActive ? `Resend code in ${timer}s` : "Resend Code"}
           </button>
+
+          <div style={{ marginTop: "16px", paddingTop: "14px", borderTop: "1px solid #e4e4e4" }}>
+            <Link
+              to="/login"
+              style={{
+                fontSize: "13px",
+                fontWeight: "700",
+                color: "#555",
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              ← Back to Sign In
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -1,9 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap");
+
+:root {
+  --bg: #fafafa;
+  --ink: #000000;
+  --muted: #555555;
+  --line: #e4e4e4;
+  --soft: #f4f4f4;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 html, body, #root {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
-  overflow: auto;
 }
 
 *, *::before, *::after {
@@ -13,13 +21,17 @@ html, body, #root {
 }
 
 body {
-  background: #f5f6fa;
-  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  line-height: 1.6;
 }
 
 .app {
   width: 100%;
-  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* ── Hero ─────────────────────────────────────────────── */
@@ -28,142 +40,307 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  padding: 60px 48px 48px;
+  padding: 52px 5vw 40px;
   text-align: center;
 }
 
-.hero__title {
-  font-family: 'Sora', sans-serif;
-  font-size: 42px;
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
   font-weight: 800;
-  color: #1a1a2e;
-  letter-spacing: -1px;
-  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 6px 14px;
+  border: 1.5px solid #000;
+  border-radius: 20px;
+  background: #fff;
+  color: #000;
+  box-shadow: 2px 2px 0 #000;
+  margin-bottom: 4px;
+}
+
+.hero__title {
+  font-size: clamp(34px, 5.5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #000;
+  line-height: 1.08;
+  max-width: 22ch;
 }
 
 .hero__sub {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  color: #6b7280;
-  max-width: 480px;
-  line-height: 1.6;
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 58ch;
+  line-height: 1.55;
+  margin-bottom: 8px;
 }
 
-/* ── Stats ────────────────────────────────────────────── */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 100%;
-  max-width: 1400px;
-  margin: 24px auto;
-  padding: 0 48px;
+/* ── Workflow Steps ───────────────────────────────────── */
+.workflow-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.workflow-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: #fff;
-  border: 1px solid #e5e7eb;
+  border: 1.5px solid #000;
   border-radius: 20px;
-  overflow: hidden;
+  padding: 6px 14px;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.workflow-step__num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+.workflow-step__text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #000;
+}
+
+.workflow-step__divider {
+  font-size: 14px;
+  font-weight: 800;
+  color: #888;
 }
 
 /* ── Generic section ──────────────────────────────────── */
 .section {
-  padding: 48px 48px 0;
+  padding: 40px 5vw 0;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Stats Row ────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  max-width: 960px;
+  margin: 40px auto 20px;
+  padding: 0;
+  background: #fff;
+  border: 1.5px solid #000;
+  border-radius: 12px;
+  box-shadow: 5px 5px 0 #000;
+  overflow: hidden;
+}
+
+.stat-card {
+  padding: 24px;
+  text-align: center;
+  border-right: 1.5px solid #000;
+}
+
+.stat-card:last-child {
+  border-right: none;
+}
+
+.stat-card__value {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  color: #000;
+}
+
+.stat-card__label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
 }
 
 /* ── Precision Engine ─────────────────────────────────── */
 .precision-section {
-  background: none;
+  padding: 60px 5vw 20px;
 }
 
 .precision-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .section-title {
-  font-family: 'Sora', sans-serif;
-  font-size: 35px;
+  font-size: clamp(28px, 4vw, 40px);
   font-weight: 800;
-  color: #1a1a2e;
-  letter-spacing: -0.5px;
+  color: #000;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
 }
 
 .section-sub {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: #9ca3af;
-  margin-top: 8px;
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 52ch;
+  margin: 0 auto;
 }
 
 .features-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* ── Footer ───────────────────────────────────────────── */
-.footer {
-  margin: 48px 48px 0;
-  padding: 20px 0;
-  border-top: 1px solid #e8eaf0;
+.feature-card {
+  background: #fff;
+  border: 1.5px solid #000;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 #000;
+  padding: 26px 20px;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 12px;
 }
 
-.footer__brand {
-  font-family: 'Sora', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1a1a2e;
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0 #000;
 }
 
-.footer__links {
+.feature-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--soft);
+  border: 1.5px solid #000;
+  display: grid;
+  place-items: center;
+}
+
+.feature-card__title {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #000;
+}
+
+.feature-card__desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── ATS FAQ / Guide Cards ────────────────────────────── */
+.ats-faq-section {
+  padding: 60px 5vw 20px;
+}
+
+.ats-faq-container {
+  max-width: 860px;
+  margin: 0 auto;
   display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ats-faq-card {
+  background: #fff;
+  border: 1.5px solid #000;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 #000;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ats-faq-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0 #000;
+}
+
+.ats-faq-card.active {
+  box-shadow: 5px 5px 0 #000;
+}
+
+.ats-faq-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 16px;
-  flex-wrap: wrap;
 }
 
-.footer__link {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  color: #6b7280;
-  text-decoration: none;
-  transition: color 0.15s;
+.ats-faq-card__question {
+  font-size: 16px;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.01em;
 }
 
-.footer__link:hover {
-  color: #2563eb;
+.ats-faq-card__toggle {
+  font-size: 20px;
+  font-weight: 800;
+  color: #000;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
 }
 
-.footer__copy {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  color: #c4c9d4;
-  width: 100%;
+.ats-faq-card__body {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
-/* ── Responsive & Mobile Slides ───────────────────────── */
-@media (max-width: 768px) {
+/* ── Responsive Mobile Styles ─────────────────────────── */
+@media (max-width: 860px) {
   .hero__title {
-    font-size: 28px;
+    font-size: 30px;
   }
 
   .hero {
-    padding: 36px 20px 28px;
+    padding: 36px 4vw 24px;
   }
 
-  /* Stats as Mobile Slides */
+  .workflow-steps {
+    gap: 8px;
+  }
+
+  .workflow-step__divider {
+    display: none;
+  }
+
   .stats-row {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 14px;
-    margin: 16px 20px;
-    padding: 16px;
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 14px !important;
+    margin: 24px 4vw !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
     scrollbar-width: none;
-    border-radius: 14px;
+    box-shadow: 4px 4px 0 #000 !important;
   }
 
   .stats-row::-webkit-scrollbar {
@@ -171,44 +348,56 @@ body {
   }
 
   .stats-row > * {
-    flex: 0 0 75%;
-    min-width: 210px;
-    scroll-snap-align: start;
-    flex-shrink: 0;
+    flex: 0 0 78% !important;
+    min-width: 200px !important;
+    scroll-snap-align: start !important;
+    flex-shrink: 0 !important;
+    border: none !important;
+    border-right: none !important;
   }
 
-  /* Feature Cards as Mobile Slides */
   .features-grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 16px;
-    padding: 8px 4px 20px;
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 16px !important;
+    padding: 8px 4vw 20px !important;
+    margin: 0 -4vw !important;
     scrollbar-width: thin;
   }
 
   .features-grid > * {
-    flex: 0 0 80%;
-    min-width: 260px;
-    scroll-snap-align: start;
-    flex-shrink: 0;
+    flex: 0 0 80% !important;
+    min-width: 250px !important;
+    scroll-snap-align: start !important;
+    flex-shrink: 0 !important;
   }
 
   .section {
-    padding: 36px 20px 0;
+    padding: 30px 4vw 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__badge {
+    font-size: 10px;
+    padding: 4px 10px;
   }
 
-  .analysis-panel__grid {
-    grid-template-columns: 1fr;
+  .hero__title {
+    font-size: 26px;
   }
 
-  .analysis-panel__ats {
-    grid-column: 1 / -1;
-    grid-row: auto;
+  .hero__sub {
+    font-size: 15px;
   }
 
-  .footer {
-    margin: 36px 20px 0;
+  .stat-card__value {
+    font-size: 30px;
+  }
+
+  .ats-faq-card__question {
+    font-size: 15px;
   }
 }

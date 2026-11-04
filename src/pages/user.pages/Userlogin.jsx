@@ -120,7 +120,7 @@ export default function ResumeAILogin() {
       } else if (error?.status === 'FETCH_ERROR' || error?.message?.includes('Failed to fetch') || error?.error?.includes('Failed to fetch')) {
         toast.error('Unable to connect to the backend server. Please verify your backend server is running and reachable.');
       } else {
-        toast.error(error?.data?.message || error.message || 'Google sign in failed.');
+        toast.error('Google sign in failed.');
       }
     }
   };
@@ -222,9 +222,8 @@ export default function ResumeAILogin() {
                   {[1, 2, 3, 4, 5].map((seg) => (
                     <div
                       key={seg}
-                      className={`auth-strength-segment ${
-                        strength.score >= seg ? `active-${strength.type}` : ''
-                      }`}
+                      className={`auth-strength-segment ${strength.score >= seg ? `active-${strength.type}` : ''
+                        }`}
                     />
                   ))}
                 </div>

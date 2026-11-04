@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./simplepage.css";
 import { Link } from "react-router-dom";
+import Footer from "../../components/footer";
+import { Menu, X } from "lucide-react";
 
 /* Returns true once the element has scrolled into view */
 function useInView(threshold = 0.25) {
@@ -94,12 +96,6 @@ const reviews = [
   { q: "The bullet rewrite added numbers and results to my lines. My resume finally reads like real work.", a: "Aman V., Data Analyst" },
 ];
 
-const plans = [
-  { n: "Free", p: "₹0", d: "To get started", f: ["3 scans per month", "ATS score", "Basic keyword gap"] },
-  { n: "Pro", p: "₹299 / month", d: "For an active job search", f: ["Unlimited scans", "Bullet rewrite", "Role-specific tips", "PDF report download"], hot: true },
-  { n: "Team", p: "₹999 / month", d: "For colleges and career coaches", f: ["10 seats", "Shared dashboard", "Priority support"] },
-];
-
 const faqs = [
   { q: "What is an ATS?", a: "An Applicant Tracking System is software companies use to filter resumes. It converts your resume to text and matches it against the job description." },
   { q: "Do I need a score of 100?", a: "No. A score of 80 or above is considered very good. What matters is that your resume contains the real keywords for the role." },
@@ -115,6 +111,7 @@ export default function Homee() {
   const [statsRef, statsSeen] = useInView(0.4);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(0);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -125,22 +122,62 @@ export default function Homee() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const closeMobileNav = () => setMobileNavOpen(false);
+
   return (
     <div className="page">
       <div className="progress" style={{ transform: `scaleX(${progress})` }} />
 
       <header className="nav">
         <a className="logo" href="#top">resumeAI</a>
-        <nav>
+        <nav className="desktop-nav">
           <a href="#how">How it works</a>
           <a href="#score">Score</a>
           <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
+          <Link to="/blog">Blog</Link>
+          <Link to="/about">About Us</Link>
+          <Link to="/contact">Contact</Link>
         </nav>
-        <Link className="btn btn-sm" to={token ? "/home" : "/login"}>
-          {token ? "Dashboard" : "Sign In"}
-        </Link>
+        <div className="nav-actions">
+          <Link className="btn btn-sm" to={token ? "/home" : "/login"}>
+            {token ? "Dashboard" : "Sign In"}
+          </Link>
+          <button
+            type="button"
+            className="landing-mobile-toggle"
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            aria-label="Toggle navigation"
+          >
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileNavOpen && (
+          <div className="landing-mobile-drawer">
+            <a href="#how" onClick={closeMobileNav}>How it works</a>
+            <a href="#score" onClick={closeMobileNav}>Score Analysis</a>
+            <a href="#features" onClick={closeMobileNav}>Features</a>
+            <a href="#faq" onClick={closeMobileNav}>FAQ</a>
+            <Link to="/blog" onClick={closeMobileNav}>Career Blog</Link>
+            <Link to="/about" onClick={closeMobileNav}>About Us</Link>
+            <Link to="/contact" onClick={closeMobileNav}>Contact Support</Link>
+            <Link to="/policy" onClick={closeMobileNav}>Privacy Policy</Link>
+            <Link to="/terms" onClick={closeMobileNav}>Terms of Service</Link>
+            <Link to="/disclaimer" onClick={closeMobileNav}>Disclaimer</Link>
+            <div style={{ paddingTop: "12px" }}>
+              <Link
+                className="btn btn-sm"
+                to={token ? "/home" : "/login"}
+                style={{ width: "100%", textAlign: "center", display: "block" }}
+                onClick={closeMobileNav}
+              >
+                {token ? "Open Dashboard" : "Sign In / Register"}
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* HERO */}
@@ -152,11 +189,9 @@ export default function Homee() {
             ATS score and shows exactly why a line might get you rejected.
           </p>
           <div className="hero-actions">
-            {/* <a className="btn" href="/home">Check it free</a>
-             */}
-             <Link className="btn" to={token ? "/home" : "/login"}>
-  Check it free
-</Link>
+            <Link className="btn" to={token ? "/home" : "/login"}>
+              Check it free
+            </Link>
             <a className="btn btn-ghost" href="#how">See how it works</a>
           </div>
         </div>
@@ -333,25 +368,6 @@ export default function Homee() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section className="section" id="pricing">
-        <Reveal>
-          <h2>Simple, transparent pricing</h2>
-          <span className="mobile-slide-hint">← Swipe plans →</span>
-        </Reveal>
-        <div className="plans">
-          {plans.map((x, i) => (
-            <Reveal key={x.n} delay={i * 120} className={`plan ${x.hot ? "plan-hot" : ""}`}>
-              <h3>{x.n}</h3>
-              <strong className="price">{x.p}</strong>
-              <p>{x.d}</p>
-              <ul>{x.f.map((t) => <li key={t}>{t}</li>)}</ul>
-              <Link className={`btn ${x.hot ? "" : "btn-ghost"}`} to={token ? "/home" : "/login"}>Get started</Link>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       {/* FAQ */}
       <section className="section" id="faq">
         <Reveal><h2>Frequently asked questions</h2></Reveal>
@@ -367,27 +383,8 @@ export default function Homee() {
         </div>
       </section>
 
-      {/* CTA */}
-      {/* <section className="cta" id="cta">
-        <Reveal>
-          <h2>See your score before your next application</h2>
-          <p className="lead">No sign-up needed. Upload your resume and get your result in 30 seconds.</p>
-          <a className="btn btn-lg" href="#top">Upload your resume</a>
-        </Reveal>
-      </section> */}
-
-      <footer className="footer">
-        <div>
-          <strong className="logo">resumeAI</strong>
-          <p>An AI-powered ATS resume checker.</p>
-        </div>
-        <div className="f-links">
-          <a href="#how">How it works</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#faq">FAQ</a>
-        </div>
-        <p>Your resume is used only for the scan.</p>
-      </footer>
+      {/* COMPREHENSIVE RESPONSIVE FOOTER */}
+      <Footer />
     </div>
   );
 }

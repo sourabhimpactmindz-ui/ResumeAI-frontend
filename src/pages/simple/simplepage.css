@@ -41,6 +41,28 @@ a { color: inherit; text-decoration: none; }
 .nav nav { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
 .nav nav a:hover { color: var(--ink); }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.landing-mobile-toggle {
+  display: none;
+  background: #fff;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--ink);
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-mobile-drawer {
+  display: none;
+}
+
 /* buttons */
 .btn {
   display: inline-block; background: var(--ink); color: #fff;
@@ -228,6 +250,46 @@ p { color: var(--muted); }
     border-radius: 20px;
     padding: 3px 10px;
     margin-bottom: 18px;
+  }
+
+  .nav .desktop-nav {
+    display: none !important;
+  }
+
+  .landing-mobile-toggle {
+    display: flex !important;
+  }
+
+  .landing-mobile-drawer {
+    display: flex !important;
+    flex-direction: column !important;
+    position: absolute !important;
+    top: 60px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #ffffff !important;
+    border-bottom: 2px solid var(--ink) !important;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12) !important;
+    padding: 20px 6vw !important;
+    gap: 10px !important;
+    z-index: 50 !important;
+    max-height: calc(100vh - 60px) !important;
+    overflow-y: auto !important;
+    animation: landingDrawer 0.2s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  @keyframes landingDrawer {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .landing-mobile-drawer a {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: var(--ink) !important;
+    text-decoration: none !important;
+    padding: 9px 0 !important;
+    border-bottom: 1px solid var(--line) !important;
   }
 
   .hero {
