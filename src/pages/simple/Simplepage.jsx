@@ -107,7 +107,7 @@ const faqs = [
   { q: "Can freshers use this?", a: "Absolutely. Freshers get focused suggestions for the projects, skills and education sections." },
 ];
 
-export default function Simplepage() {
+export default function simplepage() {
   const [scoreRef, scoreSeen] = useInView(0.4);
   const [barsRef, barsSeen] = useInView(0.3);
   const [statsRef, statsSeen] = useInView(0.4);

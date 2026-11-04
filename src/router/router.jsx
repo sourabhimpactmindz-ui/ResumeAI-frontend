@@ -11,6 +11,7 @@ import Terms from "../pages/terms/terms";
 import Contact from "../pages/contact/contact";
 import Disclaimer from "../pages/Disclaimer/Disclaimer";
 import Simplepage from "../pages/simple/simplepage";
+// import Simplepage from "../pages/simple/simplepage";
 
 const router = createBrowserRouter([
     
