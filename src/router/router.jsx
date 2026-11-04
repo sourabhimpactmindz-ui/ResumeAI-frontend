@@ -6,6 +6,10 @@ import Home from "../pages/Home/home";
 import SignUp from "../pages/user.pages/Usersignup";
 import OTPPage from "../pages/otp.page/otp.page";
 import PolicyPages from "../pages/policy/policy";
+import About from "../pages/about/about";
+import Terms from "../pages/terms/terms";
+import Contact from "../pages/contact/contact";
+import Disclaimer from "../pages/Disclaimer/Disclaimer";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +36,21 @@ const router = createBrowserRouter([
         {
             path : "/policy",
             element : <PolicyPages />
+        },
+        {
+            path : "/about",
+            element : <About />
+        },{
+            path : "/terms",
+            element : <Terms />
+        }, 
+        {
+            path : "/contact",
+            element : <Contact />
+        },
+        {
+            path : "/disclaimer",
+            element : <Disclaimer />
         }
        
     ]

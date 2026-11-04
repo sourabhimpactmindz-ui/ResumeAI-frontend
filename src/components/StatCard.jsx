@@ -8,23 +8,22 @@ const STAT_ICONS = {
   "Success Rate": <Users size={22} color="#16a34a" />,
 };
 
-// "12,400+" → 12400, "78" → 78, "92%" → 92
+
 const parseValue = (val) => {
   const num = parseInt(val.replace(/[^0-9]/g, ''));
   return isNaN(num) ? 0 : num;
 };
 
-// suffix nikalo — "+" ya "%" ya ""
+
 const getSuffix = (val) => {
   if (val.includes('+')) return '+';
   if (val.includes('%')) return '%';
   return '';
 };
 
-// prefix nikalo — comma wale numbers ke liye
 const formatNumber = (num, original) => {
   if (original.includes(',')) {
-    return num.toLocaleString();  // 12400 → 12,400
+    return num.toLocaleString();  
   }
   return num.toString();
 };
@@ -53,7 +52,7 @@ function useCountUp(target, duration = 1800) {
 }
 
 export default function StatCard({ value, label }) {
-  const numericTarget = parseValue(value);
+  const numericTarget = parseValue(value)
   const suffix = getSuffix(value);
   const animatedCount = useCountUp(numericTarget);
 
