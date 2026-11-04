@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
@@ -24,7 +24,6 @@ export default function Navbar() {
         <Link to="/" className="navbar__logo" onClick={closeMenu}>
           resumeAI
         </Link>
-        <span className="navbar__badge">Pro</span>
       </div>
 
       {/* Desktop Navigation Links */}
@@ -35,12 +34,17 @@ export default function Navbar() {
         >
           Home
         </Link>
-        <Link
-          to="/home"
-          className={`navbar__link ${location.pathname === "/home" ? "active" : ""}`}
-        >
-          Dashboard
-        </Link>
+
+        {/* Dashboard link only when user is logged in */}
+        {isLoggedIn && (
+          <Link
+            to="/home"
+            className={`navbar__link ${location.pathname === "/home" ? "active" : ""}`}
+          >
+            Dashboard
+          </Link>
+        )}
+
         <Link
           to="/blog"
           className={`navbar__link ${location.pathname === "/blog" ? "active" : ""}`}
@@ -64,12 +68,9 @@ export default function Navbar() {
       {/* Desktop & Mobile Actions */}
       <div className="navbar__actions">
         {isLoggedIn ? (
-          <>
-            <span className="navbar__user-pill">✦ Active Member</span>
-            <button className="navbar__logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
-          </>
+          <button className="navbar__logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
         ) : (
           <>
             <Link to="/login" className="navbar__signin-btn">
@@ -99,21 +100,26 @@ export default function Navbar() {
             className={`navbar__mobile-link ${location.pathname === "/" ? "active" : ""}`}
             onClick={closeMenu}
           >
-            Home Landing
+            Home
           </Link>
-          <Link
-            to="/home"
-            className={`navbar__mobile-link ${location.pathname === "/home" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Resume Dashboard
-          </Link>
+
+          {/* Mobile Dashboard link only when logged in */}
+          {isLoggedIn && (
+            <Link
+              to="/home"
+              className={`navbar__mobile-link ${location.pathname === "/home" ? "active" : ""}`}
+              onClick={closeMenu}
+            >
+              Dashboard
+            </Link>
+          )}
+
           <Link
             to="/blog"
             className={`navbar__mobile-link ${location.pathname === "/blog" ? "active" : ""}`}
             onClick={closeMenu}
           >
-            Career Blog & Guides
+            Blog
           </Link>
           <Link
             to="/about"
@@ -127,7 +133,7 @@ export default function Navbar() {
             className={`navbar__mobile-link ${location.pathname === "/contact" ? "active" : ""}`}
             onClick={closeMenu}
           >
-            Contact & Support
+            Contact
           </Link>
           <Link
             to="/policy"

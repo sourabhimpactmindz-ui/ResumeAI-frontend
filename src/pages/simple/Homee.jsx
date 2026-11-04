@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./simplepage.css";
 import { Link } from "react-router-dom";
+import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
-import { Menu, X } from "lucide-react";
 
 /* Returns true once the element has scrolled into view */
 function useInView(threshold = 0.25) {
@@ -111,7 +111,6 @@ export default function Homee() {
   const [statsRef, statsSeen] = useInView(0.4);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(0);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -122,63 +121,12 @@ export default function Homee() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const closeMobileNav = () => setMobileNavOpen(false);
-
   return (
-    <div className="page">
+    <div className="landing-page">
       <div className="progress" style={{ transform: `scaleX(${progress})` }} />
 
-      <header className="nav">
-        <a className="logo" href="#top">resumeAI</a>
-        <nav className="desktop-nav">
-          <a href="#how">How it works</a>
-          <a href="#score">Score</a>
-          <a href="#features">Features</a>
-          <a href="#faq">FAQ</a>
-          <Link to="/blog">Blog</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/contact">Contact</Link>
-        </nav>
-        <div className="nav-actions">
-          <Link className="btn btn-sm" to={token ? "/home" : "/login"}>
-            {token ? "Dashboard" : "Sign In"}
-          </Link>
-          <button
-            type="button"
-            className="landing-mobile-toggle"
-            onClick={() => setMobileNavOpen(!mobileNavOpen)}
-            aria-label="Toggle navigation"
-          >
-            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation Drawer */}
-        {mobileNavOpen && (
-          <div className="landing-mobile-drawer">
-            <a href="#how" onClick={closeMobileNav}>How it works</a>
-            <a href="#score" onClick={closeMobileNav}>Score Analysis</a>
-            <a href="#features" onClick={closeMobileNav}>Features</a>
-            <a href="#faq" onClick={closeMobileNav}>FAQ</a>
-            <Link to="/blog" onClick={closeMobileNav}>Career Blog</Link>
-            <Link to="/about" onClick={closeMobileNav}>About Us</Link>
-            <Link to="/contact" onClick={closeMobileNav}>Contact Support</Link>
-            <Link to="/policy" onClick={closeMobileNav}>Privacy Policy</Link>
-            <Link to="/terms" onClick={closeMobileNav}>Terms of Service</Link>
-            <Link to="/disclaimer" onClick={closeMobileNav}>Disclaimer</Link>
-            <div style={{ paddingTop: "12px" }}>
-              <Link
-                className="btn btn-sm"
-                to={token ? "/home" : "/login"}
-                style={{ width: "100%", textAlign: "center", display: "block" }}
-                onClick={closeMobileNav}
-              >
-                {token ? "Open Dashboard" : "Sign In / Register"}
-              </Link>
-            </div>
-          </div>
-        )}
-      </header>
+      {/* Unified Global Navbar */}
+      <Navbar />
 
       {/* HERO */}
       <section className="hero" id="top">

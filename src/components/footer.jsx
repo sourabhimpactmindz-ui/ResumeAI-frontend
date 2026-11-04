@@ -17,7 +17,6 @@ export default function Footer() {
               <Link to="/" className="site-footer__logo">
                 resumeAI
               </Link>
-              <span className="site-footer__badge">Pro</span>
             </div>
             <p className="site-footer__desc">
               Next-generation AI Applicant Tracking System analyzer. Reverse-engineer

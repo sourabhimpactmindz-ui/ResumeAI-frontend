@@ -14,10 +14,6 @@ import {
   BarChart3,
   ShieldCheck,
   Sparkles,
-  FileSearch,
-  CheckCircle,
-  HelpCircle,
-  ChevronDown,
 } from "lucide-react";
 import UploadBox from "../../components/UploadBox";
 import { toast } from "react-toastify";
@@ -114,40 +110,40 @@ export default function Home() {
   };
 
   return (
-    <div className="app">
+    <div className="dash-app">
       <Navbar />
 
       {/* HERO & UPLOAD SECTION */}
-      <section className="hero">
-        <div className="hero__badge">
+      <section className="dash-hero">
+        <div className="dash-hero__badge">
           <Sparkles size={14} />
           <span>AI-Powered ATS Diagnostic Suite</span>
         </div>
 
-        <h1 className="hero__title">
+        <h1 className="dash-hero__title">
           Beat the ATS. Land more recruiter interviews.
         </h1>
 
-        <p className="hero__sub">
+        <p className="dash-hero__sub">
           Benchmark your resume against any target job description in 30 seconds.
           Detect missing keywords, eliminate format traps, and receive AI-backed bullet enhancements.
         </p>
 
         {/* 3-STEP QUICK PROCESS PILLS */}
-        <div className="workflow-steps">
-          <div className="workflow-step">
-            <span className="workflow-step__num">1</span>
-            <span className="workflow-step__text">Upload PDF Resume</span>
+        <div className="dash-workflow-steps">
+          <div className="dash-workflow-step">
+            <span className="dash-workflow-step__num">1</span>
+            <span className="dash-workflow-step__text">Upload PDF Resume</span>
           </div>
-          <span className="workflow-step__divider">→</span>
-          <div className="workflow-step">
-            <span className="workflow-step__num">2</span>
-            <span className="workflow-step__text">Paste Job Description</span>
+          <span className="dash-workflow-step__divider">→</span>
+          <div className="dash-workflow-step">
+            <span className="dash-workflow-step__num">2</span>
+            <span className="dash-workflow-step__text">Paste Job Description</span>
           </div>
-          <span className="workflow-step__divider">→</span>
-          <div className="workflow-step">
-            <span className="workflow-step__num">3</span>
-            <span className="workflow-step__text">Get Instant ATS Score</span>
+          <span className="dash-workflow-step__divider">→</span>
+          <div className="dash-workflow-step">
+            <span className="dash-workflow-step__num">3</span>
+            <span className="dash-workflow-step__text">Get Instant ATS Score</span>
           </div>
         </div>
 
@@ -156,7 +152,7 @@ export default function Home() {
 
       {/* AI ANALYSIS RESULTS */}
       {analysis && (
-        <section className="section" id="analysis-results">
+        <section className="dash-section" id="analysis-results">
           <AnalysisPanel
             atsScore={analysis.atsScore}
             matchingSkills={analysis.matchingSkills || []}
@@ -168,22 +164,22 @@ export default function Home() {
       )}
 
       {/* STATS ROW */}
-      <section className="stats-row">
+      <section className="dash-stats-row">
         {STATS.map((s) => (
           <StatCard key={s.label} value={s.value} label={s.label} />
         ))}
       </section>
 
       {/* PRECISION FEATURES */}
-      <section className="section precision-section">
-        <div className="precision-header">
-          <h2 className="section-title">Precision Analysis Engine</h2>
-          <p className="section-sub">
+      <section className="dash-section dash-precision-section">
+        <div className="dash-precision-header">
+          <h2 className="dash-section-title">Precision Analysis Engine</h2>
+          <p className="dash-section-sub">
             Built on algorithmic recruiter filters, keyword frequency density, and strict ATS parser models.
           </p>
         </div>
 
-        <div className="features-grid">
+        <div className="dash-features-grid">
           {FEATURES.map((f) => (
             <FeatureCard
               key={f.title}
@@ -196,29 +192,29 @@ export default function Home() {
       </section>
 
       {/* ATS OPTIMIZATION TIPS & FAQ */}
-      <section className="section ats-faq-section">
-        <div className="precision-header">
-          <h2 className="section-title">ATS Fundamentals & Best Practices</h2>
-          <p className="section-sub">
+      <section className="dash-section dash-faq-section">
+        <div className="dash-precision-header">
+          <h2 className="dash-section-title">ATS Fundamentals & Best Practices</h2>
+          <p className="dash-section-sub">
             Common algorithmic challenges and how to optimize your resume for automated screening.
           </p>
         </div>
 
-        <div className="ats-faq-container">
+        <div className="dash-faq-container">
           {ATS_TIPS.map((item, index) => (
             <div
               key={item.q}
-              className={`ats-faq-card ${openFaq === index ? "active" : ""}`}
+              className={`dash-faq-card ${openFaq === index ? "active" : ""}`}
               onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
             >
-              <div className="ats-faq-card__header">
-                <span className="ats-faq-card__question">{item.q}</span>
-                <span className="ats-faq-card__toggle">
+              <div className="dash-faq-card__header">
+                <span className="dash-faq-card__question">{item.q}</span>
+                <span className="dash-faq-card__toggle">
                   {openFaq === index ? "−" : "+"}
                 </span>
               </div>
               {openFaq === index && (
-                <div className="ats-faq-card__body">
+                <div className="dash-faq-card__body">
                   <p>{item.a}</p>
                 </div>
               )}
@@ -228,7 +224,7 @@ export default function Home() {
       </section>
 
       {/* CTA BANNER */}
-      <section className="section" style={{ marginBottom: "60px" }}>
+      <section className="dash-section" style={{ marginBottom: "60px" }}>
         <CTABanner
           title="Ready to fast-track your job search?"
           subtitle="Keep your resume tailored for every single application to consistently bypass initial applicant filters."
