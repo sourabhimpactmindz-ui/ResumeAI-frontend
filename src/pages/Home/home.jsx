@@ -171,7 +171,7 @@ export default function Home() {
       </section> */}
 
       {/* PRECISION FEATURES */}
-      <section className="dash-section dash-precision-section">
+      {/* <section className="dash-section dash-precision-section">
         <div className="dash-precision-header">
           <h2 className="dash-section-title">Precision Analysis Engine</h2>
           <p className="dash-section-sub">
@@ -189,7 +189,7 @@ export default function Home() {
             />
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* ATS OPTIMIZATION TIPS & FAQ */}
       <section className="dash-section dash-faq-section">
