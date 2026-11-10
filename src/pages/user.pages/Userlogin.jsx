@@ -45,7 +45,7 @@ export default function ResumeAILogin() {
   });
 
   const watchedPassword = watch('password', '');
-  const strength = getPasswordStrength(watchedPassword);
+  // const strength = getPasswordStrength(watchedPassword);
 
   // Handle redirect result (if popup was blocked and user was redirected to Google)
   useEffect(() => {
