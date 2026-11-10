@@ -164,11 +164,11 @@ export default function Home() {
       )}
 
       {/* STATS ROW */}
-      <section className="dash-stats-row">
+      {/* <section className="dash-stats-row">
         {STATS.map((s) => (
           <StatCard key={s.label} value={s.value} label={s.label} />
         ))}
-      </section>
+      </section> */}
 
       {/* PRECISION FEATURES */}
       <section className="dash-section dash-precision-section">
