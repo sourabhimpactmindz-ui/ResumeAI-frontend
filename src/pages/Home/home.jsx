@@ -224,13 +224,13 @@ export default function Home() {
       </section>
 
       {/* CTA BANNER */}
-      <section className="dash-section" style={{ marginBottom: "60px" }}>
+      {/* <section className="dash-section" style={{ marginBottom: "60px" }}>
         <CTABanner
           title="Ready to fast-track your job search?"
           subtitle="Keep your resume tailored for every single application to consistently bypass initial applicant filters."
           onGetStarted={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         />
-      </section>
+      </section> */}
 
       {/* COMPREHENSIVE RESPONSIVE FOOTER */}
       <Footer />
