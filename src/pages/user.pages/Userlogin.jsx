@@ -10,20 +10,20 @@ import { useGoogleLoginMutation, useLoginUserMutation } from '../../Apis/user.ap
 import { validateLogin } from '../../Validation/form.validation';
 import './auth.css';
 
-function getPasswordStrength(password) {
-  if (!password) return { score: 0, label: '', type: '' };
-  let score = 0;
-  if (password.length >= 8) score++;
-  if (/[A-Z]/.test(password)) score++;
-  if (/[a-z]/.test(password)) score++;
-  if (/\d/.test(password)) score++;
-  if (/[@$!%*?&]/.test(password)) score++;
+// function getPasswordStrength(password) {
+//   if (!password) return { score: 0, label: '', type: '' };
+//   let score = 0;
+//   if (password.length >= 8) score++;
+//   if (/[A-Z]/.test(password)) score++;
+//   if (/[a-z]/.test(password)) score++;
+//   if (/\d/.test(password)) score++;
+//   if (/[@$!%*?&]/.test(password)) score++;
 
-  if (score <= 2) return { score, label: 'Weak', type: 'weak' };
-  if (score === 3) return { score, label: 'Fair', type: 'fair' };
-  if (score === 4) return { score, label: 'Good', type: 'good' };
-  return { score, label: 'Strong', type: 'strong' };
-}
+//   if (score <= 2) return { score, label: 'Weak', type: 'weak' };
+//   if (score === 3) return { score, label: 'Fair', type: 'fair' };
+//   if (score === 4) return { score, label: 'Good', type: 'good' };
+//   return { score, label: 'Strong', type: 'strong' };
+// }
 
 export default function ResumeAILogin() {
   const navigate = useNavigate();
@@ -63,6 +63,7 @@ export default function ResumeAILogin() {
       .catch((error) => {
         if (error && error.code !== 'auth/credential-already-in-use') {
           console.error('Redirect sign-in error:', error);
+          toast.error(error?.data?.message || error?.message || 'Google sign in failed.');
         }
       });
 
@@ -120,7 +121,7 @@ export default function ResumeAILogin() {
       } else if (error?.status === 'FETCH_ERROR' || error?.message?.includes('Failed to fetch') || error?.error?.includes('Failed to fetch')) {
         toast.error('Unable to connect to the backend server. Please verify your backend server is running and reachable.');
       } else {
-        toast.error('Google sign in failed.');
+        toast.error(error?.data?.message || error?.message || 'Google sign in failed.');
       }
     }
   };
