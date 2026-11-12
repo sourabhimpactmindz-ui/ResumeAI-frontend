@@ -1,66 +1,159 @@
 import { createBrowserRouter } from "react-router-dom";
-import UserLogin from "../pages/user.pages/Userlogin";
-import PrivateRouter from "../protectedRouter/privateRouter";
-import Home from "../pages/Home/home";
-import SignUp from "../pages/user.pages/Usersignup";
-import OTPPage from "../pages/otp.page/otp.page";
-import PolicyPages from "../pages/policy/policy";
-import About from "../pages/about/about";
-import Terms from "../pages/terms/terms";
-import Contact from "../pages/contact/contact";
-import Disclaimer from "../pages/Disclaimer/Disclaimer";
-import Blog from "../pages/blog/blog";
-import Homee from "../pages/simple/Homee";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Homee />,
+    lazy: async () => {
+      const m = await import("../pages/Home");
+      return { Component: m.default };
+    },
   },
   {
-    path: "/login",
-    element: <UserLogin />,
+    path: "/scanner",
+    lazy: async () => {
+      const m = await import("../pages/ScannerPage");
+      return { Component: m.default };
+    },
   },
   {
-    path: "/signup",
-    element: <SignUp />,
+    path: "/home",
+    lazy: async () => {
+      const m = await import("../pages/ScannerPage");
+      return { Component: m.default };
+    },
   },
   {
-    path: "/verifyOTP",
-    element: <OTPPage />,
+    path: "/dashboard",
+    lazy: async () => {
+      const m = await import("../pages/DashboardPage");
+      return { Component: m.default };
+    },
+  },
+  {
+    path: "/tools/:toolId",
+    lazy: async () => {
+      const m = await import("../pages/ToolPage");
+      return { Component: m.default };
+    },
+  },
+  {
+    path: "/tools/keyword-gap",
+    lazy: async () => {
+      const m = await import("../pages/ToolPage");
+      return { Component: () => <m.default toolId="keyword-gap" /> };
+    },
+  },
+  {
+    path: "/tools/bullet-rewriter",
+    lazy: async () => {
+      const m = await import("../pages/ToolPage");
+      return { Component: () => <m.default toolId="bullet-rewriter" /> };
+    },
+  },
+  {
+    path: "/tools/format-check",
+    lazy: async () => {
+      const m = await import("../pages/ToolPage");
+      return { Component: () => <m.default toolId="format-check" /> };
+    },
+  },
+  {
+    path: "/tools/live-demo",
+    lazy: async () => {
+      const m = await import("../pages/ToolPage");
+      return { Component: () => <m.default toolId="live-demo" /> };
+    },
   },
   {
     path: "/blog",
-    element: <Blog />,
+    lazy: async () => {
+      const m = await import("../pages/BlogPage");
+      return { Component: m.default };
+    },
+  },
+  {
+    path: "/blog/:slug",
+    lazy: async () => {
+      const m = await import("../pages/BlogArticlePage");
+      return { Component: m.default };
+    },
   },
   {
     path: "/about",
-    element: <About />,
+    lazy: async () => {
+      const m = await import("../pages/AboutPage");
+      return { Component: m.default };
+    },
   },
   {
     path: "/contact",
-    element: <Contact />,
+    lazy: async () => {
+      const m = await import("../pages/ContactPage");
+      return { Component: m.default };
+    },
+  },
+  {
+    path: "/login",
+    lazy: async () => {
+      const m = await import("../pages/user.pages/Userlogin");
+      return { Component: m.default };
+    },
+  },
+  {
+    path: "/signin",
+    lazy: async () => {
+      const m = await import("../pages/user.pages/Userlogin");
+      return { Component: m.default };
+    },
+  },
+  {
+    path: "/signup",
+    lazy: async () => {
+      const m = await import("../pages/user.pages/Usersignup");
+      return { Component: m.default };
+    },
+  },
+  {
+    path: "/verifyOTP",
+    lazy: async () => {
+      const m = await import("../pages/otp.page/otp.page");
+      return { Component: m.default };
+    },
   },
   {
     path: "/policy",
-    element: <PolicyPages />,
+    lazy: async () => {
+      const m = await import("../pages/LegalPage");
+      return { Component: () => <m.default type="privacy" /> };
+    },
+  },
+  {
+    path: "/privacy",
+    lazy: async () => {
+      const m = await import("../pages/LegalPage");
+      return { Component: () => <m.default type="privacy" /> };
+    },
   },
   {
     path: "/terms",
-    element: <Terms />,
+    lazy: async () => {
+      const m = await import("../pages/LegalPage");
+      return { Component: () => <m.default type="terms" /> };
+    },
   },
   {
     path: "/disclaimer",
-    element: <Disclaimer />,
+    lazy: async () => {
+      const m = await import("../pages/LegalPage");
+      return { Component: () => <m.default type="disclaimer" /> };
+    },
   },
   {
-    element: <PrivateRouter />,
-    children: [
-      {
-        path: "/home",
-        element: <Home />,
-      },
-    ],
+    path: "*",
+    lazy: async () => {
+      const m = await import("../pages/NotFoundPage");
+      return { Component: m.default };
+    },
   },
 ]);
 

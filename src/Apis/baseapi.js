@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const getBaseUrl = () => {
-  // Use Vite proxy in development to avoid CORS / ERR_FAILED issues
   if (import.meta.env.DEV) {
     return '/api';
   }

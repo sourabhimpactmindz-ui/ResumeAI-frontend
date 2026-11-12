@@ -1,39 +1,61 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
-import { Eye, EyeOff, ArrowLeft, AlertCircle } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth';
-import { auth } from '../../firebase/firebase';
-import { useGoogleLoginMutation, useSignupUserMutation } from '../../Apis/user.api';
-import { validateSignup } from '../../Validation/form.validation';
-import './auth.css';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { Eye, EyeOff, ArrowLeft, Sparkles, CheckCircle2, ShieldCheck, Lock } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
+} from "firebase/auth";
+import { auth } from "../../firebase/firebase";
+import { useGoogleLoginMutation, useSignupUserMutation } from "../../Apis/user.api";
+import { Card } from "../../components/Card";
+import { Button } from "../../components/Button";
+import { Badge } from "../../components/Badge";
+import ParticleField from "../../components/ParticleField";
+import FloatingWrapper from "../../components/animations/FloatingWrapper";
 
-export default function ResumeAISignUp() {
+export default function UserSignUp() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [shake, setShake] = useState(false);
+
   const [SignupUser, { isLoading }] = useSignupUserMutation();
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [GoogleLogin] = useGoogleLoginMutation();
+  const [GoogleLogin, { isLoading: isGoogleLoading }] = useGoogleLoginMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     watch,
   } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-    },
+    mode: "onChange",
+    defaultValues: { name: "", email: "", password: "" },
   });
 
-  const password = watch('password', '');
+  const passwordVal = watch("password", "");
 
-  // Handle redirect result (if user was redirected to Google login)
+  // Calculate password strength
+  const calculateStrength = (pwd) => {
+    if (!pwd) return { score: 0, label: "Empty", color: "bg-c-700" };
+    let s = 0;
+    if (pwd.length >= 8) s++;
+    if (/[A-Z]/.test(pwd)) s++;
+    if (/[0-9]/.test(pwd)) s++;
+    if (/[^A-Za-z0-9]/.test(pwd)) s++;
+
+    if (s <= 1) return { score: 25, label: "Weak", color: "bg-c-error" };
+    if (s === 2) return { score: 50, label: "Fair", color: "bg-c-warning" };
+    if (s === 3) return { score: 75, label: "Good", color: "bg-c-300" };
+    return { score: 100, label: "Strong", color: "bg-c-success" };
+  };
+
+  const strength = calculateStrength(passwordVal);
+
+  // Google redirect handler
   useEffect(() => {
     let isMounted = true;
     getRedirectResult(auth)
@@ -41,14 +63,14 @@ export default function ResumeAISignUp() {
         if (!isMounted || !result?.user) return;
         const firebaseToken = await result.user.getIdToken();
         const res = await GoogleLogin({ token: firebaseToken }).unwrap();
-        localStorage.setItem('accessToken', res.accessToken);
-        localStorage.setItem('refreshToken', res.refreshToken);
-        toast.success('Login successful!');
-        navigate('/home', { replace: true });
+        localStorage.setItem("accessToken", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
+        toast.success("Account created via Google!");
+        navigate("/dashboard", { replace: true });
       })
       .catch((error) => {
-        if (error && error.code !== 'auth/credential-already-in-use') {
-          console.error('Redirect sign-in error:', error);
+        if (error && error.code !== "auth/credential-already-in-use") {
+          console.error("Redirect sign-in error:", error);
         }
       });
 
@@ -57,275 +79,238 @@ export default function ResumeAISignUp() {
     };
   }, [GoogleLogin, navigate]);
 
-  // Password strength calculation
-  const getPasswordStrength = (pwd) => {
-    if (!pwd) return { score: 0, label: '', type: '' };
-    let score = 0;
-    if (pwd.length >= 8) score++;
-    if (/[a-z]/.test(pwd)) score++;
-    if (/[A-Z]/.test(pwd)) score++;
-    if (/\d/.test(pwd)) score++;
-    if (/[@$!%*?&]/.test(pwd)) score++;
-
-    if (score <= 2) return { score, label: 'Weak', type: 'weak' };
-    if (score === 3) return { score, label: 'Fair', type: 'fair' };
-    if (score === 4) return { score, label: 'Good', type: 'good' };
-    return { score, label: 'Strong', type: 'strong' };
-  };
-
-  const strength = getPasswordStrength(password);
-
   const handleSignUp = async (data) => {
     try {
       const res = await SignupUser(data).unwrap();
       if (res?.status) {
-        toast.success('OTP sent successfully');
-        navigate('/verifyOTP', {
-          state: {
-            email: data.email,
-          },
+        toast.success("Verification code dispatched to your email!");
+        navigate("/verifyOTP", {
+          state: { email: data.email },
         });
       }
     } catch (err) {
-      if (err?.status === 'FETCH_ERROR' || err?.error?.includes('Failed to fetch')) {
-        toast.error('Unable to connect to the backend server. Please verify your backend server is running and reachable.');
-      } else {
-        toast.error(err?.data?.message || err?.error || 'Signup failed. Please try again.');
-      }
+      setShake(true);
+      setTimeout(() => setShake(false), 600);
+      toast.error(err?.data?.message || err?.error || "Registration failed. Please try again.");
     }
   };
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
+    provider.setCustomParameters({ prompt: "select_account" });
 
     try {
-      setIsGoogleLoading(true);
       const result = await signInWithPopup(auth, provider);
       const firebaseToken = await result.user.getIdToken();
-
-      const res = await GoogleLogin({
-        token: firebaseToken,
-      }).unwrap();
-
-      localStorage.setItem('accessToken', res.accessToken);
-      localStorage.setItem('refreshToken', res.refreshToken);
-
-      toast.success('Login successful!');
-      navigate('/home', { replace: true });
-    } catch (error) {
-      console.error('Google Sign-in error:', error);
-      if (error?.code === 'auth/popup-blocked') {
-        toast.info('Popup blocked by browser. Redirecting to Google Sign-in...');
-        try {
-          await signInWithRedirect(auth, provider);
-        } catch (redirectErr) {
-          console.error('Redirect error:', redirectErr);
-          toast.error('Popup blocked by browser. Please allow popups in your address bar to continue.');
-        }
-      } else if (error?.code === 'auth/popup-closed-by-user') {
-        toast.warn('Sign-in popup was closed.');
-      } else if (error?.status === 'FETCH_ERROR' || error?.message?.includes('Failed to fetch') || error?.error?.includes('Failed to fetch')) {
-        toast.error('Unable to connect to the backend server. Please verify your backend server is running and reachable.');
+      const res = await GoogleLogin({ token: firebaseToken }).unwrap();
+      localStorage.setItem("accessToken", res.accessToken);
+      localStorage.setItem("refreshToken", res.refreshToken);
+      toast.success("Google registration successful!");
+      navigate("/dashboard", { replace: true });
+    } catch (popupError) {
+      if (popupError.code === "auth/popup-blocked" || popupError.code === "auth/popup-closed-by-user") {
+        await signInWithRedirect(auth, provider);
       } else {
-        toast.error(error?.data?.message || error.message || 'Google sign in failed.');
+        toast.error("Google sign up failed. Please try again.");
       }
-    } finally {
-      setIsGoogleLoading(false);
     }
   };
 
   return (
-    <div className="auth-page-centered">
-      {/* Brand Header */}
-      <div className="auth-brand-header">
-        <Link to="/" className="auth-logo">
-          resumeAI
-        </Link>
-        <span className="auth-pill">✦ Free ATS Scan</span>
-      </div>
+    <div className="relative min-h-screen bg-deep-space text-c-100 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+      <ParticleField count={20} />
 
-      {/* Main Single-Column Auth Card */}
-      <div className="auth-card">
-        <div className="auth-card-header">
-          <h2>Create your account</h2>
-          <p>Start scanning your resume for ATS compatibility</p>
-        </div>
-
-        {/* Google Sign In */}
-        <button
-          type="button"
-          className="auth-google-btn"
-          onClick={handleGoogleSignIn}
-          disabled={isLoading || isGoogleLoading}
-        >
-          <FcGoogle size={20} />
-          <span>{isGoogleLoading ? 'Connecting...' : 'Sign up with Google'}</span>
-        </button>
-
-        <div className="auth-divider">
-          <span>OR SIGN UP WITH EMAIL</span>
-        </div>
-
-        {/* Signup Form */}
-        <form className="auth-form" onSubmit={handleSubmit(handleSignUp)}>
-          {/* Full Name */}
-          <div className="auth-group">
-            <label htmlFor="fullName" className="auth-label">
-              Full Name
-            </label>
-            <div className="auth-input-wrapper">
-              <input
-                type="text"
-                id="fullName"
-                placeholder="Rohit Sharma"
-                className={`auth-input ${errors.name ? 'has-error' : ''}`}
-                {...register('name', validateSignup.name)}
-              />
-            </div>
-            {errors.name && (
-              <div className="auth-error-msg" role="alert">
-                <AlertCircle size={14} />
-                <span>{errors.name.message}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Email Address */}
-          <div className="auth-group">
-            <label htmlFor="email" className="auth-label">
-              Email Address
-            </label>
-            <div className="auth-input-wrapper">
-              <input
-                type="email"
-                id="email"
-                placeholder="name@example.com"
-                className={`auth-input ${errors.email ? 'has-error' : ''}`}
-                {...register('email', validateSignup.email)}
-              />
-            </div>
-            {errors.email && (
-              <div className="auth-error-msg" role="alert">
-                <AlertCircle size={14} />
-                <span>{errors.email.message}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="auth-group">
-            <label htmlFor="password" className="auth-label">
-              Password
-            </label>
-            <div className="auth-input-wrapper">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                placeholder="••••••••"
-                className={`auth-input ${errors.password ? 'has-error' : ''}`}
-                {...register('password', validateSignup.password)}
-              />
-              <button
-                type="button"
-                className="auth-toggle-pwd"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+      <div className="relative z-10 w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        {/* Left Form Card */}
+        <div className={`lg:col-span-7 ${shake ? "animate-[wiggle_0.4s_ease-in-out]" : ""}`}>
+          <Card className="p-8 sm:p-12 shadow-[0_28px_60px_-15px_rgba(6,20,27,0.9),0_0_35px_rgba(155,168,171,0.12)]" glow={true}>
+            <div className="flex items-center justify-between mb-8">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 text-xs font-heading font-semibold text-c-300 hover:text-c-100 transition-colors"
               >
-                {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-              </button>
+                <ArrowLeft size={14} />
+                <span>Return to Home</span>
+              </Link>
+              <Badge variant="status" pulsing={true}>
+                Instant Free Access
+              </Badge>
             </div>
 
-            {/* Password Strength Indicator */}
-            {password && (
-              <div className="auth-strength-container">
-                <div className="auth-strength-top">
-                  <span>Password Strength</span>
-                  <span style={{ textTransform: 'capitalize' }}>{strength.label}</span>
-                </div>
-                <div className="auth-strength-meter">
-                  {[1, 2, 3, 4, 5].map((seg) => (
-                    <div
-                      key={seg}
-                      className={`auth-strength-segment ${
-                        strength.score >= seg ? `active-${strength.type}` : ''
-                      }`}
-                    />
-                  ))}
-                </div>
+            <div className="mb-8">
+              <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-c-100">
+                Create your ResumeAI account
+              </h1>
+              <p className="mt-1 text-xs sm:text-sm text-c-300 font-sans">
+                Never get filtered out by applicant tracking software again.
+              </p>
+            </div>
 
-                <ul className="auth-requirements-list">
-                  <li className={`auth-req-item ${password.length >= 8 ? 'met' : ''}`}>
-                    <span className="auth-req-icon">{password.length >= 8 ? '✓' : '•'}</span>
-                    8+ characters
-                  </li>
-                  <li className={`auth-req-item ${/[A-Z]/.test(password) ? 'met' : ''}`}>
-                    <span className="auth-req-icon">{/[A-Z]/.test(password) ? '✓' : '•'}</span>
-                    Uppercase letter
-                  </li>
-                  <li className={`auth-req-item ${/[a-z]/.test(password) ? 'met' : ''}`}>
-                    <span className="auth-req-icon">{/[a-z]/.test(password) ? '✓' : '•'}</span>
-                    Lowercase letter
-                  </li>
-                  <li className={`auth-req-item ${/\d/.test(password) ? 'met' : ''}`}>
-                    <span className="auth-req-icon">{/\d/.test(password) ? '✓' : '•'}</span>
-                    Number
-                  </li>
-                  <li className={`auth-req-item ${/[@$!%*?&]/.test(password) ? 'met' : ''}`}>
-                    <span className="auth-req-icon">{/[@$!%*?&]/.test(password) ? '✓' : '•'}</span>
-                    Special (@$!%*?&)
-                  </li>
-                </ul>
+            {/* Google Signup Button */}
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={isGoogleLoading}
+              className="w-full py-3 px-4 rounded-2xl bg-c-900 border border-c-700/80 hover:border-c-300 hover:bg-c-800 text-c-100 font-heading font-semibold text-xs sm:text-sm flex items-center justify-center gap-3 transition-all cursor-pointer shadow-sm"
+            >
+              <FcGoogle size={20} />
+              <span>Register with Google</span>
+            </button>
+
+            <div className="relative my-7 text-center">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-c-700/60" />
               </div>
-            )}
+              <span className="relative px-3 bg-c-800 text-[11px] font-heading font-bold text-c-600 uppercase tracking-widest">
+                or with email
+              </span>
+            </div>
 
-            {errors.password && (
-              <div className="auth-error-msg" role="alert">
-                <AlertCircle size={14} />
-                <span>{errors.password.message}</span>
+            <form onSubmit={handleSubmit(handleSignUp)} className="space-y-4">
+              <div>
+                <label className="block text-xs font-heading font-bold text-c-100 mb-1.5">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  {...register("name", { required: "Full name is required" })}
+                  placeholder="e.g. Rohit Verma"
+                  className="w-full px-5 py-3 rounded-2xl bg-c-900 border border-c-700 text-c-100 placeholder:text-c-600 font-sans text-sm outline-none focus:border-c-300 transition-all"
+                />
+                {errors.name && (
+                  <span className="text-[11px] text-c-error mt-1 block">
+                    {errors.name.message}
+                  </span>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isLoading || isGoogleLoading || !isValid}
-            className="auth-submit-btn"
-          >
-            {isLoading ? (
-              <>
-                <span className="auth-spinner" />
-                <span>Creating account...</span>
-              </>
-            ) : (
-              'Create Account →'
-            )}
-          </button>
-        </form>
+              <div>
+                <label className="block text-xs font-heading font-bold text-c-100 mb-1.5">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  {...register("email", { required: "Valid email is required" })}
+                  placeholder="name@company.com"
+                  className="w-full px-5 py-3 rounded-2xl bg-c-900 border border-c-700 text-c-100 placeholder:text-c-600 font-sans text-sm outline-none focus:border-c-300 transition-all"
+                />
+                {errors.email && (
+                  <span className="text-[11px] text-c-error mt-1 block">
+                    {errors.email.message}
+                  </span>
+                )}
+              </div>
 
-        {/* Switch Link */}
-        <div className="auth-switch-text">
-          Already have an account?{' '}
-          <Link to="/login" className="auth-switch-link">
-            Sign in
-          </Link>
+              <div>
+                <label className="block text-xs font-heading font-bold text-c-100 mb-1.5">
+                  Create Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: { value: 6, message: "Minimum 6 characters" },
+                    })}
+                    placeholder="••••••••••••"
+                    className="w-full px-5 py-3 pr-12 rounded-2xl bg-c-900 border border-c-700 text-c-100 placeholder:text-c-600 font-sans text-sm outline-none focus:border-c-300 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-c-600 hover:text-c-300"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                {errors.password && (
+                  <span className="text-[11px] text-c-error mt-1 block">
+                    {errors.password.message}
+                  </span>
+                )}
+
+                {/* Password Strength Indicator */}
+                {passwordVal && (
+                  <div className="mt-2.5 space-y-1">
+                    <div className="flex items-center justify-between text-[11px] font-sans">
+                      <span className="text-c-600">Password strength:</span>
+                      <span className="text-c-100 font-bold">{strength.label}</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-c-900 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${strength.color} transition-all duration-300`}
+                        style={{ width: `${strength.score}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isLoading}
+                variant="primary"
+                size="lg"
+                className="w-full mt-4"
+              >
+                {isLoading ? "Creating Account..." : "Create Account & Verify →"}
+              </Button>
+            </form>
+
+            <p className="mt-6 text-center text-xs text-c-600 font-sans">
+              Already have an account?{" "}
+              <Link to="/login" className="text-c-100 font-bold hover:underline">
+                Sign in here
+              </Link>
+            </p>
+          </Card>
         </div>
 
-        <div className="auth-terms-text">
-          By creating an account, you agree to our{' '}
-          <Link to="/terms">Terms</Link> and <Link to="/policy">Privacy Policy</Link>.
+        {/* Right Floating Resume Visual with Parallax Depth */}
+        <div className="hidden lg:block lg:col-span-5">
+          <FloatingWrapper y={14} duration={6.8}>
+            <div className="relative p-8 rounded-[36px] bg-gradient-to-br from-c-800 to-c-800/40 border border-c-700/80 shadow-[0_30px_70px_-15px_rgba(6,20,27,0.95)] overflow-hidden">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="w-9 h-9 rounded-full bg-c-success/20 text-c-success border border-c-success/40 flex items-center justify-center">
+                  <Sparkles size={18} />
+                </span>
+                <div>
+                  <h3 className="font-heading font-bold text-sm text-c-100">
+                    What you unlock free
+                  </h3>
+                  <p className="text-[11px] text-c-600">
+                    Full candidate dashboard features
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3.5 mb-6 text-xs font-sans text-c-300">
+                <div className="p-3.5 rounded-xl bg-c-900 border border-c-700 flex items-center gap-2.5">
+                  <CheckCircle2 size={15} className="text-c-success shrink-0" />
+                  <span>Unlimited ATS resume scans</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-c-900 border border-c-700 flex items-center gap-2.5">
+                  <CheckCircle2 size={15} className="text-c-success shrink-0" />
+                  <span>Automatic missing keyword gap detection</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-c-900 border border-c-700 flex items-center gap-2.5">
+                  <CheckCircle2 size={15} className="text-c-success shrink-0" />
+                  <span>AI quantified bullet point rewriting</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-c-900 border border-c-700 flex items-center gap-2.5">
+                  <CheckCircle2 size={15} className="text-c-success shrink-0" />
+                  <span>Saved scan history and score improvement trend</span>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-c-700/60 flex items-center gap-2 text-[11px] text-c-600">
+                <Lock size={14} className="text-c-success" />
+                <span>100% private in-memory document scanning</span>
+              </div>
+            </div>
+          </FloatingWrapper>
         </div>
       </div>
-
-      {/* Back to Home Link */}
-      <Link to="/" className="auth-back-home">
-        <ArrowLeft size={15} /> Back to home
-      </Link>
-
-      <p className="auth-trust-note">
-        ✦ Safe & secure · Your resume is encrypted and private.
-      </p>
     </div>
   );
 }

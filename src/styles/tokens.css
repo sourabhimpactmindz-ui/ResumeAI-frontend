@@ -1,0 +1,33 @@
+:root {
+  /* Deep-Space Slate Palette */
+  --c-900: #06141B; /* Page background / deepest */
+  --c-800: #11212D; /* Surfaces, levitating cards */
+  --c-700: #253745; /* Borders, raised cards */
+  --c-600: #4A5C6A; /* Muted text, secondary icons */
+  --c-300: #9BA8AB; /* Secondary text, soft labels */
+  --c-100: #CCD0CF; /* Primary text, highlights, CTA background */
+
+  /* Semantic desaturated colors */
+  --c-success: #7FB59A;
+  --c-warning: #D9B26F;
+  --c-error: #D98C8C;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-accent: 'Caveat', cursive, sans-serif;
+
+  /* Levitating Curves & Radii */
+  --radius-pill: 9999px;
+  --radius-card: 32px;
+  --radius-card-sm: 24px;
+  --radius-input: 16px;
+
+  /* Weightless Soft Glow Shadows */
+  --glow-subtle: 0 8px 25px -6px rgba(155, 168, 171, 0.12);
+  --glow-card: 0 20px 40px -12px rgba(155, 168, 171, 0.15), 0 0 0 1px rgba(74, 92, 106, 0.35);
+  --glow-hover: 0 28px 60px -10px rgba(155, 168, 171, 0.25), 0 0 0 1px rgba(155, 168, 171, 0.45);
+  --glow-cta: 0 12px 32px -4px rgba(204, 208, 207, 0.3);
+  --glow-status: 0 0 14px rgba(127, 181, 154, 0.6);
+}
+
