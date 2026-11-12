@@ -1,320 +1,336 @@
-import { useEffect, useRef, useState } from "react";
-import "./simplepage.css";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+import AnalysisPanel from "../../components/AnalysisPanel";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
+import UploadBox from "../../components/UploadBox";
+import { useUplodeResumeMutation } from "../../Apis/resumeApi";
+import { Settings2, Target, BarChart3, ShieldCheck, Sparkles } from "lucide-react";
+import { toast } from "react-toastify";
+import "./simplepage.css";
 
-/* Returns true once the element has scrolled into view */
-function useInView(threshold = 0.25) {
-  const ref = useRef(null);
-  const [seen, setSeen] = useState(false);
+gsap.registerPlugin(ScrollTrigger);
+
+const STATS = [
+  { value: "12,400+", label: "Resumes checked by real job seekers" },
+  { value: "82%", label: "Average ATS score improvement" },
+  { value: "3.2x", label: "More interview callbacks" },
+];
+
+const STEPS = [
+  { icon: "📄", title: "Upload your resume", desc: "Drop in your PDF. We read it exactly the way a recruiter's software does." },
+  { icon: "🎯", title: "Paste the job description", desc: "We pick out the skills the job asks for and compare them with yours." },
+  { icon: "✨", title: "Get your score and fixes", desc: "Every problem comes with a simple fix you can apply in minutes." },
+];
+
+const FEATURES = [
+  { icon: <Settings2 size={26} />, title: "Format check", desc: "Finds tables, columns and image headers that confuse recruiter software." },
+  { icon: <Target size={26} />, title: "Missing keywords", desc: "Shows which skills from the job post your resume doesn't mention yet." },
+  { icon: <BarChart3 size={26} />, title: "Bullet strength", desc: "Checks that your bullets start with action verbs and show real results." },
+  { icon: <ShieldCheck size={26} />, title: "Your data stays yours", desc: "Your resume is encrypted and never used to train public models." },
+];
+
+const VOICES = [
+  { quote: "My score went from 48 to 86 and I got two interview calls within three weeks.", name: "Rohit G.", role: "Frontend Developer" },
+  { quote: "I found out my two-column template wasn't being read at all. One format change fixed it.", name: "Neha K.", role: "Marketing Executive" },
+  { quote: "The bullet suggestions added numbers to my lines. My resume finally sounds like real work.", name: "Aman V.", role: "Data Analyst" },
+];
+
+const ATS_TIPS = [
+  { q: "Why do so many resumes get rejected by ATS filters?", a: "Recruiter software reads plain text and looks for exact job titles, skills and tools. Two-column layouts, tables and missing keywords often give your resume a low match score before a person ever sees it." },
+  { q: "What is a good ATS score?", a: "80 or higher puts you ahead of most applicants for that role. A score between 60 and 79 usually passes the first filter, and adding the missing keywords can lift it further." },
+  { q: "How do I tailor my resume for each job?", a: "Run every job description through the scanner. Keep your experience the same, but use the same wording the job post uses for your skills." },
+];
+
+const HEADLINES = [
+  "before any recruiter does.",
+  "in just 6 seconds.",
+  "so you don’t get rejected.",
+  "and shows exactly how to fix it.",
+];
+
+/* Typewriter: types, deletes, then moves on to the next line */
+function Typewriter({ lines, typeSpeed = 55, deleteSpeed = 28, pause = 1400 }) {
+  const [text, setText] = useState("");
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setSeen(true);
-          io.disconnect();
-        }
-      },
-      { threshold }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [threshold]);
-  return [ref, seen];
+    let dead = false;
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    (async () => {
+      let i = 0;
+      while (!dead) {
+        const s = lines[i++ % lines.length];
+        for (let k = 1; k <= s.length && !dead; k++) { setText(s.slice(0, k)); await sleep(typeSpeed); }
+        await sleep(pause);
+        for (let k = s.length; k >= 0 && !dead; k--) { setText(s.slice(0, k)); await sleep(deleteSpeed); }
+        await sleep(300);
+      }
+    })();
+    return () => { dead = true; };
+  }, [lines, typeSpeed, deleteSpeed, pause]);
+  return (<><span>{text}</span><span className="ag-cursor" aria-hidden="true" /></>);
 }
 
-function Reveal({ children, delay = 0, className = "" }) {
-  const [ref, seen] = useInView(0.15);
-  return (
-    <div
-      ref={ref}
-      className={`reveal ${seen ? "is-in" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-}
+export default function Home() {
+  const [analysis, setAnalysis] = useState(null);
+  const [openFaq, setOpenFaq] = useState(0);
+  const [UplodeResume, { isLoading }] = useUplodeResumeMutation();
+  const navigate = useNavigate();
+  const root = useRef(null);
+  const lenisRef = useRef(null);
 
-function CountUp({ to, run, duration = 1400 }) {
-  const [n, setN] = useState(0);
-  useEffect(() => {
-    if (!run) return;
-    let raf;
-    const t0 = performance.now();
-    const tick = (t) => {
-      const p = Math.min((t - t0) / duration, 1);
-      setN(Math.round((1 - Math.pow(1 - p, 3)) * to));
-      if (p < 1) raf = requestAnimationFrame(tick);
+  useLayoutEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    // Lenis smooth scroll, synced with ScrollTrigger
+    const lenis = new Lenis({ lerp: 0.08 });
+    lenisRef.current = lenis;
+    lenis.on("scroll", ScrollTrigger.update);
+    const tick = (t) => lenis.raf(t * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+
+    const ctx = gsap.context(() => {
+      // Gentle floating (hero chip, upload box, icons)
+      gsap.utils.toArray(".ag-float").forEach((el) =>
+        gsap.to(el, { y: -10, duration: gsap.utils.random(2.5, 4), yoyo: true, repeat: -1, ease: "sine.inOut", delay: Math.random() * 2 })
+      );
+
+      // Drifting particles
+      gsap.utils.toArray(".ag-dot").forEach((d) => {
+        gsap.set(d, { x: gsap.utils.random(0, window.innerWidth), y: window.innerHeight + 20 });
+        gsap.to(d, { y: -40, duration: gsap.utils.random(14, 28), repeat: -1, ease: "none", delay: -Math.random() * 20 });
+      });
+
+      // Scroll Zoom: pinned resume paper
+      gsap.timeline({ scrollTrigger: { trigger: ".ag-zoom", start: "top top", end: "+=150%", pin: true, scrub: 1 } })
+        .fromTo(".ag-zoom__mock", { scale: 0.8, rotateX: 10 }, { scale: 2.6, rotateX: 0, ease: "power1.in" }, 0)
+        .to(".ag-zoom__text", { y: -140, opacity: 0, duration: 0.5 }, 0);
+
+      // Card stack
+      const cards = gsap.utils.toArray(".ag-stack__card");
+      gsap.set(cards.slice(1), { yPercent: 130 });
+      gsap.timeline({ scrollTrigger: { trigger: ".ag-steps", start: "top top", end: "+=220%", pin: true, scrub: 1 } })
+        .to(cards[0], { scale: 0.92, y: -40, opacity: 0.6 }, 0)
+        .to(cards[1], { yPercent: 0 }, 0)
+        .to(cards[1], { scale: 0.96, y: -20, opacity: 0.8 }, 1)
+        .to(cards[2], { yPercent: 0 }, 1);
+
+      // Stagger from edges (clearProps so hover effects still work afterwards)
+      [".ag-stats", ".ag-features__grid", ".ag-voices__grid"].forEach((wrap) => {
+        gsap.from(`${wrap} .ag-card`, {
+          opacity: 0, y: 60, scale: 0.9, duration: 0.8, ease: "power3.out",
+          stagger: { each: 0.1, from: "edges" },
+          clearProps: "transform,opacity",
+          scrollTrigger: { trigger: wrap, start: "top 80%", once: true },
+        });
+      });
+    }, root);
+
+    return () => {
+      ctx.revert();
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+      lenisRef.current = null;
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [run, to, duration]);
-  return <>{n}</>;
-}
+  }, []);
 
-const steps = [
-  { t: "Upload your resume", d: "Drop in a PDF or DOCX. We read the text, headings and layout the same way an ATS does." },
-  { t: "Paste the job description", d: "The AI pulls the key skills and keywords from the job post and matches them against your resume." },
-  { t: "Get your score and fixes", d: "Every issue comes with a clear fix that you can apply in one click." },
-];
+  // Re-measure pinned sections when results change the page height
+  useEffect(() => { ScrollTrigger.refresh(); }, [analysis]);
 
-const bars = [
-  { l: "Keyword match", v: 82 },
-  { l: "Format and parsing", v: 94 },
-  { l: "Section structure", v: 76 },
-  { l: "Measurable results", v: 61 },
-];
-
-const features = [
-  { t: "ATS-safe format check", d: "Catches tables, columns and images that break parsing." },
-  { t: "Keyword gap", d: "A single list of the skills in the job post that your resume is missing." },
-  { t: "Bullet rewrite", d: "Turns weak lines into strong bullets with numbers and outcomes." },
-  { t: "Role-specific tips", d: "Suggestions tailored to frontend, data, marketing and more." },
-];
-
-const stats = [
-  { n: 75, s: "%", l: "of resumes are rejected by an ATS before a human sees them" },
-  { n: 6, s: " sec", l: "is how long a recruiter spends on a first look" },
-  { n: 40, s: "+", l: "format and keyword checks in every scan" },
-  { n: 30, s: " sec", l: "to get your full score and report" },
-];
-
-const myths = [
-  { m: "A beautiful design impresses the ATS.", f: "An ATS only reads text. Columns, icons and images often break parsing." },
-  { m: "Listing your skills once is enough.", f: "Every job post uses different keywords. Tailor your resume for each role." },
-  { m: "The longer the resume, the better.", f: "One page is enough for freshers and two for experienced candidates." },
-  { m: "Putting contact details in the header is fine.", f: "Many systems skip headers and footers entirely. Keep contact details in the body." },
-];
-
-const reviews = [
-  { q: "My score went from 48 to 86 and I got two interview calls within three weeks.", a: "Rohit S., Frontend Developer" },
-  { q: "I learned my two-column template wasn't being parsed at all. One format change fixed it.", a: "Neha K., Marketing Executive" },
-  { q: "The bullet rewrite added numbers and results to my lines. My resume finally reads like real work.", a: "Aman V., Data Analyst" },
-];
-
-const faqs = [
-  { q: "What is an ATS?", a: "An Applicant Tracking System is software companies use to filter resumes. It converts your resume to text and matches it against the job description." },
-  { q: "Do I need a score of 100?", a: "No. A score of 80 or above is considered very good. What matters is that your resume contains the real keywords for the role." },
-  { q: "Which file formats are supported?", a: "Both PDF and DOCX. A text-based PDF works best. Scanned image PDFs are harder to parse." },
-  { q: "Is my resume safe?", a: "Yes. Your resume is used only for the scan, and you can delete it at any time." },
-  { q: "Can freshers use this?", a: "Absolutely. Freshers get focused suggestions for the projects, skills and education sections." },
-];
-
-export default function Homee() {
-  const token = localStorage.getItem("accessToken");
-  const [scoreRef, scoreSeen] = useInView(0.4);
-  const [barsRef, barsSeen] = useInView(0.3);
-  const [statsRef, statsSeen] = useInView(0.4);
-  const [open, setOpen] = useState(0);
+  const handleAnalze = async (file, jobDescription) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      toast.error("Please login before analyzing your resume.");
+      navigate("/login");
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append("resume", file);
+      formData.append("jobDescription", jobDescription);
+      const result = await UplodeResume(formData).unwrap();
+      setAnalysis(result.data);
+      toast.success("Analysis complete! Review your ATS score below.");
+      setTimeout(() => {
+        const el = document.getElementById("analysis-results");
+        if (!el) return;
+        if (lenisRef.current) lenisRef.current.scrollTo(el, { offset: -20 });
+        else el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 200);
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.data?.message || error?.error || "Upload failed. Please try again.");
+      if (error?.status === 401) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        navigate("/login");
+      }
+    }
+  };
 
   return (
-    <div className="landing-page">
-      {/* Unified Global Navbar */}
+    <div className="ag-app" ref={root}>
+      <div className="ag-grain" aria-hidden="true" />
+      <div className="ag-dots" aria-hidden="true">
+        {Array.from({ length: 28 }).map((_, i) => <i key={i} className="ag-dot" />)}
+      </div>
+
       <Navbar />
 
-      {/* HERO */}
-      <section className="hero" id="top">
-        <div className="hero-copy">
-          <h1>An ATS reads your resume before any recruiter does.</h1>
-          <p className="lead">
-            Our AI matches your resume against the job description, gives you an
-            ATS score and shows exactly why a line might get you rejected.
-          </p>
-          <div className="hero-actions">
-            <Link className="btn" to={token ? "/home" : "/login"}>
-              Check it free
-            </Link>
-            <a className="btn btn-ghost" href="#how">See how it works</a>
-          </div>
+      {/* HERO + UPLOAD */}
+      <section className="ag-hero">
+        <div className="ag-chip ag-float">
+          <span className="ag-pulse" />
+          <Sparkles size={14} />
+          <span>Free ATS check, ready in 30 seconds</span>
         </div>
 
-        <div className="doc" aria-hidden="true">
-          <div className="scan-line" />
-          <div className="doc-head">
-            <div className="doc-name" />
-            <div className="doc-sub" />
+        <h1 className="ag-hero__title">
+          A robot reads your resume first.
+          <span className="ag-hero__type"><Typewriter lines={HEADLINES} /></span>
+        </h1>
+
+        <p className="ag-hero__sub">
+          We show you why a line might get rejected and how to fix it.
+          Upload your resume, paste the job description, and see your score.
+        </p>
+
+        <p className="ag-hand ag-hero__hint">Tip: paste the job post too, your score gets much sharper.</p>
+
+        <div className="ag-upload ag-float">
+          <UploadBox onAnalyze={handleAnalze} isLoading={isLoading} />
+        </div>
+        <p className="ag-hero__note"><span className="ag-hand">Free to try.</span> Your resume is never sold or shared.</p>
+      </section>
+
+      {/* AI ANALYSIS RESULTS */}
+      {analysis && (
+        <section className="ag-section ag-results" id="analysis-results">
+          <AnalysisPanel
+            atsScore={analysis.atsScore}
+            matchingSkills={analysis.matchingSkills || []}
+            missingSkills={analysis.missingSkills || []}
+            strengths={analysis.strength || []}
+            aiSuggestions={analysis.suggestions || []}
+          />
+        </section>
+      )}
+
+      {/* SCROLL ZOOM HERO */}
+      <section className="ag-zoom">
+        <div className="ag-zoom__text">
+          <h2>See what the ATS sees.</h2>
+          <p>Keep scrolling and look closer at one resume.</p>
+        </div>
+        <div className="ag-zoom__stage">
+          <div className="ag-zoom__mock">
+            <div className="ag-mock__bar ag-mock__bar--name" style={{ width: "45%" }} />
+            <small>Skills</small>
+            <div><span className="ag-tag">React</span><span className="ag-tag">JavaScript</span><span className="ag-tag">REST API</span></div>
+            <small>Experience</small>
+            <div className="ag-mock__bar" style={{ width: "92%" }} />
+            <div className="ag-mock__bar" style={{ width: "70%" }} />
+            <span className="ag-warn">TypeScript is in the job post but not on your resume</span>
           </div>
-          <div className="doc-block">
-            <span className="doc-h">Skills</span>
-            <p>
-              <mark className="hit">React</mark>, <mark className="hit">JavaScript</mark>,{" "}
-              <mark className="hit">REST API</mark>, Git, <mark className="miss">TypeScript</mark>
-            </p>
-          </div>
-          <div className="doc-block">
-            <span className="doc-h">Experience</span>
-            <div className="line w90" />
-            <div className="line w75" />
-            <div className="line w85" />
-          </div>
-          <div className="doc-block">
-            <span className="doc-h">Projects</span>
-            <div className="line w80" />
-            <div className="line w60" />
-          </div>
-          <div className="doc-tag">TypeScript is in the job post, not in your resume</div>
         </div>
       </section>
 
       {/* STATS */}
-      <section className="stats" ref={statsRef}>
-        {stats.map((x) => (
-          <div key={x.l} className="stat">
-            <strong><CountUp to={x.n} run={statsSeen} />{x.s}</strong>
-            <p>{x.l}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* HOW */}
-      <section className="section" id="how">
-        <Reveal>
-          <h2>Three steps to an ATS-ready resume</h2>
-        </Reveal>
-        <div className="steps">
-          {steps.map((s, i) => (
-            <Reveal key={s.t} delay={i * 120} className="step">
-              <span className="step-n">{i + 1}</span>
-              <h3>{s.t}</h3>
-              <p>{s.d}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* SCORE */}
-      <section className="section score" id="score">
-        <Reveal><h2>A score that shows where to improve</h2></Reveal>
-        <div className="score-grid">
-          <div className="ring-wrap" ref={scoreRef}>
-            <svg viewBox="0 0 120 120" className="ring">
-              <circle cx="60" cy="60" r="52" className="ring-bg" />
-              <circle
-                cx="60" cy="60" r="52"
-                className={`ring-fg ${scoreSeen ? "go" : ""}`}
-                pathLength="100"
-              />
-            </svg>
-            <div className="ring-num">
-              <strong><CountUp to={78} run={scoreSeen} /></strong>
-              <span>/ 100</span>
-            </div>
-          </div>
-
-          <div className="bars" ref={barsRef}>
-            {bars.map((b, i) => (
-              <div className="bar" key={b.l}>
-                <div className="bar-top">
-                  <span>{b.l}</span>
-                  <span>{b.v}%</span>
-                </div>
-                <div className="track">
-                  <div
-                    className="fill"
-                    style={{
-                      width: barsSeen ? `${b.v}%` : "0%",
-                      transitionDelay: `${i * 150}ms`,
-                    }}
-                  />
-                </div>
+      <section className="ag-band ag-band--cream">
+        <div className="ag-section">
+          <div className="ag-stats">
+            {STATS.map((s) => (
+              <div key={s.label} className="ag-card">
+                <div className="ag-num">{s.value}</div>
+                <p>{s.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section className="section" id="features">
-        <Reveal>
-          <h2>Not just a score, the fixes too</h2>
-        </Reveal>
-        <div className="features">
-          {features.map((f, i) => (
-            <Reveal key={f.t} delay={i * 100} className="feature">
-              <h3>{f.t}</h3>
-              <p>{f.d}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* BEFORE / AFTER */}
-      <section className="section">
-        <Reveal>
-          <h2>One line, two very different results</h2>
-        </Reveal>
-        <div className="compare">
-          <Reveal className="cmp cmp-before">
-            <h3>Before · Score 52</h3>
-            <p>Responsible for building website pages and fixing bugs in the team.</p>
-            <ul>
-              <li>No numbers or results</li>
-              <li>Job post keywords missing</li>
-              <li>Passive wording</li>
-            </ul>
-          </Reveal>
-          <Reveal delay={150} className="cmp cmp-after">
-            <h3>After · Score 88</h3>
-            <p>Built 12 React pages with REST APIs and cut page load time by 38%, lifting sign-ups by 15%.</p>
-            <ul>
-              <li>Measurable result</li>
-              <li>React and REST API keywords</li>
-              <li>Starts with an action verb</li>
-            </ul>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* MYTHS */}
-      <section className="section">
-        <Reveal>
-          <h2>Common myths about the ATS</h2>
-        </Reveal>
-        <div className="myths">
-          {myths.map((x, i) => (
-            <Reveal key={x.m} delay={i * 90} className="myth">
-              <p className="myth-m">{x.m}</p>
-              <p className="myth-f">{x.f}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* REVIEWS */}
-      <section className="section">
-        <Reveal>
-          <h2>In the words of people who raised their score</h2>
-        </Reveal>
-        <div className="reviews">
-          {reviews.map((r, i) => (
-            <Reveal key={r.a} delay={i * 120} className="review">
-              <blockquote>{r.q}</blockquote>
-              <cite>{r.a}</cite>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="section" id="faq">
-        <Reveal><h2>Frequently asked questions</h2></Reveal>
-        <div className="faq">
-          {faqs.map((f, i) => (
-            <div key={f.q} className={`faq-item ${open === i ? "open" : ""}`}>
-              <button onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
-                {f.q}<span>{open === i ? "−" : "+"}</span>
-              </button>
-              <div className="faq-a"><p>{f.a}</p></div>
+      {/* CARD STACK: 3 STEPS */}
+      <section className="ag-steps">
+        <div className="ag-stack">
+          {STEPS.map((s, i) => (
+            <div key={s.title} className="ag-stack__card">
+              <span className="ag-stack__icon ag-float">{s.icon}</span>
+              <div className="ag-num">{i + 1}</div>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* COMPREHENSIVE RESPONSIVE FOOTER */}
+      {/* FEATURES */}
+      <section className="ag-band ag-band--cream">
+        <div className="ag-section ag-features">
+          <h2 className="ag-title">Not just a score. The fixes too.</h2>
+          <div className="ag-features__grid">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="ag-card">
+                <div className="ag-icon ag-float">{f.icon}</div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* VOICES */}
+      <section className="ag-band ag-band--navy">
+        <div className="ag-section ag-voices">
+          <h2 className="ag-title">People who raised their score</h2>
+          <div className="ag-voices__grid">
+            {VOICES.map((v) => (
+              <figure key={v.name} className="ag-card ag-voice">
+                <blockquote>{v.quote}</blockquote>
+                <figcaption>
+                  <span className="ag-hand">{v.name}</span>
+                  <small>{v.role}</small>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="ag-band ag-band--cream">
+        <div className="ag-section ag-faq">
+          <h2 className="ag-title">ATS basics, in plain words</h2>
+          <div className="ag-faq__list">
+            {ATS_TIPS.map((item, i) => (
+              <div key={item.q} className={`ag-faq__item ${openFaq === i ? "is-open" : ""}`}>
+                <button
+                  className="ag-faq__head"
+                  aria-expanded={openFaq === i}
+                  onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
+                >
+                  <span>{item.q}</span>
+                  <span className="ag-faq__toggle">{openFaq === i ? "−" : "+"}</span>
+                </button>
+                <div className="ag-faq__body"><div><p>{item.a}</p></div></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="ag-cta">
+        <h2>Ready to get past the robot?</h2>
+        <button className="ag-btn" onClick={() => (lenisRef.current ? lenisRef.current.scrollTo(0) : window.scrollTo({ top: 0, behavior: "smooth" }))}>
+          Check my resume
+        </button>
+      </section>
+
       <Footer />
     </div>
   );
