@@ -1,159 +1,66 @@
 import { createBrowserRouter } from "react-router-dom";
+import UserLogin from "../pages/user.pages/Userlogin";
+import PrivateRouter from "../protectedRouter/privateRouter";
+import Home from "../pages/Home/home";
+import SignUp from "../pages/user.pages/Usersignup";
+import OTPPage from "../pages/otp.page/otp.page";
+import PolicyPages from "../pages/policy/policy";
+import About from "../pages/about/about";
+import Terms from "../pages/terms/terms";
+import Contact from "../pages/contact/contact";
+import Disclaimer from "../pages/Disclaimer/Disclaimer";
+import Blog from "../pages/blog/blog";
+import Homee from "../pages/simple/Homee";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    lazy: async () => {
-      const m = await import("../pages/Home");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/scanner",
-    lazy: async () => {
-      const m = await import("../pages/ScannerPage");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/home",
-    lazy: async () => {
-      const m = await import("../pages/ScannerPage");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/dashboard",
-    lazy: async () => {
-      const m = await import("../pages/DashboardPage");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/tools/:toolId",
-    lazy: async () => {
-      const m = await import("../pages/ToolPage");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/tools/keyword-gap",
-    lazy: async () => {
-      const m = await import("../pages/ToolPage");
-      return { Component: () => <m.default toolId="keyword-gap" /> };
-    },
-  },
-  {
-    path: "/tools/bullet-rewriter",
-    lazy: async () => {
-      const m = await import("../pages/ToolPage");
-      return { Component: () => <m.default toolId="bullet-rewriter" /> };
-    },
-  },
-  {
-    path: "/tools/format-check",
-    lazy: async () => {
-      const m = await import("../pages/ToolPage");
-      return { Component: () => <m.default toolId="format-check" /> };
-    },
-  },
-  {
-    path: "/tools/live-demo",
-    lazy: async () => {
-      const m = await import("../pages/ToolPage");
-      return { Component: () => <m.default toolId="live-demo" /> };
-    },
-  },
-  {
-    path: "/blog",
-    lazy: async () => {
-      const m = await import("../pages/BlogPage");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/blog/:slug",
-    lazy: async () => {
-      const m = await import("../pages/BlogArticlePage");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/about",
-    lazy: async () => {
-      const m = await import("../pages/AboutPage");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/contact",
-    lazy: async () => {
-      const m = await import("../pages/ContactPage");
-      return { Component: m.default };
-    },
+    element: <Homee />,
   },
   {
     path: "/login",
-    lazy: async () => {
-      const m = await import("../pages/user.pages/Userlogin");
-      return { Component: m.default };
-    },
-  },
-  {
-    path: "/signin",
-    lazy: async () => {
-      const m = await import("../pages/user.pages/Userlogin");
-      return { Component: m.default };
-    },
+    element: <UserLogin />,
   },
   {
     path: "/signup",
-    lazy: async () => {
-      const m = await import("../pages/user.pages/Usersignup");
-      return { Component: m.default };
-    },
+    element: <SignUp />,
   },
   {
     path: "/verifyOTP",
-    lazy: async () => {
-      const m = await import("../pages/otp.page/otp.page");
-      return { Component: m.default };
-    },
+    element: <OTPPage />,
+  },
+  {
+    path: "/blog",
+    element: <Blog />,
+  },
+  {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
   },
   {
     path: "/policy",
-    lazy: async () => {
-      const m = await import("../pages/LegalPage");
-      return { Component: () => <m.default type="privacy" /> };
-    },
-  },
-  {
-    path: "/privacy",
-    lazy: async () => {
-      const m = await import("../pages/LegalPage");
-      return { Component: () => <m.default type="privacy" /> };
-    },
+    element: <PolicyPages />,
   },
   {
     path: "/terms",
-    lazy: async () => {
-      const m = await import("../pages/LegalPage");
-      return { Component: () => <m.default type="terms" /> };
-    },
+    element: <Terms />,
   },
   {
     path: "/disclaimer",
-    lazy: async () => {
-      const m = await import("../pages/LegalPage");
-      return { Component: () => <m.default type="disclaimer" /> };
-    },
+    element: <Disclaimer />,
   },
   {
-    path: "*",
-    lazy: async () => {
-      const m = await import("../pages/NotFoundPage");
-      return { Component: m.default };
-    },
+    element: <PrivateRouter />,
+    children: [
+      {
+        path: "/home",
+        element: <Home />,
+      },
+    ],
   },
 ]);
 

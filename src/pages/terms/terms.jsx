@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Footer from "../../components/footer";
 import { ArrowLeft, BookOpen, CheckSquare, ShieldCheck, Scale, AlertTriangle } from "lucide-react";
 import "../../styles/legal-pages.css";
 

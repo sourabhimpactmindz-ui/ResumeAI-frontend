@@ -1,393 +1,205 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Sparkles,
-  ChevronDown,
-  Menu,
-  X,
-  Target,
-  FileEdit,
-  LayoutTemplate,
-  PlayCircle,
-  LogOut,
-  User,
-} from "lucide-react";
-import { Button } from "./Button";
-import { Badge } from "./Badge";
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import "../styles/Navbar.css";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const [toolsOpen, setToolsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userToken, setUserToken] = useState(null);
-
-  const lastScrollY = useRef(0);
-  const location = useLocation();
   const navigate = useNavigate();
-
-  // Check auth token
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setUserToken(token);
-  }, [location.pathname]);
-
-  // Scroll listener: glass after 80px, hide on scroll down, show on scroll up
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > 80) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-
-      if (currentScrollY > 150) {
-        if (currentScrollY > lastScrollY.current && currentScrollY - lastScrollY.current > 5) {
-          // Scrolling down
-          setVisible(false);
-          setToolsOpen(false);
-        } else if (lastScrollY.current - currentScrollY > 5) {
-          // Scrolling up
-          setVisible(true);
-        }
-      } else {
-        setVisible(true);
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close menus on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-    setToolsOpen(false);
-  }, [location.pathname]);
+  const location = useLocation();
+  const isLoggedIn = !!localStorage.getItem("accessToken");
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    setUserToken(null);
+    setMobileMenuOpen(false);
     navigate("/");
   };
 
-  const toolItems = [
-    {
-      name: "ATS Resume Scanner",
-      desc: "Instant score, layout traps & category breakdown",
-      path: "/scanner",
-      icon: <Sparkles size={16} className="text-c-100" />,
-    },
-    {
-      name: "Keyword Gap Detector",
-      desc: "Find missing keywords from any job description",
-      path: "/tools/keyword-gap",
-      icon: <Target size={16} className="text-c-100" />,
-    },
-    {
-      name: "Bullet Metric Rewriter",
-      desc: "Transform passive tasks into quantified impact",
-      path: "/tools/bullet-rewriter",
-      icon: <FileEdit size={16} className="text-c-100" />,
-    },
-    {
-      name: "Formatting Trap Check",
-      desc: "Scan two-column layouts, tables, and image headers",
-      path: "/tools/format-check",
-      icon: <LayoutTemplate size={16} className="text-c-100" />,
-    },
-    {
-      name: "Interactive Live Demo",
-      desc: "Pre-filled sample scan without sign up",
-      path: "/tools/live-demo",
-      icon: <PlayCircle size={16} className="text-c-100" />,
-    },
-  ];
+  const closeMenu = () => setMobileMenuOpen(false);
 
   return (
-    <>
-      <header
-        className={`fixed top-4 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-400 ease-out ${
-          visible ? "translate-y-0 opacity-100" : "-translate-y-24 opacity-0"
-        }`}
-      >
-        <nav
-          className={`w-full max-w-5xl flex items-center justify-between px-5 md:px-7 py-3 rounded-full transition-all duration-400 ${
-            scrolled
-              ? "bg-c-800/85 backdrop-blur-2xl border border-c-700/60 shadow-[0_16px_36px_-10px_rgba(6,20,27,0.8),0_0_24px_rgba(155,168,171,0.12)]"
-              : "bg-c-800/40 backdrop-blur-md border border-c-700/30 shadow-none"
-          }`}
+    <nav className="navbar">
+      <div className="navbar__left">
+        <Link to="/" className="navbar__logo" onClick={closeMenu}>
+          resumeAI
+        </Link>
+      </div>
+
+      {/* Desktop Navigation Links */}
+      <div className="navbar__links">
+        <Link
+          to="/"
+          className={`navbar__link ${location.pathname === "/" ? "active" : ""}`}
         >
-          {/* Logo with Weightless Badge */}
-          <Link to="/" className="flex items-center gap-2 group cursor-pointer">
-            <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-c-700 to-c-600 border border-c-300/40 flex items-center justify-center text-c-100 shadow-[0_0_12px_rgba(204,208,207,0.25)] group-hover:scale-105 transition-transform">
-              <Sparkles size={16} />
-            </span>
-            <span className="font-heading font-extrabold text-xl tracking-tight text-c-100 group-hover:text-white transition-colors">
-              Resume<span className="text-c-300 font-medium">AI</span>
-            </span>
+          Home
+        </Link>
+
+        {/* Dashboard link only when user is logged in */}
+        {isLoggedIn && (
+          <Link
+            to="/home"
+            className={`navbar__link ${location.pathname === "/home" ? "active" : ""}`}
+          >
+            Dashboard
+          </Link>
+        )}
+
+        <Link
+          to="/blog"
+          className={`navbar__link ${location.pathname === "/blog" ? "active" : ""}`}
+        >
+          Blog
+        </Link>
+        <Link
+          to="/about"
+          className={`navbar__link ${location.pathname === "/about" ? "active" : ""}`}
+        >
+          About
+        </Link>
+        <Link
+          to="/contact"
+          className={`navbar__link ${location.pathname === "/contact" ? "active" : ""}`}
+        >
+          Contact
+        </Link>
+      </div>
+
+      {/* Desktop & Mobile Actions */}
+      <div className="navbar__actions">
+        {isLoggedIn ? (
+          <button className="navbar__logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link to="/login" className="navbar__signin-btn">
+              Sign In
+            </Link>
+            <Link
+              to="/signup"
+              className="navbar__signup-btn"
+              style={{ color: "#ffffff", backgroundColor: "#000000" }}
+            >
+              Get Started
+            </Link>
+          </>
+        )}
+
+        <button
+          className="navbar__mobile-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation"
+          type="button"
+        >
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="navbar__mobile-drawer">
+          <Link
+            to="/"
+            className={`navbar__mobile-link ${location.pathname === "/" ? "active" : ""}`}
+            onClick={closeMenu}
+          >
+            Home
           </Link>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-6 text-sm font-heading font-medium">
+          {/* Mobile Dashboard link only when logged in */}
+          {isLoggedIn && (
             <Link
-              to="/"
-              className={`transition-colors hover:text-c-100 ${
-                location.pathname === "/" ? "text-c-100" : "text-c-300"
-              }`}
+              to="/home"
+              className={`navbar__mobile-link ${location.pathname === "/home" ? "active" : ""}`}
+              onClick={closeMenu}
             >
-              Home
+              Dashboard
             </Link>
+          )}
 
-            {/* Tools Dropdown */}
-            <div className="relative">
+          <Link
+            to="/blog"
+            className={`navbar__mobile-link ${location.pathname === "/blog" ? "active" : ""}`}
+            onClick={closeMenu}
+          >
+            Blog
+          </Link>
+          <Link
+            to="/about"
+            className={`navbar__mobile-link ${location.pathname === "/about" ? "active" : ""}`}
+            onClick={closeMenu}
+          >
+            About Us
+          </Link>
+          <Link
+            to="/contact"
+            className={`navbar__mobile-link ${location.pathname === "/contact" ? "active" : ""}`}
+            onClick={closeMenu}
+          >
+            Contact
+          </Link>
+          <Link
+            to="/policy"
+            className={`navbar__mobile-link ${location.pathname === "/policy" ? "active" : ""}`}
+            onClick={closeMenu}
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            to="/terms"
+            className={`navbar__mobile-link ${location.pathname === "/terms" ? "active" : ""}`}
+            onClick={closeMenu}
+          >
+            Terms of Service
+          </Link>
+          <Link
+            to="/disclaimer"
+            className={`navbar__mobile-link ${location.pathname === "/disclaimer" ? "active" : ""}`}
+            onClick={closeMenu}
+          >
+            Disclaimer
+          </Link>
+
+          <div className="navbar__mobile-auth">
+            {isLoggedIn ? (
               <button
                 type="button"
-                onClick={() => setToolsOpen(!toolsOpen)}
-                className={`flex items-center gap-1.5 transition-colors hover:text-c-100 cursor-pointer ${
-                  toolsOpen || location.pathname.startsWith("/tools")
-                    ? "text-c-100"
-                    : "text-c-300"
-                }`}
+                className="navbar__logout-btn"
+                style={{ width: "100%", justifyContent: "center" }}
+                onClick={handleLogout}
               >
-                <span>Tools</span>
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-300 ${
-                    toolsOpen ? "rotate-180 text-c-100" : ""
-                  }`}
-                />
+                Logout
               </button>
-
-              {toolsOpen && (
-                <div
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 p-2.5 rounded-3xl bg-c-800/95 backdrop-blur-2xl border border-c-700 shadow-[0_24px_50px_-10px_rgba(0,0,0,0.6),0_0_30px_rgba(155,168,171,0.15)] flex flex-col gap-1 z-50 animate-in fade-in zoom-in-95 duration-200"
-                  onMouseLeave={() => setToolsOpen(false)}
-                >
-                  {toolItems.map((tool) => (
-                    <Link
-                      key={tool.path}
-                      to={tool.path}
-                      className="flex items-start gap-3 p-3 rounded-2xl hover:bg-c-700/50 transition-colors group"
-                      onClick={() => setToolsOpen(false)}
-                    >
-                      <span className="w-8 h-8 rounded-xl bg-c-900 border border-c-700 flex items-center justify-center shrink-0 group-hover:border-c-300 transition-colors">
-                        {tool.icon}
-                      </span>
-                      <div>
-                        <p className="font-heading font-bold text-xs text-c-100 group-hover:text-white">
-                          {tool.name}
-                        </p>
-                        <p className="text-[11px] text-c-600 line-clamp-1">
-                          {tool.desc}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <Link
-              to="/blog"
-              className={`transition-colors hover:text-c-100 ${
-                location.pathname.startsWith("/blog")
-                  ? "text-c-100"
-                  : "text-c-300"
-              }`}
-            >
-              Blog
-            </Link>
-
-            <Link
-              to="/about"
-              className={`transition-colors hover:text-c-100 ${
-                location.pathname === "/about" ? "text-c-100" : "text-c-300"
-              }`}
-            >
-              About
-            </Link>
-
-            <Link
-              to="/contact"
-              className={`transition-colors hover:text-c-100 ${
-                location.pathname === "/contact" ? "text-c-100" : "text-c-300"
-              }`}
-            >
-              Contact
-            </Link>
-          </div>
-
-          {/* Desktop Right Actions */}
-          <div className="hidden md:flex items-center gap-3">
-            {userToken ? (
-              <>
-                <Link
-                  to="/dashboard"
-                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-heading font-semibold text-c-100 border border-c-600/60 hover:border-c-300 hover:bg-c-700/40 transition-all"
-                >
-                  <User size={14} />
-                  <span>Dashboard</span>
-                </Link>
-
-                <Button to="/scanner" variant="primary" size="sm">
-                  Scan Resume
-                </Button>
-
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  title="Log out"
-                  className="w-8 h-8 rounded-full border border-c-700 hover:border-c-error/40 hover:text-c-error flex items-center justify-center text-c-300 transition-colors"
-                >
-                  <LogOut size={14} />
-                </button>
-              </>
             ) : (
-              <>
-                <Button to="/login" variant="ghost" size="sm">
-                  Sign In
-                </Button>
-                <Button to="/scanner" variant="primary" size="sm">
-                  Get Started
-                </Button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Hamburger */}
-          <div className="md:hidden flex items-center gap-2">
-            <Button to="/scanner" variant="primary" size="sm">
-              Scan
-            </Button>
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-full border border-c-700 text-c-100 bg-c-800/80 hover:bg-c-700/80 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
-        </nav>
-      </header>
-
-      {/* Mobile Full-Screen Floating Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-c-900/95 backdrop-blur-3xl p-6 pt-28 flex flex-col justify-between overflow-y-auto animate-in fade-in duration-300 md:hidden">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <span className="text-xs font-heading font-semibold uppercase tracking-widest text-c-600">
-                Navigation
-              </span>
-              <Link
-                to="/"
-                className="text-2xl font-heading font-bold text-c-100 hover:text-white"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                to="/scanner"
-                className="text-2xl font-heading font-bold text-c-100 hover:text-white flex items-center gap-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span>ATS Resume Scanner</span>
-                <span className="text-xs bg-c-100 text-c-900 px-2 py-0.5 rounded-full font-bold">
-                  Core
-                </span>
-              </Link>
-              <Link
-                to="/blog"
-                className="text-2xl font-heading font-bold text-c-100 hover:text-white"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Career Guides & Blog
-              </Link>
-              <Link
-                to="/about"
-                className="text-2xl font-heading font-bold text-c-100 hover:text-white"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About Our Mission
-              </Link>
-              <Link
-                to="/contact"
-                className="text-2xl font-heading font-bold text-c-100 hover:text-white"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Contact Humans
-              </Link>
-            </div>
-
-            <div className="border-t border-c-700/60 pt-4 flex flex-col gap-2">
-              <span className="text-xs font-heading font-semibold uppercase tracking-widest text-c-600 mb-1">
-                Diagnostic Tools
-              </span>
-              {toolItems.slice(1).map((t) => (
+              <div style={{ display: "flex", gap: "10px", width: "100%" }}>
                 <Link
-                  key={t.path}
-                  to={t.path}
-                  className="text-sm font-heading font-medium text-c-300 hover:text-c-100 flex items-center gap-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {t.icon}
-                  <span>{t.name}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="border-t border-c-700/60 pt-6 flex flex-col gap-3">
-            {userToken ? (
-              <>
-                <Button
-                  to="/dashboard"
-                  variant="secondary"
-                  size="md"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Go to Dashboard
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="md"
-                  onClick={() => {
-                    handleLogout();
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
                   to="/login"
-                  variant="secondary"
-                  size="md"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="navbar__signin-btn"
+                  style={{ flex: 1, textAlign: "center", display: "inline-block" }}
+                  onClick={closeMenu}
                 >
                   Sign In
-                </Button>
-                <Button
-                  to="/scanner"
-                  variant="primary"
-                  size="md"
-                  onClick={() => setMobileMenuOpen(false)}
+                </Link>
+                <Link
+                  to="/signup"
+                  className="navbar__signup-btn"
+                  style={{
+                    flex: 1,
+                    textAlign: "center",
+                    display: "inline-block",
+                    color: "#ffffff",
+                    backgroundColor: "#000000",
+                  }}
+                  onClick={closeMenu}
                 >
-                  Check My Resume Free
-                </Button>
-              </>
+                  Get Started
+                </Link>
+              </div>
             )}
           </div>
         </div>
       )}
-    </>
+    </nav>
   );
 }
