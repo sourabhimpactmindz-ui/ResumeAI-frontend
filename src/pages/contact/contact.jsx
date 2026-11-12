@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Footer from "../../components/footer";
+import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
 import { Mail, Clock, MessageSquare, Send, CheckCircle, ExternalLink, ShieldCheck } from "lucide-react";
 import { useSendContactMessageMutation } from "../../Apis/user.api";

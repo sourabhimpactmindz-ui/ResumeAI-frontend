@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./simplepage.css";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Footer from "../../components/footer";
+import Footer from "../../components/Footer";
 
 /* Returns true once the element has scrolled into view */
 function useInView(threshold = 0.25) {

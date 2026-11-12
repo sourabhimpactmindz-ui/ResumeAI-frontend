@@ -4,7 +4,7 @@ import AnalysisPanel from "../../components/AnalysisPanel";
 import FeatureCard from "../../components/FeatureCard";
 import Navbar from "../../components/Navbar";
 import StatCard from "../../components/StatCard";
-import Footer from "../../components/footer";
+import Footer from "../../components/Footer";
 import "../../styles/home.css";
 import CTABanner from "../../components/CTABanner";
 import { useUplodeResumeMutation } from "../../Apis/resumeApi";
