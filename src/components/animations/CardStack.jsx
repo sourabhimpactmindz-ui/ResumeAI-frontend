@@ -10,90 +10,52 @@ export default function CardStack({
   className = "",
 }) {
   const containerRef = useRef(null);
-  const cardsRef = useRef([]);
+  const cardRefs = useRef([]);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (!containerRef.current || cards.length === 0 || reducedMotion) return;
 
-    const container = containerRef.current;
-    const cardElements = cardsRef.current.filter(Boolean);
-
     const ctx = gsap.context(() => {
-      // Pin the stack section during scroll
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top 12%",
-          end: `+=${cardElements.length * 350}`,
-          pin: true,
-          scrub: 0.8,
-          anticipatePin: 1,
-        },
+      cardRefs.current.forEach((cardEl, idx) => {
+        if (!cardEl || idx === cards.length - 1) return;
+
+        const nextCard = cardRefs.current[idx + 1];
+        if (!nextCard) return;
+
+        // When the next card slides up and approaches this card, scale and dim the current card
+        gsap.to(cardEl, {
+          scale: 0.94,
+          opacity: 0.5,
+          y: -15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: nextCard,
+            start: "top 85%",
+            end: "top 30%",
+            scrub: true,
+          },
+        });
       });
-
-      cardElements.forEach((card, index) => {
-        if (index === 0) return;
-
-        const prevCard = cardElements[index - 1];
-
-        // Animate previous card scaling down, dimming, and shifting up
-        tl.to(
-          prevCard,
-          {
-            scale: 0.92,
-            opacity: 0.45,
-            y: -25,
-            ease: "none",
-          },
-          index - 1
-        );
-
-        // Slide the new card up and over
-        tl.fromTo(
-          card,
-          {
-            yPercent: 120,
-            opacity: 0.8,
-            scale: 0.96,
-          },
-          {
-            yPercent: 0,
-            opacity: 1,
-            scale: 1,
-            ease: "none",
-          },
-          index - 1
-        );
-      });
-    }, container);
+    }, containerRef);
 
     return () => ctx.revert();
   }, [cards, reducedMotion]);
 
-  if (reducedMotion) {
-    return (
-      <div className={`flex flex-col gap-8 w-full max-w-4xl mx-auto py-12 ${className}`}>
-        {cards.map((card, idx) => (
-          <div key={idx} className="w-full">
-            {card}
-          </div>
-        ))}
-      </div>
-    );
-  }
-
   return (
     <div
       ref={containerRef}
-      className={`relative w-full max-w-4xl mx-auto h-[600px] flex items-center justify-center ${className}`}
+      className={`relative w-full max-w-4xl mx-auto flex flex-col gap-10 pb-16 ${className}`}
     >
       {cards.map((card, idx) => (
         <div
           key={idx}
-          ref={(el) => (cardsRef.current[idx] = el)}
-          className="absolute inset-x-0 top-0 will-change-transform"
-          style={{ zIndex: idx + 10 }}
+          ref={(el) => (cardRefs.current[idx] = el)}
+          className="sticky w-full will-change-transform transition-shadow duration-300"
+          style={{
+            top: `${100 + idx * 24}px`,
+            zIndex: idx + 10,
+          }}
         >
           {card}
         </div>
@@ -101,4 +63,5 @@ export default function CardStack({
     </div>
   );
 }
+
 

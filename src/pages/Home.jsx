@@ -13,11 +13,11 @@ import FaqSection from "../sections/home/FaqSection";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-deep-space text-c-100 overflow-x-hidden selection:bg-c-100 selection:text-c-900">
+    <div className="relative min-h-screen bg-deep-space text-c-100 selection:bg-c-100 selection:text-c-900">
       <ParticleField count={36} />
       <Navbar />
 
-      <main className="relative z-10 flex flex-col items-center w-full">
+      <main className="relative z-10 w-full">
         <HeroSection />
         <StatsSection />
         <StepsStackSection />
