@@ -3,6 +3,18 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import "../styles/Navbar.css";
 
+const LINKS = [
+  { to: "/blog", label: "Blog", mobile: "Blog" },
+  { to: "/about", label: "About", mobile: "About Us" },
+  { to: "/contact", label: "Contact", mobile: "Contact" },
+];
+
+const MOBILE_EXTRA = [
+  { to: "/policy", label: "Privacy Policy" },
+  { to: "/terms", label: "Terms of Service" },
+  { to: "/disclaimer", label: "Disclaimer" },
+];
+
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -17,72 +29,35 @@ export default function Navbar() {
   };
 
   const closeMenu = () => setMobileMenuOpen(false);
+  const isActive = (path) => (location.pathname === path ? "active" : "");
 
   return (
     <nav className="navbar">
       <div className="navbar__left">
         <Link to="/" className="navbar__logo" onClick={closeMenu}>
-          resumeAI
+          resumeAI<span className="navbar__dot" aria-hidden="true" />
         </Link>
       </div>
 
-      {/* Desktop Navigation Links */}
+      {/* Desktop links */}
       <div className="navbar__links">
-        <Link
-          to="/"
-          className={`navbar__link ${location.pathname === "/" ? "active" : ""}`}
-        >
-          Home
-        </Link>
-
-        {/* Dashboard link only when user is logged in */}
+        <Link to="/" className={`navbar__link ${isActive("/")}`}>Home</Link>
         {isLoggedIn && (
-          <Link
-            to="/home"
-            className={`navbar__link ${location.pathname === "/home" ? "active" : ""}`}
-          >
-            Dashboard
-          </Link>
+          <Link to="/dashboard" className={`navbar__link ${isActive("/dashboard")}`}>Dashboard</Link>
         )}
-
-        <Link
-          to="/blog"
-          className={`navbar__link ${location.pathname === "/blog" ? "active" : ""}`}
-        >
-          Blog
-        </Link>
-        <Link
-          to="/about"
-          className={`navbar__link ${location.pathname === "/about" ? "active" : ""}`}
-        >
-          About
-        </Link>
-        <Link
-          to="/contact"
-          className={`navbar__link ${location.pathname === "/contact" ? "active" : ""}`}
-        >
-          Contact
-        </Link>
+        {LINKS.map((l) => (
+          <Link key={l.to} to={l.to} className={`navbar__link ${isActive(l.to)}`}>{l.label}</Link>
+        ))}
       </div>
 
-      {/* Desktop & Mobile Actions */}
+      {/* Actions */}
       <div className="navbar__actions">
         {isLoggedIn ? (
-          <button className="navbar__logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
+          <button className="navbar__logout-btn" onClick={handleLogout}>Logout</button>
         ) : (
           <>
-            <Link to="/login" className="navbar__signin-btn">
-              Sign In
-            </Link>
-            <Link
-              to="/signup"
-              className="navbar__signup-btn"
-              style={{ color: "#ffffff", backgroundColor: "#000000" }}
-            >
-              Get Started
-            </Link>
+            <Link to="/login" className="navbar__signin-btn">Sign In</Link>
+            <Link to="/signup" className="navbar__signup-btn">Get Started</Link>
           </>
         )}
 
@@ -90,111 +65,34 @@ export default function Navbar() {
           className="navbar__mobile-toggle"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle navigation"
+          aria-expanded={mobileMenuOpen}
           type="button"
         >
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile drawer */}
       {mobileMenuOpen && (
         <div className="navbar__mobile-drawer">
-          <Link
-            to="/"
-            className={`navbar__mobile-link ${location.pathname === "/" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Home
-          </Link>
-
-          {/* Mobile Dashboard link only when logged in */}
+          <Link to="/" className={`navbar__mobile-link ${isActive("/")}`} onClick={closeMenu}>Home</Link>
           {isLoggedIn && (
-            <Link
-              to="/home"
-              className={`navbar__mobile-link ${location.pathname === "/home" ? "active" : ""}`}
-              onClick={closeMenu}
-            >
-              Dashboard
-            </Link>
+            <Link to="/dashboard" className={`navbar__mobile-link ${isActive("/dashboard")}`} onClick={closeMenu}>Dashboard</Link>
           )}
-
-          <Link
-            to="/blog"
-            className={`navbar__mobile-link ${location.pathname === "/blog" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Blog
-          </Link>
-          <Link
-            to="/about"
-            className={`navbar__mobile-link ${location.pathname === "/about" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className={`navbar__mobile-link ${location.pathname === "/contact" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Contact
-          </Link>
-          <Link
-            to="/policy"
-            className={`navbar__mobile-link ${location.pathname === "/policy" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            to="/terms"
-            className={`navbar__mobile-link ${location.pathname === "/terms" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Terms of Service
-          </Link>
-          <Link
-            to="/disclaimer"
-            className={`navbar__mobile-link ${location.pathname === "/disclaimer" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Disclaimer
-          </Link>
+          {LINKS.map((l) => (
+            <Link key={l.to} to={l.to} className={`navbar__mobile-link ${isActive(l.to)}`} onClick={closeMenu}>{l.mobile}</Link>
+          ))}
+          {MOBILE_EXTRA.map((l) => (
+            <Link key={l.to} to={l.to} className={`navbar__mobile-link ${isActive(l.to)}`} onClick={closeMenu}>{l.label}</Link>
+          ))}
 
           <div className="navbar__mobile-auth">
             {isLoggedIn ? (
-              <button
-                type="button"
-                className="navbar__logout-btn"
-                style={{ width: "100%", justifyContent: "center" }}
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
+              <button type="button" className="navbar__logout-btn navbar__block" onClick={handleLogout}>Logout</button>
             ) : (
-              <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-                <Link
-                  to="/login"
-                  className="navbar__signin-btn"
-                  style={{ flex: 1, textAlign: "center", display: "inline-block" }}
-                  onClick={closeMenu}
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/signup"
-                  className="navbar__signup-btn"
-                  style={{
-                    flex: 1,
-                    textAlign: "center",
-                    display: "inline-block",
-                    color: "#ffffff",
-                    backgroundColor: "#000000",
-                  }}
-                  onClick={closeMenu}
-                >
-                  Get Started
-                </Link>
+              <div className="navbar__mobile-row">
+                <Link to="/login" className="navbar__signin-btn navbar__block" onClick={closeMenu}>Sign In</Link>
+                <Link to="/signup" className="navbar__signup-btn navbar__block" onClick={closeMenu}>Get Started</Link>
               </div>
             )}
           </div>

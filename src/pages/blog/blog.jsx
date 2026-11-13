@@ -82,7 +82,7 @@ export default function Blog() {
         </Link> */}
 
         <div className="legal-header">
-          <span className="legal-badge">✦ Career Intelligence</span>
+          {/* <span className="legal-badge">✦ Career Intelligence</span> */}
           <h1 className="legal-title">ATS Optimization & Resume Guides</h1>
           <p className="legal-subtitle">
             Actionable strategies, algorithm teardowns, and practical templates to help you pass automated recruiter
@@ -132,7 +132,7 @@ export default function Blog() {
           <p style={{ color: "var(--muted)", maxWidth: "54ch", margin: "8px auto 20px" }}>
             Upload your resume now and get your instant ATS score, keyword breakdown, and bullet point fixes in under 30 seconds.
           </p>
-          <Link to="/home" className="contact-submit-btn" style={{ textDecoration: "none" }}>
+          <Link to="/dashboard" className="contact-submit-btn" style={{ textDecoration: "none" }}>
             <Sparkles size={16} />
             <span>Scan Resume Free on Dashboard →</span>
           </Link>

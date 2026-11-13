@@ -1,84 +1,91 @@
 .btn {
+  --ink: #0D1B2A;
+  --navy: #1B263B;
+  --steel: #415A77;
+  --sage: #778D7A;
+  --sand: #D4C4A8;
+  --cream: #F4F1DE;
+  --wipe: var(--navy);        /* colour that sweeps in on hover */
+  --hover-text: var(--cream); /* text colour after the sweep */
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   font-weight: 600;
-  border-radius: 12px;
+  line-height: 1.2;
+  border-radius: 999px;
+  border: 1px solid transparent;
   cursor: pointer;
-  border: none;
-  transition: all 0.3s ease;
   white-space: nowrap;
+  transition: color 0.3s ease 0.05s, border-color 0.3s, box-shadow 0.3s, transform 0.15s;
 }
+
+/* hover: a colour sweeps in from the left */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--wipe);
+  transform: translateX(-101%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn:hover::before { transform: translateX(0); }
+.btn:hover { color: var(--hover-text); }
+.btn:active { transform: scale(0.97); }
+
+.btn:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+
+.btn__icon { display: inline-flex; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.btn:hover .btn__icon { transform: translateX(4px); }
+
 .btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none !important;
-  box-shadow: none;
+  box-shadow: none !important;
   pointer-events: none;
 }
 
+/* spinner follows the button text colour */
 .btn__spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: btn-spin 0.7s linear infinite;
   flex-shrink: 0;
 }
+@keyframes btn-spin { to { transform: rotate(360deg); } }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-/* Sizes */
-.btn--sm {
-  font-size: 14px;
-  padding: 10px 20px;
-}
+/* sizes */
+.btn--sm { font-size: 14px; padding: 10px 20px; }
+.btn--md { font-size: 16px; padding: 14px 28px; }
+.btn--lg { font-size: 18px; padding: 18px 40px; }
 
-.btn--md {
-  font-size: 16px;
-  padding: 14px 28px;
-}
+/* primary: works on cream cards and on dark backgrounds */
+.btn--primary { --wipe: var(--navy); background: var(--steel); color: var(--cream); box-shadow: 0 6px 18px rgba(65, 90, 119, 0.3); }
+.btn--primary:hover { border-color: var(--sage); box-shadow: 0 10px 28px rgba(65, 90, 119, 0.4); }
 
-.btn--lg {
-  font-size: 18px;
-  padding: 18px 40px;
-}
+/* light: cream button for dark backgrounds */
+.btn--light { --wipe: var(--sand); --hover-text: var(--ink); background: var(--cream); color: var(--ink); }
+.btn--light:hover { box-shadow: 0 10px 28px rgba(119, 141, 122, 0.3); }
 
-/* Variants */
-.btn--primary {
-  background: #2563eb;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
-}
+/* outline: for dark backgrounds */
+.btn--outline { --wipe: var(--cream); --hover-text: var(--ink); background: transparent; color: var(--cream); border-color: var(--steel); }
+.btn--outline:hover { border-color: var(--cream); }
 
-.btn--primary:hover {
-  background: #1d4ed8;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
-}
+/* ghost: for light backgrounds */
+.btn--ghost { --wipe: var(--steel); --hover-text: var(--cream); background: transparent; color: var(--steel); border-color: var(--sand); }
+.btn--ghost:hover { border-color: var(--steel); }
 
-.btn--outline {
-  background: transparent;
-  color: #fff;
-  border: 2px solid #fff;
-}
-
-.btn--outline:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.btn--ghost {
-  background: transparent;
-  color: #2563eb;
-  border: 1px solid #bfdbfe;
-}
-
-.btn--ghost:hover {
-  background: #eff6ff;
-  transform: translateY(-2px);
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn::before, .btn__icon { transition: none; }
+  .btn__spinner { animation-duration: 1.6s; }
 }
