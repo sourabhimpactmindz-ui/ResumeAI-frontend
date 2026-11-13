@@ -323,9 +323,9 @@ export default function ResumeAISignUp() {
         <ArrowLeft size={15} /> Back to home
       </Link>
 
-      <p className="auth-trust-note">
+      {/* <p className="auth-trust-note">
         ✦ Safe & secure · Your resume is encrypted and private.
-      </p>
+      </p> */}
     </div>
   );
 }

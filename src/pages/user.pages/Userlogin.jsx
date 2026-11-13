@@ -336,9 +336,9 @@ export default function ResumeAILogin() {
         Back to home
       </Link>
 
-      <p className="auth-trust-note">
+      {/* <p className="auth-trust-note">
         ✦ Safe & secure · Your resume is encrypted and private.
-      </p>
+      </p> */}
 
     </div>
   );
