@@ -187,9 +187,9 @@ export default function ResumeAILogin() {
           resumeAI
         </Link>
 
-        <span className="auth-pill">
+        {/* <span className="auth-pill">
           ✦ ATS Resume Checker
-        </span>
+        </span> */}
       </div>
 
       {/* Main Auth Card */}

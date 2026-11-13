@@ -142,7 +142,7 @@ export default function ResumeAISignUp() {
         <Link to="/" className="auth-logo">
           resumeAI
         </Link>
-        <span className="auth-pill">✦ Free ATS Scan</span>
+        {/* <span className="auth-pill">✦ Free ATS Scan</span> */}
       </div>
 
       {/* Main Single-Column Auth Card */}
