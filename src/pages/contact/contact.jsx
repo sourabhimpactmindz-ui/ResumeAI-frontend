@@ -248,7 +248,7 @@ function Contact() {
                       name="name"
                       value={form.name}
                       onChange={handleChange}
-                      placeholder="e.g. John Doe"
+                      placeholder="Enter your name"
                       className="contact-input"
                       required
                       disabled={isLoading}
