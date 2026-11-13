@@ -5,7 +5,12 @@
   --sage: #778D7A;
   --sand: #D4C4A8;
   --cream: #F4F1DE;
+  --wipe: var(--navy);        /* colour that sweeps in on hover */
+  --hover-text: var(--cream); /* text colour after the sweep */
 
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -17,11 +22,27 @@
   border: 1px solid transparent;
   cursor: pointer;
   white-space: nowrap;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-              background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+  transition: color 0.3s ease 0.05s, border-color 0.3s, box-shadow 0.3s, transform 0.15s;
 }
+
+/* hover: a colour sweeps in from the left */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--wipe);
+  transform: translateX(-101%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn:hover::before { transform: translateX(0); }
+.btn:hover { color: var(--hover-text); }
+.btn:active { transform: scale(0.97); }
+
 .btn:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
-.btn__icon { display: inline-flex; }
+
+.btn__icon { display: inline-flex; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.btn:hover .btn__icon { transform: translateX(4px); }
 
 .btn:disabled {
   opacity: 0.7;
@@ -49,22 +70,22 @@
 .btn--lg { font-size: 18px; padding: 18px 40px; }
 
 /* primary: works on cream cards and on dark backgrounds */
-.btn--primary { background: var(--steel); color: var(--cream); box-shadow: 0 6px 18px rgba(65, 90, 119, 0.3); }
-.btn--primary:hover { background: var(--navy); border-color: var(--steel); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(65, 90, 119, 0.4); }
+.btn--primary { --wipe: var(--navy); background: var(--steel); color: var(--cream); box-shadow: 0 6px 18px rgba(65, 90, 119, 0.3); }
+.btn--primary:hover { border-color: var(--sage); box-shadow: 0 10px 28px rgba(65, 90, 119, 0.4); }
 
 /* light: cream button for dark backgrounds */
-.btn--light { background: var(--cream); color: var(--ink); }
-.btn--light:hover { background: var(--sand); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(119, 141, 122, 0.3); }
+.btn--light { --wipe: var(--sand); --hover-text: var(--ink); background: var(--cream); color: var(--ink); }
+.btn--light:hover { box-shadow: 0 10px 28px rgba(119, 141, 122, 0.3); }
 
 /* outline: for dark backgrounds */
-.btn--outline { background: transparent; color: var(--cream); border-color: var(--steel); }
-.btn--outline:hover { background: var(--navy); border-color: var(--sage); transform: translateY(-2px); }
+.btn--outline { --wipe: var(--cream); --hover-text: var(--ink); background: transparent; color: var(--cream); border-color: var(--steel); }
+.btn--outline:hover { border-color: var(--cream); }
 
 /* ghost: for light backgrounds */
-.btn--ghost { background: transparent; color: var(--steel); border-color: var(--sand); }
-.btn--ghost:hover { background: rgba(212, 196, 168, 0.35); border-color: var(--steel); transform: translateY(-2px); }
+.btn--ghost { --wipe: var(--steel); --hover-text: var(--cream); background: transparent; color: var(--steel); border-color: var(--sand); }
+.btn--ghost:hover { border-color: var(--steel); }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn { transition: none; }
+  .btn, .btn::before, .btn__icon { transition: none; }
   .btn__spinner { animation-duration: 1.6s; }
 }
