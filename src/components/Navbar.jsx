@@ -77,7 +77,7 @@ export default function Navbar() {
         <div className="navbar__mobile-drawer">
           <Link to="/" className={`navbar__mobile-link ${isActive("/")}`} onClick={closeMenu}>Home</Link>
           {isLoggedIn && (
-            <Link to="/dashboard" className={`navbar__mobile-link ${isActive("/home")}`} onClick={closeMenu}>Dashboard</Link>
+            <Link to="/dashboard" className={`navbar__mobile-link ${isActive("/dashboard")}`} onClick={closeMenu}>Dashboard</Link>
           )}
           {LINKS.map((l) => (
             <Link key={l.to} to={l.to} className={`navbar__mobile-link ${isActive(l.to)}`} onClick={closeMenu}>{l.mobile}</Link>
