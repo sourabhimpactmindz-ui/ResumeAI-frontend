@@ -342,7 +342,7 @@ export default function Homee() {
       </section>
 
       {/* REVIEWS */}
-      <section className="lp-band lp-band--cream">
+      {/* <section className="lp-band lp-band--cream">
         <div className="lp-wrap">
           <Reveal><h2>In the words of people who raised their score</h2></Reveal>
           <div className="lp-reviews">
@@ -354,7 +354,7 @@ export default function Homee() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* FAQ */}
       <section className="lp-band lp-band--ink" id="faq">
@@ -374,10 +374,10 @@ export default function Homee() {
       </section>
 
       {/* CTA */}
-      <section className="lp-cta">
+      {/* <section className="lp-cta">
         <h2>Ready to get past the robot?</h2>
         <Link className="lp-btn" to={token ? "/home" : "/login"}>Check my resume</Link>
-      </section>
+      </section> */}
 
       <Footer />
     </div>
