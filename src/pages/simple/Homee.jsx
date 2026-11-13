@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { UploadCloud, Target, Sparkles } from "lucide-react";
 import "./simplepage.css";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
@@ -140,9 +141,9 @@ const HEADLINES = [
 ];
 
 const steps = [
-  { t: "Upload your resume", d: "Drop in a PDF or DOCX. We read the text, headings and layout the same way an ATS does.", e: "📄" },
-  { t: "Paste the job description", d: "The AI pulls the key skills from the job post and matches them against your resume.", e: "🎯" },
-  { t: "Get your score and fixes", d: "Every issue comes with a clear fix that you can apply in one click.", e: "✨" },
+  { t: "Upload your resume", d: "Drop in a PDF or DOCX. We read the text, headings and layout the same way an ATS does.", icon: UploadCloud },
+  { t: "Paste the job description", d: "The AI pulls the key skills from the job post and matches them against your resume.", icon: Target },
+  { t: "Get your score and fixes", d: "Every issue comes with a clear fix that you can apply in one click.", icon: Sparkles },
 ];
 
 const bars = [
@@ -173,11 +174,11 @@ const stats = [
 //   { m: "Putting contact details in the header is fine.", f: "Many systems skip headers and footers entirely. Keep contact details in the body." },
 // ];
 
-const reviews = [
-  { q: "My score went from 48 to 86 and I got two interview calls within three weeks.", a: "Rohit S.", r: "Frontend Developer" },
-  { q: "I learned my two-column template wasn't being parsed at all. One format change fixed it.", a: "Neha K.", r: "Marketing Executive" },
-  { q: "The bullet rewrite added numbers and results to my lines. My resume finally reads like real work.", a: "Aman V.", r: "Data Analyst" },
-];
+// const reviews = [
+//   { q: "My score went from 48 to 86 and I got two interview calls within three weeks.", a: "Rohit S.", r: "Frontend Developer" },
+//   { q: "I learned my two-column template wasn't being parsed at all. One format change fixed it.", a: "Neha K.", r: "Marketing Executive" },
+//   { q: "The bullet rewrite added numbers and results to my lines. My resume finally reads like real work.", a: "Aman V.", r: "Data Analyst" },
+// ];
 
 const faqs = [
   { q: "What is an ATS?", a: "An Applicant Tracking System is software companies use to filter resumes. It converts your resume to text and matches it against the job description." },
@@ -309,14 +310,19 @@ export default function Homee() {
       {/* STEPS: CARD STACK */}
       <section className="lp-steps" id="how">
         <div className="lp-stack">
-          {steps.map((s, i) => (
-            <div key={s.t} className="lp-stack__card">
-              <span className="lp-stack__emoji" aria-hidden="true">{s.e}</span>
-              <div className="lp-stack__n">{i + 1}</div>
-              <h3>{s.t}</h3>
-              <p>{s.d}</p>
-            </div>
-          ))}
+          {steps.map((s, i) => {
+            const Icon = s.icon; // capital letter is required for a component
+            return (
+              <div key={s.t} className="lp-stack__card">
+                <span className="lp-stack__icon" aria-hidden="true">
+                  <Icon size={40} strokeWidth={1.6} />
+                </span>
+                <div className="lp-stack__n">{i + 1}</div>
+                <h3>{s.t}</h3>
+                <p>{s.d}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
