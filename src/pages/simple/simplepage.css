@@ -252,14 +252,7 @@
   .lp-feat__paper { width: min(250px, 62%); }
   .lp-feat__paper--back { transform: translate(-34px, 6px) rotate(-9deg); }
   .lp-feat__paper--mid  { transform: translate(32px, -4px) rotate(7deg); }
-    .lp-zoom__doc {
-    width: 86vw;
-    min-height: 62vh;
-    padding: 26px 22px;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35); 
-  }
-  .lp-zoom__text { top: 8vh; }
-
+  
 }
 
 /* reduced motion: no pinning, so show the stack as a normal list */
