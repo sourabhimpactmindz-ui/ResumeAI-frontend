@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import UserLogin from "../pages/user.pages/Userlogin";
 import PrivateRouter from "../protectedRouter/privateRouter";
-import Home from "../pages/Home/home";
 import SignUp from "../pages/user.pages/Usersignup";
 import OTPPage from "../pages/otp.page/otp.page";
 import PolicyPages from "../pages/policy/policy";
@@ -11,6 +10,7 @@ import Contact from "../pages/contact/contact";
 import Disclaimer from "../pages/Disclaimer/Disclaimer";
 import Blog from "../pages/blog/blog";
 import Homee from "../pages/simple/Homee";
+import Dashboard from "../pages/Home/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -57,8 +57,8 @@ const router = createBrowserRouter([
     element: <PrivateRouter />,
     children: [
       {
-        path: "/home",
-        element: <Home />,
+        path: "/dashboard",
+        element: <Dashboard />,
       },
     ],
   },

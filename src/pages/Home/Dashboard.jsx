@@ -5,7 +5,7 @@ import FeatureCard from "../../components/FeatureCard";
 import Navbar from "../../components/Navbar";
 import StatCard from "../../components/StatCard";
 import Footer from "../../components/footer";
-import "../../styles/home.css";
+import "../../styles/Dashboard.css";
 import CTABanner from "../../components/CTABanner";
 import { useUplodeResumeMutation } from "../../Apis/resumeApi";
 import {
@@ -62,7 +62,7 @@ const ATS_TIPS = [
   },
 ];
 
-export default function Home() {
+export default function Dashboard() {
   const [analysis, setAnalysis] = useState(null);
   const [openFaq, setOpenFaq] = useState(0);
   const [UplodeResume, { isLoading }] = useUplodeResumeMutation();
