@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const getBaseUrl = () => {
-  // Use Vite proxy in development to avoid CORS / ERR_FAILED issues
   if (import.meta.env.DEV) {
     return '/api';
   }
@@ -49,11 +48,6 @@ const baseQueryWithRefresh = async (
       extraOptions
     );
 
-    console.log(
-      "Refresh Response:",
-      refreshResult
-    );
-
     if (refreshResult?.data?.accessToken) {
 
       localStorage.setItem(
@@ -68,7 +62,6 @@ const baseQueryWithRefresh = async (
         );
       }
 
-      // Retry original request
       result = await baseQuery(
         args,
         api,
