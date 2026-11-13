@@ -107,7 +107,7 @@ function Contact() {
 
       <div className="legal-container legal-container-wide">
         <div className="legal-header">
-          <span className="legal-badge">✦ Direct Support</span>
+          {/* <span className="legal-badge">✦ Direct Support</span> */}
           <h1 className="legal-title">Get in Touch with ResumeAI</h1>
           <p className="legal-subtitle">
             Have questions about ATS scoring, need help with your account, or want to share feedback?

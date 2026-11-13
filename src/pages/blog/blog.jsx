@@ -82,7 +82,7 @@ export default function Blog() {
         </Link> */}
 
         <div className="legal-header">
-          <span className="legal-badge">✦ Career Intelligence</span>
+          {/* <span className="legal-badge">✦ Career Intelligence</span> */}
           <h1 className="legal-title">ATS Optimization & Resume Guides</h1>
           <p className="legal-subtitle">
             Actionable strategies, algorithm teardowns, and practical templates to help you pass automated recruiter

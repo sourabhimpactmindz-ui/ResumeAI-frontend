@@ -73,10 +73,10 @@ export default function Dashboard() {
 
       {/* HERO + UPLOAD */}
       <section className="dash-hero">
-        <div className="dash-hero__badge">
+        {/* <div className="dash-hero__badge">
           <Sparkles size={14} />
           <span>Free ATS check, ready in 30 seconds</span>
-        </div>
+        </div> */}
 
         <h1 className="dash-hero__title">See your resume the way the ATS does.</h1>
 

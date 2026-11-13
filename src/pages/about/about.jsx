@@ -15,7 +15,7 @@ function About() {
         </Link> */}
 
         <div className="legal-header">
-          <span className="legal-badge">✦ Our Mission</span>
+          {/* <span className="legal-badge">✦ Our Mission</span> */}
           <h1 className="legal-title">Leveling the Playing Field for Job Seekers</h1>
           <p className="legal-subtitle">
             Over 75% of resumes are rejected by automated ATS filters before a hiring manager ever sees them.

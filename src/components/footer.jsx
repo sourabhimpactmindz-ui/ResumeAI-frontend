@@ -52,10 +52,10 @@ export default function Footer() {
               We help you see your resume the way a recruiter's software does, so you can
               fix what matters and get past the first 6 seconds.
             </p>
-            <div className="site-footer__status">
+            {/* <div className="site-footer__status">
               <span className="site-footer__status-dot" />
               <span>All scanners are running</span>
-            </div>
+            </div> */}
           </div>
 
           {COLUMNS.map((col) => (

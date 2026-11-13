@@ -178,7 +178,7 @@ export default function ResumeAISignUp() {
               <input
                 type="text"
                 id="fullName"
-                placeholder="Rohit Sharma"
+                placeholder="Enter your name"
                 className={`auth-input ${errors.name ? 'has-error' : ''}`}
                 {...register('name', validateSignup.name)}
               />
