@@ -43,7 +43,7 @@ export default function Navbar() {
       <div className="navbar__links">
         <Link to="/" className={`navbar__link ${isActive("/")}`}>Home</Link>
         {isLoggedIn && (
-          <Link to="/home" className={`navbar__link ${isActive("/home")}`}>Dashboard</Link>
+          <Link to="/dashboard" className={`navbar__link ${isActive("/dashboard")}`}>Dashboard</Link>
         )}
         {LINKS.map((l) => (
           <Link key={l.to} to={l.to} className={`navbar__link ${isActive(l.to)}`}>{l.label}</Link>
