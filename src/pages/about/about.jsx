@@ -80,12 +80,12 @@ function About() {
               Whether you are a fresher looking for your first tech role or a senior executive targeting leadership positions,
               ResumeAI gives you the competitive edge needed to land interviews consistently.
             </p>
-            <div style={{ marginTop: "24px" }}>
+            {/* <div style={{ marginTop: "24px" }}>
               <Link to="/home" className="contact-submit-btn" style={{ textDecoration: "none" }}>
                 <Zap size={16} />
                 <span>Start Free Scan on Dashboard →</span>
               </Link>
-            </div>
+            </div> */}
           </section>
         </div>
       </div>
