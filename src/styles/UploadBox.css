@@ -91,7 +91,29 @@
   font: 600 15px "Plus Jakarta Sans", system-ui, sans-serif;
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s, box-shadow 0.25s;
 }
-.upload-box__analyze-btn:hover:not(:disabled) { background: var(--steel); border-color: var(--steel); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(65, 90, 119, 0.35); }
+/* Analyze button: no colour change on hover, just a gentle, natural movement */
+.upload-box__analyze-btn {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+.upload-box__analyze-btn svg {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.upload-box__analyze-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(13, 27, 42, 0.22);
+}
+.upload-box__analyze-btn:hover:not(:disabled) svg {
+  transform: rotate(18deg) scale(1.15);
+}
+
+/* pressed: feels like a real button being pushed */
+.upload-box__analyze-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 10px rgba(13, 27, 42, 0.2);
+  transition-duration: 0.1s;
+}
+
 .upload-box__analyze-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 .upload-box :focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
 
