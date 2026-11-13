@@ -75,6 +75,62 @@ function Typewriter({ lines, typeSpeed = 55, deleteSpeed = 28, pause = 1400 }) {
   return (<><span>{text}</span><span className="lp-cursor" aria-hidden="true" /></>);
 }
 
+/* Small mock shown on the front paper for each feature */
+function FeatureVisual({ type }) {
+  if (type === "format") {
+    return (
+      <>
+        <div className="lp-mini__name" />
+        <div className="lp-mini__cols lp-mini__cols--bad">
+          <div><i /><i /><i /></div>
+          <div><i /><i /><i /></div>
+        </div>
+        <span className="lp-mini__flag">Two columns: text can merge</span>
+        <div className="lp-mini__line" style={{ width: "85%" }} />
+        <div className="lp-mini__line" style={{ width: "60%" }} />
+      </>
+    );
+  }
+  if (type === "keywords") {
+    return (
+      <>
+        <span className="lp-mini__label">Skills in the job post</span>
+        <div className="lp-mini__tags">
+          <span className="lp-mini__tag is-hit">React</span>
+          <span className="lp-mini__tag is-hit">REST API</span>
+          <span className="lp-mini__tag is-miss">TypeScript</span>
+          <span className="lp-mini__tag is-miss">Docker</span>
+          <span className="lp-mini__tag is-hit">Git</span>
+        </div>
+        <span className="lp-mini__flag">2 skills are missing</span>
+      </>
+    );
+  }
+  if (type === "bullets") {
+    return (
+      <>
+        <span className="lp-mini__label">Before</span>
+        <p className="lp-mini__before">Responsible for fixing bugs in the team.</p>
+        <span className="lp-mini__label">After</span>
+        <p className="lp-mini__after">Fixed 40+ bugs and cut page load time by <mark>38%</mark>.</p>
+      </>
+    );
+  }
+  return (
+    <>
+      <span className="lp-mini__label">Tips for your role</span>
+      <div className="lp-mini__tags">
+        <span className="lp-mini__tag is-hit">Frontend</span>
+        <span className="lp-mini__tag">Data</span>
+        <span className="lp-mini__tag">Marketing</span>
+      </div>
+      <div className="lp-mini__line" style={{ width: "90%" }} />
+      <div className="lp-mini__line" style={{ width: "75%" }} />
+      <span className="lp-mini__flag">Add links to 2 live projects</span>
+    </>
+  );
+}
+
 /* ---------- content ---------- */
 const HEADLINES = [
   "before any recruiter does.",
@@ -97,10 +153,10 @@ const bars = [
 ];
 
 const features = [
-  { t: "ATS-safe format check", d: "Catches tables, columns and images that break parsing." },
-  { t: "Keyword gap", d: "A single list of the skills in the job post that your resume is missing." },
-  { t: "Bullet rewrite", d: "Turns weak lines into strong bullets with numbers and outcomes." },
-  { t: "Role-specific tips", d: "Suggestions tailored to frontend, data, marketing and more." },
+  { t: "ATS-safe format check", d: "Catches tables, columns and images that break parsing.", v: "format" },
+  { t: "Keyword gap", d: "A single list of the skills in the job post that your resume is missing.", v: "keywords" },
+  { t: "Bullet rewrite", d: "Turns weak lines into strong bullets with numbers and outcomes.", v: "bullets" },
+  { t: "Role-specific tips", d: "Suggestions tailored to frontend, data, marketing and more.", v: "tips" },
 ];
 
 const stats = [
@@ -138,7 +194,16 @@ export default function Homee() {
   const [barsRef, barsSeen] = useInView(0.3);
   const [statsRef, statsSeen] = useInView(0.4);
   const [open, setOpen] = useState(0);
+  const [feat, setFeat] = useState(0);
+  const [featPaused, setFeatPaused] = useState(false);
   const root = useRef(null);
+
+  // Features: move to the next item every 5 seconds, pause while the user is interacting
+  useEffect(() => {
+    if (featPaused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setFeat((f) => (f + 1) % features.length), 5000);
+    return () => clearInterval(id);
+  }, [featPaused]);
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -166,9 +231,9 @@ export default function Homee() {
         .to(cards[2], { yPercent: 0 }, 1);
 
       // Stagger from edges
-      [".lp-stats", ".lp-features", ".lp-reviews"].forEach((wrap) => {
-        gsap.from(`${wrap} .lp-card`, {
-          opacity: 0, y: 60, scale: 0.9, duration: 0.8, ease: "power3.out",
+      [[".lp-stats", ".lp-card"], [".lp-feat__list", ".lp-feat__item"]].forEach(([wrap, item]) => {
+        gsap.from(`${wrap} ${item}`, {
+          opacity: 0, y: 60, scale: 0.95, duration: 0.8, ease: "power3.out",
           stagger: { each: 0.1, from: "edges" },
           clearProps: "transform,opacity",
           scrollTrigger: { trigger: wrap, start: "top 80%", once: true },
@@ -284,17 +349,36 @@ export default function Homee() {
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section className="lp-band lp-band--navy" id="features">
+      {/* FEATURES: visual on the left, numbered list on the right */}
+      <section className="lp-band lp-band--navy lp-feat" id="features">
         <div className="lp-wrap">
           <Reveal><h2>Not just a score, the fixes too</h2></Reveal>
-          <div className="lp-features">
-            {features.map((f) => (
-              <div key={f.t} className="lp-card">
-                <h3>{f.t}</h3>
-                <p>{f.d}</p>
+
+          <div
+            className="lp-feat__grid"
+            onMouseEnter={() => setFeatPaused(true)}
+            onMouseLeave={() => setFeatPaused(false)}
+            onFocus={() => setFeatPaused(true)}
+            onBlur={() => setFeatPaused(false)}
+          >
+            <div className="lp-feat__visual" aria-hidden="true">
+              <div className="lp-feat__paper lp-feat__paper--back" />
+              <div className="lp-feat__paper lp-feat__paper--mid" />
+              <div className="lp-feat__paper lp-feat__paper--front" key={feat}>
+                <FeatureVisual type={features[feat].v} />
               </div>
-            ))}
+            </div>
+
+            <ol className="lp-feat__list">
+              {features.map((f, i) => (
+                <li key={f.t} className={`lp-feat__item ${feat === i ? "is-active" : ""}`}>
+                  <button type="button" onClick={() => setFeat(i)} aria-expanded={feat === i}>
+                    {i + 1}. {f.t}
+                  </button>
+                  <div className="lp-feat__body"><p>{f.d}</p></div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
