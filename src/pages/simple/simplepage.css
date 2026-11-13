@@ -178,6 +178,10 @@
 .lp-feat__item.is-active .lp-feat__body { grid-template-rows: 1fr; }
 .lp-feat__item.is-active .lp-feat__body p { padding: 2px 0 10px; }
 
+.lp-btn {
+  color: black;
+}
+
 /* --- mobile --- */
 @media (max-width: 860px) {
   .lp-feat__grid { grid-template-columns: 1fr; gap: 32px; }
