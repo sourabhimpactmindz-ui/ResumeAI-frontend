@@ -1,9 +1,8 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
-import { Clock, Calendar, Sparkles } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
+import { ArrowLeft, Clock, Calendar, Tag, ArrowRight, Sparkles } from "lucide-react";
 import "../../styles/legal-pages.css";
 
 const BLOG_POSTS = [
@@ -37,7 +36,7 @@ const BLOG_POSTS = [
   {
     id: 4,
     tag: "Formatting",
-    title: "Why Two-Column and Canva Resume Templates Break Parsing",
+    title: "Why Two-Column and Can-va Resume Templates Break Parsing",
     excerpt:
       "Columns, icons, tables, and image headers often cause text to merge across columns. Learn why single-column text-based PDFs always win.",
     date: "Oct 15, 2026",
@@ -57,7 +56,7 @@ const BLOG_POSTS = [
     tag: "ATS Hacks",
     title: "How Freshers Can Beat the ATS Without Years of Experience",
     excerpt:
-      "Freshers don't lack experience, they lack presentation. How to structure personal projects, hackathons, and certifications to score 85+ on ATS.",
+      "Freshers don't lack experience—they lack presentation. How to structure personal projects, hackathons, and certifications to score 85+ on ATS.",
     date: "Oct 02, 2026",
     readTime: "7 min read",
   },
@@ -65,63 +64,39 @@ const BLOG_POSTS = [
 
 const CATEGORIES = ["All Guides", "ATS Hacks", "Keywords", "Bullet Points", "Formatting", "Career Strategy"];
 
-const TAG_CLASS = {
-  "ATS Hacks": "ats",
-  Keywords: "keywords",
-  "Bullet Points": "bullets",
-  Formatting: "format",
-  "Career Strategy": "career",
-};
-
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState("All Guides");
-  const root = useRef(null);
 
   const filteredPosts =
     selectedCategory === "All Guides"
       ? BLOG_POSTS
       : BLOG_POSTS.filter((post) => post.tag === selectedCategory);
 
-  // Cards animate in from the edges whenever the filter changes
-  useLayoutEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const ctx = gsap.context(() => {
-      gsap.from(".blog-card", {
-        opacity: 0,
-        y: 40,
-        scale: 0.95,
-        duration: 0.6,
-        ease: "power3.out",
-        stagger: { each: 0.08, from: "edges" },
-        clearProps: "transform,opacity",
-      });
-    }, root);
-    return () => ctx.revert();
-  }, [selectedCategory]);
-
   return (
-    <div className="blog-page" ref={root}>
+    <div className="legal-page-wrapper">
       <Navbar />
 
-      {/* HEADER */}
-      <header className="blog-hero">
-        <p className="blog-hand">Short, practical reads</p>
-        <h1>ATS and resume guides</h1>
-        <p className="blog-hero__sub">
-          Clear strategies and real examples to help you get past automated screening
-          and into the interview.
-        </p>
-      </header>
+      <div className="legal-container legal-container-wide">
+        {/* <Link to="/home" className="legal-back-nav">
+          <ArrowLeft size={14} /> Back to Dashboard
+        </Link> */}
 
-      {/* LIST */}
-      <main className="blog-main">
-        <div className="blog-filters" role="group" aria-label="Filter guides">
+        <div className="legal-header">
+          <span className="legal-badge">✦ Career Intelligence</span>
+          <h1 className="legal-title">ATS Optimization & Resume Guides</h1>
+          <p className="legal-subtitle">
+            Actionable strategies, algorithm teardowns, and practical templates to help you pass automated recruiter
+            screens and land top-tier interviews.
+          </p>
+        </div>
+
+        {/* CATEGORY FILTER PILLS */}
+        <div className="blog-filters">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               type="button"
               className={`blog-filter-btn ${selectedCategory === cat ? "active" : ""}`}
-              aria-pressed={selectedCategory === cat}
               onClick={() => setSelectedCategory(cat)}
             >
               {cat}
@@ -129,41 +104,43 @@ export default function Blog() {
           ))}
         </div>
 
+        {/* BLOG POSTS GRID */}
         <div className="blog-grid">
-          {filteredPosts.map((post, i) => (
-            <article key={post.id} className={`blog-card blog-card--${TAG_CLASS[post.tag]}`}>
-              <span className="blog-card__num" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
+          {filteredPosts.map((post) => (
+            <article key={post.id} className="blog-card">
+              <div className="blog-card-top">
+                <span className="blog-tag">{post.tag}</span>
+                <h3 className="blog-card-title">{post.title}</h3>
+                <p className="blog-card-excerpt">{post.excerpt}</p>
+              </div>
 
-              <span className="blog-tag">{post.tag}</span>
-              <h3 className="blog-card__title">{post.title}</h3>
-              <p className="blog-card__excerpt">{post.excerpt}</p>
-
-              <div className="blog-card__meta">
-                <span><Calendar size={13} /> {post.date}</span>
-                <span><Clock size={13} /> {post.readTime}</span>
+              <div className="blog-card-meta">
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                  <Calendar size={13} /> {post.date}
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                  <Clock size={13} /> {post.readTime}
+                </span>
               </div>
             </article>
           ))}
         </div>
-      </main>
 
-      {/* CTA */}
-      <section className="blog-cta">
-        <div className="blog-cta__card">
-          <h2>Put these guides to work</h2>
-          <p>
-            Upload your resume and get your ATS score, keyword gaps and bullet fixes in about 30 seconds.
+        {/* CTA CARD */}
+        <div className="legal-card" style={{ marginTop: "48px", textAlign: "center" }}>
+          <h2>Put These Guides into Practice</h2>
+          <p style={{ color: "var(--muted)", maxWidth: "54ch", margin: "8px auto 20px" }}>
+            Upload your resume now and get your instant ATS score, keyword breakdown, and bullet point fixes in under 30 seconds.
           </p>
-          <Link to="/dashboard" className="blog-cta__btn">
+          <Link to="/home" className="contact-submit-btn" style={{ textDecoration: "none" }}>
             <Sparkles size={16} />
-            <span>Scan my resume free</span>
+            <span>Scan Resume Free on Dashboard →</span>
           </Link>
         </div>
-      </section>
+      </div>
 
       <Footer />
     </div>
   );
 }
+
