@@ -216,31 +216,67 @@ export default function Homee() {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    const ctx = gsap.context(() => {
-      // Scroll Zoom Hero: pinned resume zooms in while you scroll
-      gsap.timeline({ scrollTrigger: { trigger: ".lp-zoom", start: "top top", end: "+=150%", pin: true, scrub: 1 } })
-        .fromTo(".lp-zoom__doc", { scale: 0.8, rotateX: 10 }, { scale: 2.4, rotateX: 0, ease: "power1.in" }, 0)
-        .to(".lp-zoom__text", { y: -140, opacity: 0, duration: 0.5 }, 0);
+   const ctx = gsap.context(() => {
+  const isMobile = () => window.innerWidth < 860;
 
-      // Card stack: the 3 steps slide up and stack on each other
-      const cards = gsap.utils.toArray(".lp-stack__card");
-      gsap.set(cards.slice(1), { yPercent: 130 });
-      gsap.timeline({ scrollTrigger: { trigger: ".lp-steps", start: "top top", end: "+=220%", pin: true, scrub: 1 } })
-        .to(cards[0], { scale: 0.92, y: -40, opacity: 0.6 }, 0)
-        .to(cards[1], { yPercent: 0 }, 0)
-        .to(cards[1], { scale: 0.96, y: -20, opacity: 0.8 }, 1)
-        .to(cards[2], { yPercent: 0 }, 1);
+  // Scroll Zoom Hero: zoom size screen ke hisaab se limit hota hai, to mobile par resume kata nahi dikhega
+  gsap.timeline({
+    scrollTrigger: {
+      trigger: ".lp-zoom",
+      start: "top top",
+      end: () => (isMobile() ? "+=110%" : "+=150%"),
+      pin: true,
+      scrub: 0.6,
+      invalidateOnRefresh: true,
+    },
+  })
+    .fromTo(
+      ".lp-zoom__doc",
+      { scale: 0.8, rotateX: 10 },
+      {
+        scale: () => {
+          const el = root.current.querySelector(".lp-zoom__doc");
+          return Math.min(
+            2.4,
+            (window.innerWidth * 0.92) / el.offsetWidth,
+            (window.innerHeight * 0.85) / el.offsetHeight
+          );
+        },
+        rotateX: 0,
+        ease: "power1.in",
+      },
+      0
+    )
+    .to(".lp-zoom__text", { y: -140, opacity: 0, duration: 0.5 }, 0);
 
-      // Stagger from edges
-      [[".lp-stats", ".lp-card"], [".lp-feat__list", ".lp-feat__item"]].forEach(([wrap, item]) => {
-        gsap.from(`${wrap} ${item}`, {
-          opacity: 0, y: 60, scale: 0.95, duration: 0.8, ease: "power3.out",
-          stagger: { each: 0.1, from: "edges" },
-          clearProps: "transform,opacity",
-          scrollTrigger: { trigger: wrap, start: "top 80%", once: true },
-        });
-      });
-    }, root);
+  // Card stack: ab beech mein koi khali gap nahi, card turant aate hain
+  const cards = gsap.utils.toArray(".lp-stack__card");
+  gsap.set(cards.slice(1), { yPercent: 130 });
+  gsap.timeline({
+    scrollTrigger: {
+      trigger: ".lp-steps",
+      start: "top top",
+      end: () => (isMobile() ? "+=130%" : "+=170%"),
+      pin: true,
+      scrub: 0.6,
+      invalidateOnRefresh: true,
+    },
+  })
+    .to(cards[0], { scale: 0.92, y: -40, opacity: 0.6, duration: 1 }, 0)
+    .to(cards[1], { yPercent: 0, duration: 1 }, 0)
+    .to(cards[1], { scale: 0.96, y: -20, opacity: 0.8, duration: 1 }, 1)
+    .to(cards[2], { yPercent: 0, duration: 1 }, 1);
+
+  // Stagger from edges
+  [[".lp-stats", ".lp-card"], [".lp-feat__list", ".lp-feat__item"]].forEach(([wrap, item]) => {
+    gsap.from(`${wrap} ${item}`, {
+      opacity: 0, y: 60, scale: 0.95, duration: 0.8, ease: "power3.out",
+      stagger: { each: 0.1, from: "edges" },
+      clearProps: "transform,opacity",
+      scrollTrigger: { trigger: wrap, start: "top 80%", once: true },
+    });
+  });
+}, root);
 
     return () => {
       ctx.revert();
