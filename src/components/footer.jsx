@@ -6,10 +6,10 @@ const COLUMNS = [
   {
     heading: "Product and tools",
     links: [
-      { to: "/home", label: "ATS Resume Scanner", tag: "AI" },
-      { to: "/home", label: "Keyword Gap Detector" },
-      { to: "/home", label: "Bullet Metric Rewriter" },
-      { to: "/home", label: "Formatting Trap Check" },
+      { to: "/dashbaord", label: "ATS Resume Scanner", tag: "AI" },
+      { to: "/dashbaord", label: "Keyword Gap Detector" },
+      { to: "/dashbaord", label: "Bullet Metric Rewriter" },
+      { to: "/dashbaord", label: "Formatting Trap Check" },
       { to: "/", label: "Interactive Live Demo" },
     ],
   },
