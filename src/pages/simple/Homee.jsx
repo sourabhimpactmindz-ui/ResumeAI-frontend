@@ -166,12 +166,12 @@ const stats = [
   { n: 30, s: " sec", l: "to get your full score and report" },
 ];
 
-const myths = [
-  { m: "A beautiful design impresses the ATS.", f: "An ATS only reads text. Columns, icons and images often break parsing." },
-  { m: "Listing your skills once is enough.", f: "Every job post uses different keywords. Tailor your resume for each role." },
-  { m: "The longer the resume, the better.", f: "One page is enough for freshers and two for experienced candidates." },
-  { m: "Putting contact details in the header is fine.", f: "Many systems skip headers and footers entirely. Keep contact details in the body." },
-];
+// const myths = [
+//   { m: "A beautiful design impresses the ATS.", f: "An ATS only reads text. Columns, icons and images often break parsing." },
+//   { m: "Listing your skills once is enough.", f: "Every job post uses different keywords. Tailor your resume for each role." },
+//   { m: "The longer the resume, the better.", f: "One page is enough for freshers and two for experienced candidates." },
+//   { m: "Putting contact details in the header is fine.", f: "Many systems skip headers and footers entirely. Keep contact details in the body." },
+// ];
 
 const reviews = [
   { q: "My score went from 48 to 86 and I got two interview calls within three weeks.", a: "Rohit S.", r: "Frontend Developer" },
@@ -411,7 +411,7 @@ export default function Homee() {
       </section>
 
       {/* MYTHS */}
-      <section className="lp-band lp-band--navy">
+      {/* <section className="lp-band lp-band--navy">
         <div className="lp-wrap">
           <Reveal><h2>Common myths about the ATS</h2></Reveal>
           <div className="lp-myths">
@@ -423,7 +423,7 @@ export default function Homee() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* REVIEWS */}
       {/* <section className="lp-band lp-band--cream">
