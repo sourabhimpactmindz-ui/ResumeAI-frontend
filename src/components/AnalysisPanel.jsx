@@ -35,10 +35,11 @@ export default function AnalysisPanel({
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (animatedScore / 100) * circumference;
 
+  // bright shades because the score card is dark
   const getColor = (score) => {
-    if (score >= 80) return "#16a34a";
-    if (score >= 60) return "#f59e0b";
-    return "#dc2626";
+    if (score >= 80) return "#9fbfa4";
+    if (score >= 60) return "#e0b15c";
+    return "#e27a84";
   };
 
   const color = getColor(atsScore);
@@ -53,8 +54,8 @@ export default function AnalysisPanel({
     <div className="analysis-panel">
       <div className="analysis-panel__title-row">
         <div>
-          <h3 className="analysis-panel__title">AI Analysis Report</h3>
-          <p className="analysis-panel__subtitle">Real-time feedback for your current resume.</p>
+          <h3 className="analysis-panel__title">Your ATS report</h3>
+          <p className="analysis-panel__subtitle">Here is how your resume matches this job.</p>
         </div>
       </div>
 
@@ -62,7 +63,7 @@ export default function AnalysisPanel({
 
         {/* ATS SCORE */}
         <div className="analysis-panel__ats">
-          <span className="analysis-panel__ats-label">ATS Compatibility Score</span>
+          <span className="analysis-panel__ats-label">ATS compatibility score</span>
 
           <div className="ats-donut">
             <svg width="180" height="180" viewBox="0 0 180 180">
@@ -87,8 +88,8 @@ export default function AnalysisPanel({
         {/* MATCHING SKILLS */}
         <div className="analysis-panel__cell">
           <div className="analysis-panel__cell-title">
-            <CheckCircle2 size={22} color="#16a34a" />
-            Matching Skills
+            <CheckCircle2 size={22} color="#5b7560" />
+            Matching skills
           </div>
           <div className="analysis-panel__cell-tags">
             {matchingSkills?.length > 0
@@ -102,8 +103,8 @@ export default function AnalysisPanel({
         {/* MISSING SKILLS */}
         <div className="analysis-panel__cell">
           <div className="analysis-panel__cell-title">
-            <AlertTriangle size={22} color="#f59e0b" />
-            Missing Skills
+            <AlertTriangle size={22} color="#b7791f" />
+            Missing skills
           </div>
           <div className="analysis-panel__cell-tags">
             {missingSkills?.length > 0
@@ -117,7 +118,7 @@ export default function AnalysisPanel({
         {/* STRENGTHS */}
         <div className="analysis-panel__cell">
           <div className="analysis-panel__cell-title">
-            <Zap size={22} color="#2563eb" />
+            <Zap size={22} color="#415A77" />
             Strengths
           </div>
           {strengths?.length > 0
@@ -130,8 +131,8 @@ export default function AnalysisPanel({
         {/* AI SUGGESTIONS */}
         <div className="analysis-panel__cell">
           <div className="analysis-panel__cell-title">
-            <Bot size={22} color="#7c3aed" />
-            AI Suggestions
+            <Bot size={22} color="#1B263B" />
+            Suggestions
           </div>
           {aiSuggestions?.length > 0
             ? <ul className="analysis-panel__cell-list">

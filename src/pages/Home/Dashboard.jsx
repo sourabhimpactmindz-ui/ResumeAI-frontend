@@ -1,64 +1,28 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import AnalysisPanel from "../../components/AnalysisPanel";
-import FeatureCard from "../../components/FeatureCard";
-import Navbar from "../../components/Navbar";
-import StatCard from "../../components/StatCard";
-import Footer from "../../components/footer";
-import "../../styles/Dashboard.css";
-import CTABanner from "../../components/CTABanner";
-import { useUplodeResumeMutation } from "../../Apis/resumeApi";
-import {
-  Settings2,
-  Target,
-  BarChart3,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
-import UploadBox from "../../components/UploadBox";
+import { useNavigate } from "react-router-dom";
+import { Sparkles } from "lucide-react";
 import { toast } from "react-toastify";
+import AnalysisPanel from "../../components/AnalysisPanel";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/footer";
+import UploadBox from "../../components/UploadBox";
+import { useUplodeResumeMutation } from "../../Apis/resumeApi";
+import "../../styles/Dashboard.css";
 
-const STATS = [
-  { value: "12,400+", label: "Total Analyses Run" },
-  { value: "82%", label: "Average ATS Score Lift" },
-  { value: "3.2x", label: "More Interview Callbacks" },
-];
-
-const FEATURES = [
-  {
-    icon: <Settings2 size={24} color="#000" />,
-    title: "ATS Format & Parsing Check",
-    desc: "Scans for layout traps, multi-column tables, and image headers that break recruiter parsers.",
-  },
-  {
-    icon: <Target size={24} color="#000" />,
-    title: "AI Keyword Gap Analysis",
-    desc: "Extracts high-priority skills and qualifications from the job description missing from your resume.",
-  },
-  {
-    icon: <BarChart3 size={24} color="#000" />,
-    title: "Measurable Impact Scoring",
-    desc: "Grades your bullet points on action verbs, quantifiable achievements, and business outcomes.",
-  },
-  {
-    icon: <ShieldCheck size={24} color="#000" />,
-    title: "Encrypted & 100% Private",
-    desc: "Your resumes and job descriptions are encrypted and never used for public training.",
-  },
-];
+const STEPS = ["Upload your PDF resume", "Paste the job description", "Get your ATS score"];
 
 const ATS_TIPS = [
   {
-    q: "Why do 75% of resumes get rejected by ATS filters?",
-    a: "Recruiter software parses raw text looking for exact title, hard skill, and tool matches. Complex two-column layouts, tables, and missing keywords often result in an automatic low match score before any human recruiter reviews your application.",
+    q: "Why do so many resumes get rejected by ATS filters?",
+    a: "Recruiter software reads plain text and looks for exact job titles, skills and tools. Two-column layouts, tables and missing keywords often give your resume a low match score before a person ever sees it.",
   },
   {
-    q: "What is an acceptable ATS benchmark score?",
-    a: "A score of 80 or higher places you in the top 10% of applicants for that role. Scores between 60-79 pass baseline filters but can be improved with missing keyword additions.",
+    q: "What is a good ATS score?",
+    a: "80 or higher puts you ahead of most applicants for that role. A score between 60 and 79 usually passes the first filter, and adding the missing keywords can lift it further.",
   },
   {
-    q: "How should I tailor my resume for different job postings?",
-    a: "Run each job description through this scanner. Keep your foundational experience intact, but align your bullet points with the exact skill terminology used in the target role.",
+    q: "How do I tailor my resume for each job?",
+    a: "Run every job description through the scanner. Keep your experience the same, but use the same wording the job post uses for your skills.",
   },
 ];
 
@@ -86,20 +50,14 @@ export default function Dashboard() {
       setAnalysis(result.data);
       toast.success("Analysis complete! Review your ATS score below.");
 
-      // Smooth scroll to analysis results
       setTimeout(() => {
-        const el = document.getElementById("analysis-results");
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        document
+          .getElementById("analysis-results")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 200);
     } catch (error) {
       console.error(error);
-      toast.error(
-        error?.data?.message ||
-          error?.error ||
-          "Upload failed. Please try again."
-      );
+      toast.error(error?.data?.message || error?.error || "Upload failed. Please try again.");
 
       if (error?.status === 401) {
         localStorage.removeItem("accessToken");
@@ -113,126 +71,74 @@ export default function Dashboard() {
     <div className="dash-app">
       <Navbar />
 
-      {/* HERO & UPLOAD SECTION */}
+      {/* HERO + UPLOAD */}
       <section className="dash-hero">
         <div className="dash-hero__badge">
           <Sparkles size={14} />
-          <span>AI-Powered ATS Diagnostic Suite</span>
+          <span>Free ATS check, ready in 30 seconds</span>
         </div>
 
-        <h1 className="dash-hero__title">
-          Beat the ATS. Land more recruiter interviews.
-        </h1>
+        <h1 className="dash-hero__title">See your resume the way the ATS does.</h1>
 
         <p className="dash-hero__sub">
-          Benchmark your resume against any target job description in 30 seconds.
-          Detect missing keywords, eliminate format traps, and receive AI-backed bullet enhancements.
+          Upload your resume, paste the job description, and we will show you the missing
+          keywords, the format problems and how to fix them.
         </p>
 
-        {/* 3-STEP QUICK PROCESS PILLS */}
         <div className="dash-workflow-steps">
-          <div className="dash-workflow-step">
-            <span className="dash-workflow-step__num">1</span>
-            <span className="dash-workflow-step__text">Upload PDF Resume</span>
-          </div>
-          <span className="dash-workflow-step__divider">→</span>
-          <div className="dash-workflow-step">
-            <span className="dash-workflow-step__num">2</span>
-            <span className="dash-workflow-step__text">Paste Job Description</span>
-          </div>
-          <span className="dash-workflow-step__divider">→</span>
-          <div className="dash-workflow-step">
-            <span className="dash-workflow-step__num">3</span>
-            <span className="dash-workflow-step__text">Get Instant ATS Score</span>
-          </div>
+          {STEPS.map((text, i) => (
+            <div className="dash-workflow-step" key={text}>
+              <span className="dash-workflow-step__num">{i + 1}</span>
+              <span className="dash-workflow-step__text">{text}</span>
+            </div>
+          ))}
         </div>
 
         <UploadBox onAnalyze={handleAnalze} isLoading={isLoading} />
       </section>
 
-      {/* AI ANALYSIS RESULTS */}
+      {/* RESULTS */}
       {analysis && (
-        <section className="dash-section" id="analysis-results">
-          <AnalysisPanel
-            atsScore={analysis.atsScore}
-            matchingSkills={analysis.matchingSkills || []}
-            missingSkills={analysis.missingSkills || []}
-            strengths={analysis.strength || []}
-            aiSuggestions={analysis.suggestions || []}
-          />
+        <section className="dash-results" id="analysis-results">
+          <div className="dash-results__inner">
+            <AnalysisPanel
+              atsScore={analysis.atsScore}
+              matchingSkills={analysis.matchingSkills || []}
+              missingSkills={analysis.missingSkills || []}
+              strengths={analysis.strength || []}
+              aiSuggestions={analysis.suggestions || []}
+            />
+          </div>
         </section>
       )}
 
-      {/* STATS ROW */}
-      {/* <section className="dash-stats-row">
-        {STATS.map((s) => (
-          <StatCard key={s.label} value={s.value} label={s.label} />
-        ))}
-      </section> */}
-
-      {/* PRECISION FEATURES */}
-      {/* <section className="dash-section dash-precision-section">
+      {/* FAQ */}
+      <section className="dash-faq-section">
         <div className="dash-precision-header">
-          <h2 className="dash-section-title">Precision Analysis Engine</h2>
-          <p className="dash-section-sub">
-            Built on algorithmic recruiter filters, keyword frequency density, and strict ATS parser models.
-          </p>
-        </div>
-
-        <div className="dash-features-grid">
-          {FEATURES.map((f) => (
-            <FeatureCard
-              key={f.title}
-              icon={f.icon}
-              title={f.title}
-              desc={f.desc}
-            />
-          ))}
-        </div>
-      </section> */}
-
-      {/* ATS OPTIMIZATION TIPS & FAQ */}
-      <section className="dash-section dash-faq-section">
-        <div className="dash-precision-header">
-          <h2 className="dash-section-title">ATS Fundamentals & Best Practices</h2>
-          <p className="dash-section-sub">
-            Common algorithmic challenges and how to optimize your resume for automated screening.
-          </p>
+          <h2 className="dash-section-title">ATS basics, in plain words</h2>
+          <p className="dash-section-sub">A few answers that help you get past automated screening.</p>
         </div>
 
         <div className="dash-faq-container">
-          {ATS_TIPS.map((item, index) => (
-            <div
-              key={item.q}
-              className={`dash-faq-card ${openFaq === index ? "active" : ""}`}
-              onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
-            >
-              <div className="dash-faq-card__header">
+          {ATS_TIPS.map((item, i) => (
+            <div key={item.q} className={`dash-faq-card ${openFaq === i ? "active" : ""}`}>
+              <button
+                type="button"
+                className="dash-faq-card__header"
+                aria-expanded={openFaq === i}
+                onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
+              >
                 <span className="dash-faq-card__question">{item.q}</span>
-                <span className="dash-faq-card__toggle">
-                  {openFaq === index ? "−" : "+"}
-                </span>
+                <span className="dash-faq-card__toggle">{openFaq === i ? "−" : "+"}</span>
+              </button>
+              <div className="dash-faq-card__body">
+                <p>{item.a}</p>
               </div>
-              {openFaq === index && (
-                <div className="dash-faq-card__body">
-                  <p>{item.a}</p>
-                </div>
-              )}
             </div>
           ))}
         </div>
       </section>
 
-      {/* CTA BANNER */}
-      {/* <section className="dash-section" style={{ marginBottom: "60px" }}>
-        <CTABanner
-          title="Ready to fast-track your job search?"
-          subtitle="Keep your resume tailored for every single application to consistently bypass initial applicant filters."
-          onGetStarted={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        />
-      </section> */}
-
-      {/* COMPREHENSIVE RESPONSIVE FOOTER */}
       <Footer />
     </div>
   );
