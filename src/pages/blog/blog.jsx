@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { Clock, Calendar, Sparkles } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
-import "../../styles/Blog.css";
+import "../../styles/legal-pages.css";
 
 const BLOG_POSTS = [
   {
