@@ -105,7 +105,7 @@ function PrivacyPolicy() {
             <p>
               You own your data. You may request full deletion of your uploaded documents, account records, and analysis
               history at any time by contacting our support team at{" "}
-              <a href="mailto:support@resumeai.com" style={{ textDecoration: "underline", color: "#000" }}>
+              <a href="mailto:sourabrajput723@gmail.com" style={{ textDecoration: "underline", color: "#000" }}>
                 support@resumeai.com
               </a>.
             </p>
