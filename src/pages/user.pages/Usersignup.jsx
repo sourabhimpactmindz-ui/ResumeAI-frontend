@@ -44,7 +44,7 @@ export default function ResumeAISignUp() {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
         toast.success('Login successful!');
-        navigate('/home', { replace: true });
+        navigate('/dashboard', { replace: true });
       })
       .catch((error) => {
         if (error && error.code !== 'auth/credential-already-in-use') {
@@ -112,7 +112,7 @@ export default function ResumeAISignUp() {
       localStorage.setItem('refreshToken', res.refreshToken);
 
       toast.success('Login successful!');
-      navigate('/home', { replace: true });
+      navigate('/dashboard', { replace: true });
     } catch (error) {
       console.error('Google Sign-in error:', error);
       if (error?.code === 'auth/popup-blocked') {

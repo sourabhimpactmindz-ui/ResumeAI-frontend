@@ -301,7 +301,7 @@ export default function Homee() {
           and shows exactly why a line might get you rejected.
         </p>
         <div className="lp-actions">
-          <Link className="lp-btn" to={token ? "/home" : "/login"}>Check it free</Link>
+          <Link className="lp-btn" to={token ? "/dashbaord" : "/login"}>Check it free</Link>
           <a className="lp-btn lp-btn--ghost" href="#how">See how it works</a>
         </div>
       </section>

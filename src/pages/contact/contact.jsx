@@ -168,7 +168,7 @@ function Contact() {
             <div className="legal-callout" style={{ marginTop: "28px" }}>
               <p>
                 <strong>Need an instant scan?</strong> Head over to your{" "}
-                <Link to="/home" style={{ textDecoration: "underline", color: "#000", fontWeight: "700" }}>
+                <Link to="/dashboard" style={{ textDecoration: "underline", color: "#000", fontWeight: "700" }}>
                   Dashboard
                 </Link>{" "}
                 to check your resume match rate immediately.

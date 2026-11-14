@@ -72,7 +72,7 @@ const OTPPage = () => {
         localStorage.setItem("refreshToken", res.refreshToken);
       }
       setTimeout(() => {
-        navigate("/home");
+        navigate("/dashboard");
       }, 1000);
     } catch (error) {
       toast.error(error?.data?.message || "OTP verification failed");
