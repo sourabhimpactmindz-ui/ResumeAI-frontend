@@ -1,4 +1,7 @@
 
+.print-table { border-collapse: collapse; width: 100%; }
+.print-table td { padding: 0; }
+.print-spacer { height: 0; } /* screen par spacing nahi */
 .builder { display: grid; grid-template-columns: 380px 1fr; height: 100vh; background: #e5e7eb; }
 
 .builder-form {
@@ -20,6 +23,7 @@
   width: 100%; padding: 12px; border: 0; border-radius: 8px;
   background: #2563eb; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
 }
+.print-tip { font-size: 12px; color: #6b7280; margin: 8px 0 0; line-height: 1.4; }
 .download-btn:hover { background: #1d4ed8; }
 .field small { display: block; font-size: 12px; color: #6b7280; margin-bottom: 6px; line-height: 1.4; }
 .builder-preview { overflow: auto; padding: 24px; display: flex; justify-content: center; }

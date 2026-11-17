@@ -61,11 +61,15 @@ export default function Builder() {
     try { localStorage.setItem("resumeData", JSON.stringify(data)); } catch {}
   }, [data]);
 
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    documentTitle: data.name ? `${data.name} - Resume` : "Resume",
-    pageStyle: "@page { size: A4; margin: 14mm 15mm; } body { margin: 0; }",
-  });
+const handlePrint = useReactToPrint({
+  contentRef: printRef,
+  documentTitle: data.name ? `${data.name} - Resume` : "Resume",
+  pageStyle: `
+    @page { size: A4; margin: 0; }
+    body { margin: 0; }
+    .print-spacer { height: 14mm; }
+  `,
+});
 
   if (!found) return <p style={{ padding: 24 }}>Template not found</p>;
   const Template = found.component;
@@ -103,14 +107,22 @@ export default function Builder() {
         <button type="button" className="download-btn" onClick={handlePrint}>
           Download PDF
         </button>
+        <p className="print-tip">
+  In the print window, choose <b>Save as PDF</b> as the destination and turn off
+  "Headers and footers".
+</p>
       </aside>
 
       <main className="builder-preview">
         <div className="paper-wrap">
           <div className="paper-scale">
-            <div ref={printRef}>
-              <Template data={data} />
-            </div>
+           <div ref={printRef}>
+  <table className="print-table">
+    <thead><tr><td><div className="print-spacer" /></td></tr></thead>
+    <tbody><tr><td><Template data={data} /></td></tr></tbody>
+    <tfoot><tr><td><div className="print-spacer" /></td></tr></tfoot>
+  </table>
+</div>
           </div>
         </div>
       </main>
