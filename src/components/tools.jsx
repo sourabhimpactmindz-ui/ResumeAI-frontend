@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
-import { templates } from "./templates";
-import { sampleData } from "./sampleData";
+// import { templates } from "./templates";
+import { templates } from "../services/templates";
+// import { sampleData } from "./sampleData";
+import { sampleData } from "../services/simplerData";
+// import ScaledPreview from "./ScaledPreview";
 import ScaledPreview from "./ScaledPreview";
 import "../styles/tools.css";
 
