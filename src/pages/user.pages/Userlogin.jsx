@@ -61,7 +61,7 @@ export default function ResumeAILogin() {
         localStorage.setItem('refreshToken', res.refreshToken);
 
         toast.success('Login successful!');
-        navigate('/home', { replace: true });
+        navigate('/dashboard', { replace: true });
       })
       .catch((error) => {
         if (
@@ -94,7 +94,7 @@ export default function ResumeAILogin() {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
 
-        navigate('/home', { replace: true });
+        navigate('/dashboard', { replace: true });
       }
     } catch (err) {
       if (
@@ -136,7 +136,7 @@ export default function ResumeAILogin() {
 
       toast.success('Login successful!');
 
-      navigate('/home', { replace: true });
+      navigate('/dashboard', { replace: true });
 
     } catch (error) {
       console.error('Google Sign-in error:', error);
@@ -187,9 +187,9 @@ export default function ResumeAILogin() {
           resumeAI
         </Link>
 
-        <span className="auth-pill">
+        {/* <span className="auth-pill">
           ✦ ATS Resume Checker
-        </span>
+        </span> */}
       </div>
 
       {/* Main Auth Card */}
@@ -336,9 +336,9 @@ export default function ResumeAILogin() {
         Back to home
       </Link>
 
-      <p className="auth-trust-note">
+      {/* <p className="auth-trust-note">
         ✦ Safe & secure · Your resume is encrypted and private.
-      </p>
+      </p> */}
 
     </div>
   );
