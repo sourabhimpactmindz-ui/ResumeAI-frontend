@@ -12,6 +12,7 @@ import Blog from "../pages/blog/blog";
 import Homee from "../pages/simple/Homee";
 import Dashboard from "../pages/Home/Dashboard";
 import Tools from "../components/tools";
+import Builder from "../components/builder";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,8 @@ const router = createBrowserRouter([
       {
         path: "/tools",
         element: <Tools />
-      }
+      },
+    {path :"/tools/builder/:templateId" , element : <Builder /> }
     ],
   },
 ]);

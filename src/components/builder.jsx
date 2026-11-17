@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { templates } from "./templates";
-// import { templates } from "./templates";
 
 export default function Builder() {
   const { templateId } = useParams();
