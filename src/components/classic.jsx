@@ -2,7 +2,6 @@ const ensureUrl = (u) => (/^https?:\/\//i.test(u) ? u : `https://${u}`);
 const shortUrl = (u) => u.replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, "");
 const stripBullet = (l) => l.replace(/^\s*[-•*▪]\s*/, "").trim();
 
-// "Role | Company, City | Jan 2022 – Present" + bullets, entries khali line se alag
 function parseBlocks(text) {
   return (text || "")
     .split(/\n\s*\n/)
