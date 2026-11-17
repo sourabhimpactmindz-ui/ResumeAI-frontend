@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/footer";
 import { templates } from "./templates";
-import "./tools.css";
+import "./ToolsPage.css";
 
 const sample = {
   name: "Your Name",
@@ -21,23 +24,44 @@ const sample = {
 
 export default function Tools() {
   return (
-    <div className="tools-page">
-      <h2>Choose a template</h2>
-      <div className="tools-grid">
-        {templates.map(t => {
-          const Template = t.component;
-          return (
-            <Link key={t.id} to={`/tools/builder/${t.id}`} className="tool-card">
-              <div className="tool-preview">
-                <div className="tool-preview-inner">
-                  <Template data={sample} />
+    <div className="tl-page">
+      <Navbar />
+
+      <header className="tl-hero">
+        <p className="tl-hand">Step 1 of 2</p>
+        <h1>Choose a template</h1>
+        <p className="tl-hero__sub">
+          Pick a clean, ATS-friendly layout. You can fill in your details on the next page.
+        </p>
+      </header>
+
+      <main className="tl-main">
+        <div className="tl-grid">
+          {templates.map((t) => {
+            const Template = t.component;
+            return (
+              <Link key={t.id} to={`/tools/builder/${t.id}`} className="tl-card">
+                <div className="tl-frame">
+                  <div className="tl-preview">
+                    <div className="tl-preview__inner">
+                      <Template data={sample} />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <h3>{t.name}</h3>
-            </Link>
-          );
-        })}
-      </div>
+
+                <div className="tl-card__foot">
+                  <h3>{t.name}</h3>
+                  <span className="tl-card__use">
+                    Use this template <ArrowRight size={15} />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
