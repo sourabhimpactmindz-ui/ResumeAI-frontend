@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { templates } from "./templates";
-import ".../styles/tools.css"; 
+import '../styles/tools.css'; 
 import Footer from "./footer";
 import Navbar from "./Navbar";
 import { useLayoutEffect, useRef, useState } from "react";
