@@ -2,7 +2,7 @@ import {
   User, Contact, Settings, Languages, GraduationCap, Briefcase, FolderGit2,
   Phone, Mail, MapPin,
 } from "lucide-react";
-import "./ModernTemplate.css";
+import "../styles/modren.css";
 
 /* Newer lucide-react versions removed brand icons, so these two are small inline SVGs */
 function Linkedin({ size = 13 }) {
