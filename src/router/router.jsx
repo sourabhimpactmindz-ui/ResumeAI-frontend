@@ -12,7 +12,7 @@ import Blog from "../pages/blog/blog";
 import Homee from "../pages/simple/Homee";
 import Dashboard from "../pages/Home/Dashboard";
 import Tools from "../components/tools";
-import Builder from "../components/builder";
+import Builder from "../pages/builder/builder";
 
 const router = createBrowserRouter([
   {
