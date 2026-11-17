@@ -5,9 +5,9 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import { templates } from "../../services/templates";
 import ScaledPreview from "../../components/ScaledPreview";
-import photoUpload from "../../components/temp";
 import { sampleData } from "../../services/simplerData";
  import "./builder.css";
+import PhotoUpload from "../../components/photoUpload";
 
 const TEXT_FIELDS = [
   { key: "name", label: "Full name", placeholder: "Rohit Sharma" },
@@ -28,8 +28,9 @@ const AREA_FIELDS = [
 ];
 
 export default function Builder() {
-  const { id } = useParams();
-  const template = templates.find((t) => t.id === id);
+const params = useParams();
+const id = params.id ?? params.templateId ?? Object.values(params)[0];
+const template = templates.find((t) => String(t.id) === String(id));
   const [data, setData] = useState({ ...sampleData });
 
   if (!template) {
@@ -68,7 +69,7 @@ export default function Builder() {
           {template.supportsPhoto && (
             <div className="bd-field">
               <span className="bd-label">Photo</span>
-              <photoUpload value={data.photo} onChange={(photo) => setData((d) => ({ ...d, photo }))} />
+              <PhotoUpload value={data.photo} onChange={(photo) => setData((d) => ({ ...d, photo }))} />
             </div>
           )}
 
