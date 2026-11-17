@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/footer";
+// import Navbar from "../../components/Navbar";
+// import Footer from "../../components/footer";
 import { templates } from "./templates";
 import "./tools.css"; 
+import Footer from "./footer";
+import Navbar from "./Navbar";
 
 const sample = {
   name: "Your Name",
