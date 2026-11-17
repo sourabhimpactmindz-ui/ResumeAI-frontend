@@ -1,132 +1,124 @@
-import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useReactToPrint } from "react-to-print";
-import { templates } from "../../components/templates";
-import "./builder.css";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Download, ArrowLeft } from "lucide-react";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/footer";
+// import { templates } from "./templates";
+import { templates } from "../../services/templates";
+// import { sampleData } from "./sampleData";
+// import PhotoUpload from "./PhotoUpload";
+// import ScaledPreview from "./ScaledPreview";
+import ScaledPreview from "../../components/ScaledPreview";
+ import PhotoUpload from "../../components/photoUpload";
+import { sampleData } from "../../services/simplerData";
+ import "./Builder.css";
 
-const fields = [
-  { name: "name", label: "Full Name", placeholder: "Sourabh Kumar" },
-  { name: "title", label: "Job Title", placeholder: "Frontend Developer" },
-  { name: "email", label: "Email", placeholder: "you@email.com" },
-  { name: "phone", label: "Phone", placeholder: "+91 98765 43210" },
-  { name: "location", label: "Location", placeholder: "Sonipat, Haryana" },
-  { name: "linkedin", label: "LinkedIn (optional)", placeholder: "linkedin.com/in/yourname" },
-  { name: "github", label: "GitHub / Portfolio (optional)", placeholder: "github.com/yourname" },
-  {
-    name: "summary", label: "Professional Summary", area: true, rows: 4,
-    hint: "2–3 sentences covering your experience, key skills and career goal.",
-    placeholder: "Frontend developer with 2 years of experience building React apps...",
-  },
-  {
-    name: "skills", label: "Skills", area: true, rows: 4,
-    hint: "One category per line, in the format: Category: skill1, skill2",
-    placeholder: "Languages: JavaScript, Python\nFrontend: React, HTML, CSS\nTools: Git, Figma",
-  },
-  {
-    name: "experience", label: "Work Experience", area: true, rows: 9,
-    hint: "First line: Role | Company, City | Jan 2022 – Present. Then one bullet per line. Leave a blank line between jobs.",
-    placeholder:
-      "Frontend Developer | ABC Pvt Ltd, Delhi | Jan 2022 – Present\n- Built 10+ React pages, cut load time by 35%\n- Led a team of 3 developers\n\nIntern | XYZ Tech, Noida | Jun 2021 – Dec 2021\n- Fixed 40+ UI bugs",
-  },
-  {
-    name: "projects", label: "Projects (optional)", area: true, rows: 6,
-    hint: "First line: Project Name | Tech used | Link. Then one bullet per line. Leave a blank line between projects.",
-    placeholder:
-      "Resume Builder | React, Node.js | github.com/you/resume\n- Built a template-based resume maker with PDF export",
-  },
-  {
-    name: "education", label: "Education", area: true, rows: 4,
-    hint: "First line: Degree | Institute | Years. Add details on the next lines. Leave a blank line between entries.",
-    placeholder: "B.Tech in Computer Science | XYZ University | 2018 – 2022\n- CGPA: 8.2/10",
-  },
+const TEXT_FIELDS = [
+  { key: "name", label: "Full name", placeholder: "Rohit Sharma" },
+  { key: "title", label: "Job title", placeholder: "Frontend Developer" },
+  { key: "email", label: "Email", placeholder: "you@email.com" },
+  { key: "phone", label: "Phone", placeholder: "+91 98765 43210" },
+  { key: "location", label: "Location", placeholder: "Delhi, India" },
+  { key: "linkedin", label: "LinkedIn", placeholder: "linkedin.com/in/yourname" },
+  { key: "github", label: "GitHub", placeholder: "github.com/yourname" },
 ];
 
-const empty = Object.fromEntries(fields.map(f => [f.name, ""]));
+const AREA_FIELDS = [
+  { key: "summary", label: "Summary", rows: 4, hint: "2 to 3 lines about you." },
+  { key: "skills", label: "Skills", rows: 5, hint: "One group per line, like: Frontend: React, HTML, CSS" },
+  { key: "experience", label: "Work experience", rows: 10, hint: "Title | Company | Dates, then lines starting with - for bullets." },
+  { key: "projects", label: "Projects", rows: 7, hint: "Name | Tech used | Link, then lines starting with - for bullets." },
+  { key: "education", label: "Education", rows: 3, hint: "Degree | School | Years, one per line." },
+];
 
 export default function Builder() {
-  const { templateId } = useParams();
-  const found = templates.find(t => t.id === templateId);
-  const printRef = useRef(null);
+  const { id } = useParams();
+  const template = templates.find((t) => t.id === id);
+  const [data, setData] = useState({ ...sampleData });
 
-  const [data, setData] = useState(() => {
-    try {
-      const saved = localStorage.getItem("resumeData");
-      return saved ? { ...empty, ...JSON.parse(saved) } : empty;
-    } catch {
-      return empty;
-    }
-  });
+  if (!template) {
+    return (
+      <div className="bd-page">
+        <Navbar />
+        <main className="bd-missing">
+          <h1>Template not found</h1>
+          <p>This template does not exist. Please choose one from the list.</p>
+          <Link to="/tools" className="bd-btn">Back to templates</Link>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    try { localStorage.setItem("resumeData", JSON.stringify(data)); } catch {}
-  }, [data]);
-
-const handlePrint = useReactToPrint({
-  contentRef: printRef,
-  documentTitle: data.name ? `${data.name} - Resume` : "Resume",
-  pageStyle: `
-    @page { size: A4; margin: 0; }
-    body { margin: 0; }
-    .print-spacer { height: 14mm !important; }
-    .rc { width: auto !important; min-height: 0 !important; padding: 0 16mm !important; }
-  `,
-});
-
-  if (!found) return <p style={{ padding: 24 }}>Template not found</p>;
-  const Template = found.component;
-
-  const onChange = e => setData({ ...data, [e.target.name]: e.target.value });
+  const Template = template.component;
+  // photo only goes to templates that allow it
+  const templateData = template.supportsPhoto ? data : { ...data, photo: "" };
+  const update = (key) => (e) => setData((d) => ({ ...d, [key]: e.target.value }));
 
   return (
-    <div className="builder">
-      <aside className="builder-form">
-        <h2>Resume Details</h2>
+    <div className="bd-page">
+      <Navbar />
 
-        {fields.map(f => (
-          <label key={f.name} className="field">
-            <span>{f.label}</span>
-            {f.hint && <small>{f.hint}</small>}
-            {f.area ? (
-              <textarea
-                name={f.name}
-                rows={f.rows || 4}
-                value={data[f.name]}
-                placeholder={f.placeholder}
-                onChange={onChange}
-              />
-            ) : (
-              <input
-                name={f.name}
-                value={data[f.name]}
-                placeholder={f.placeholder}
-                onChange={onChange}
-              />
+      <header className="bd-hero">
+        <Link to="/tools" className="bd-back"><ArrowLeft size={15} /> All templates</Link>
+        <p className="bd-hand">Step 2 of 2</p>
+        <h1>Fill in your details</h1>
+        <p className="bd-hero__sub">Your {template.name} resume updates live as you type.</p>
+      </header>
+
+      <main className="bd-main">
+        {/* ---------- form ---------- */}
+        <section className="bd-form" aria-label="Resume details">
+          {template.supportsPhoto && (
+            <div className="bd-field">
+              <span className="bd-label">Photo</span>
+              <PhotoUpload value={data.photo} onChange={(photo) => setData((d) => ({ ...d, photo }))} />
+            </div>
+          )}
+
+          <div className="bd-row">
+            {TEXT_FIELDS.map((f) => (
+              <label className="bd-field" key={f.key}>
+                <span className="bd-label">{f.label}</span>
+                <input className="bd-input" value={data[f.key] || ""} onChange={update(f.key)} placeholder={f.placeholder} />
+              </label>
+            ))}
+            {template.supportsPhoto && (
+              <label className="bd-field">
+                <span className="bd-label">Languages</span>
+                <input className="bd-input" value={data.languages || ""} onChange={update("languages")} placeholder="English, Hindi" />
+              </label>
             )}
-          </label>
-        ))}
-
-        <button type="button" className="download-btn" onClick={handlePrint}>
-          Download PDF
-        </button>
-        <p className="print-tip">
-  In the print window, choose <b>Save as PDF</b> as the destination and turn off
-  "Headers and footers".
-</p>
-      </aside>
-
-      <main className="builder-preview">
-        <div className="paper-wrap">
-          <div className="paper-scale">
-           <div ref={printRef}>
-  <table className="print-table">
-    <thead><tr><td><div className="print-spacer" /></td></tr></thead>
-    <tbody><tr><td><Template data={data} /></td></tr></tbody>
-    <tfoot><tr><td><div className="print-spacer" /></td></tr></tfoot>
-  </table>
-</div>
           </div>
-        </div>
+
+          {AREA_FIELDS.map((f) => (
+            <label className="bd-field" key={f.key}>
+              <span className="bd-label">{f.label}</span>
+              <textarea className="bd-input bd-area" rows={f.rows} value={data[f.key] || ""} onChange={update(f.key)} />
+              <span className="bd-hint">{f.hint}</span>
+            </label>
+          ))}
+        </section>
+
+        {/* ---------- live preview ---------- */}
+        <aside className="bd-side" aria-label="Preview">
+          <ScaledPreview className="bd-preview">
+            <Template data={templateData} />
+          </ScaledPreview>
+
+          <button type="button" className="bd-btn" onClick={() => window.print()}>
+            <Download size={17} /> Download PDF
+          </button>
+          <p className="bd-hint bd-hint--center">In the print window, choose "Save as PDF".</p>
+        </aside>
       </main>
+
+      <Footer />
+
+      {/* full-size copy that is only used when printing */}
+      <div className="bd-print" aria-hidden="true">
+        <Template data={templateData} />
+      </div>
     </div>
   );
 }

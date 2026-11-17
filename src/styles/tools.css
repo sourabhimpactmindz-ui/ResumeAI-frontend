@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Caveat:wght@600&display=swap");
 
-/* Own "tl-" class names, so your old tools.css (used by the builder page) stays untouched. */
+/* Own "tl-" class names, so your old tools.css stays untouched. */
 
 .tl-page {
   --ink: #0D1B2A;
@@ -27,17 +27,17 @@
 .tl-page > footer { margin-top: auto; }
 .tl-page h1, .tl-page h3 { font-family: "Fraunces", Georgia, serif; letter-spacing: -0.02em; line-height: 1.1; margin: 0; }
 .tl-page p { margin: 0; }
-.tl-hand { font-family: "Caveat", cursive; font-size: 1.5em; }
+.tl-hand { font-family: "Caveat", cursive; font-size: 1.5em; color: var(--sand); }
 
 /* header */
 .tl-hero {
   display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
-  padding: 54px 0 0 0; 
+  padding: 72px 5vw 64px; background: var(--ink); color: var(--cream);
 }
 .tl-hero h1 { font-size: clamp(30px, 5.5vw, 60px); font-weight: 700; }
-.tl-hero__sub { max-width: 52ch; font-size: 18px;  }
+.tl-hero__sub { max-width: 52ch; font-size: 18px; color: var(--muted); }
 
-/* grid: cards shrink and stack by themselves on any screen size */
+/* grid */
 .tl-main { width: 100%; max-width: 1150px; margin: 0 auto; padding: 56px 5vw 90px; }
 .tl-grid {
   display: grid;
@@ -54,25 +54,18 @@
   color: var(--ink); text-decoration: none;
 }
 
-/* preview: keeps the A4 ratio and scales with the card (the scale is set in Tools.jsx) */
-.tl-preview {
-  position: relative; width: 100%; aspect-ratio: 794 / 1123; overflow: hidden;
-  background: #fff; border-radius: 12px;
-  box-shadow: 0 8px 22px rgba(13, 27, 42, 0.14);
-}
-.tl-preview__inner { width: 794px; transform-origin: top left; pointer-events: none; }
+/* preview (size and scaling come from ScaledPreview.jsx) */
+.tl-preview { border-radius: 12px; box-shadow: 0 8px 22px rgba(13, 27, 42, 0.14); }
 
-.tl-card__foot { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 6px 6px; text-align: center; }
+.tl-card__foot { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 6px 6px; text-align: center; }
 .tl-card__foot h3 { font-size: 22px; font-weight: 700; }
 .tl-card__use { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--steel); }
+.tl-badge { padding: 3px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--sage); color: var(--ink); }
 
-/* tablet */
 @media (max-width: 860px) {
   .tl-hero { padding: 60px 5vw 52px; }
   .tl-main { padding: 44px 5vw 72px; }
 }
-
-/* phone */
 @media (max-width: 520px) {
   .tl-hero { padding: 48px 5vw 40px; }
   .tl-hero__sub { font-size: 16px; }

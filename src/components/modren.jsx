@@ -4,7 +4,6 @@ import {
 } from "lucide-react";
 import "../styles/modren.css";
 
-/* Newer lucide-react versions removed brand icons, so these two are small inline SVGs */
 function Linkedin({ size = 13 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -21,9 +20,7 @@ function Github({ size = 13 }) {
   );
 }
 
-/* ---------- helpers: turn the plain text fields into lists ---------- */
 
-// "Title | Company | Dates" on one line, "- bullet" lines below it
 function parseEntries(text = "") {
   const entries = [];
   let cur = null;

@@ -1,6 +1,6 @@
 // import Classic from "./Classic";
-import Classic from "./classic";
-import ModernTemplate from "./modren";
+import Classic from "../components/classic";
+import ModernTemplate from "../components/modren";
 // import Modern from "./Modern";
 
 export const templates = [
