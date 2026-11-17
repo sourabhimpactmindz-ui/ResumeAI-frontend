@@ -61,7 +61,7 @@ export default function ResumeAILogin() {
         localStorage.setItem('refreshToken', res.refreshToken);
 
         toast.success('Login successful!');
-        navigate('/dashboard', { replace: true });
+        navigate('/home', { replace: true });
       })
       .catch((error) => {
         if (
@@ -83,7 +83,6 @@ export default function ResumeAILogin() {
     };
   }, [GoogleLogin, navigate]);
 
-  // Email and Password Login
   const handleSignIn = async (data) => {
     try {
       const res = await LoginUser(data).unwrap();
@@ -94,7 +93,7 @@ export default function ResumeAILogin() {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
 
-        navigate('/dashboard', { replace: true });
+        navigate('/home', { replace: true });
       }
     } catch (err) {
       if (
@@ -114,7 +113,6 @@ export default function ResumeAILogin() {
     }
   };
 
-  // Google Login
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
 
@@ -136,7 +134,7 @@ export default function ResumeAILogin() {
 
       toast.success('Login successful!');
 
-      navigate('/dashboard', { replace: true });
+      navigate('/home', { replace: true });
 
     } catch (error) {
       console.error('Google Sign-in error:', error);
