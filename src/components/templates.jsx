@@ -1,4 +1,5 @@
-import Classic from "./Classic";
+// import Classic from "./Classic";
+import Classic from "./classic";
 import Modern from "./Modern";
 
 export const templates = [
