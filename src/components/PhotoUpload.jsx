@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Camera, X } from "lucide-react";
 import { toast } from "react-toastify";
-import "./PhotoUpload.css";
+import "../styles/PhotoUpload.css";
 
 const MAX_SIZE = 400;          // the photo is shrunk to 400px so it stays light
 const MAX_FILE_MB = 5;
