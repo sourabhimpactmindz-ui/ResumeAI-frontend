@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/footer";
+import Navbar from "./Navbar";
+import Footer from "./footer";
 // import { templates } from "./templates";
 import { templates } from "../services/templates";
 // import { sampleData } from "./sampleData";

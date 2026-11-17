@@ -3,15 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { Download, ArrowLeft } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
-// import { templates } from "./templates";
 import { templates } from "../../services/templates";
-// import { sampleData } from "./sampleData";
-// import PhotoUpload from "./PhotoUpload";
-// import ScaledPreview from "./ScaledPreview";
 import ScaledPreview from "../../components/ScaledPreview";
- import PhotoUpload from "../../components/photoUpload";
+import PhotoUpload from "../../components/photoUpload";
 import { sampleData } from "../../services/simplerData";
- import "./Builder.css";
+ import "./builder.css";
 
 const TEXT_FIELDS = [
   { key: "name", label: "Full name", placeholder: "Rohit Sharma" },
