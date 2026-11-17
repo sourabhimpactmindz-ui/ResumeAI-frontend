@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import { templates } from "../../services/templates";
 import ScaledPreview from "../../components/ScaledPreview";
-import PhotoUpload from "../../components/photoUpload";
+import photoUpload from "../../components/temp";
 import { sampleData } from "../../services/simplerData";
  import "./builder.css";
 
@@ -68,7 +68,7 @@ export default function Builder() {
           {template.supportsPhoto && (
             <div className="bd-field">
               <span className="bd-label">Photo</span>
-              <PhotoUpload value={data.photo} onChange={(photo) => setData((d) => ({ ...d, photo }))} />
+              <photoUpload value={data.photo} onChange={(photo) => setData((d) => ({ ...d, photo }))} />
             </div>
           )}
 

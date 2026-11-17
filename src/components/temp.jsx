@@ -27,11 +27,8 @@ function fileToDataUrl(file) {
   });
 }
 
-/**
- * value:    current photo (base64 or url)
- * onChange: called with the new base64 string, or "" when the photo is removed
- */
-export default function PhotoUpload({ value, onChange }) {
+
+export default function photoUpload({ value, onChange }) {
   const input = useRef(null);
 
   const handleFile = async (e) => {
