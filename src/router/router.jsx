@@ -11,6 +11,7 @@ import Disclaimer from "../pages/Disclaimer/Disclaimer";
 import Blog from "../pages/blog/blog";
 import Homee from "../pages/simple/Homee";
 import Dashboard from "../pages/Home/Dashboard";
+import Tools from "../components/tools";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +62,8 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/tools"
+        path: "/tools",
+        element: <Tools />
       }
     ],
   },

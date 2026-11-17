@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import "../styles/Navbar.css";
 
 const LINKS = [
-  { to: "/tool", label : "Tools" , mobile : "Tools"},
+  { to: "/tools", label : "Tools" , mobile : "Tools"},
   { to: "/blog", label: "Blog", mobile: "Blog" },
   { to: "/about", label: "About", mobile: "About Us" },
   { to: "/contact", label: "Contact", mobile: "Contact" },
