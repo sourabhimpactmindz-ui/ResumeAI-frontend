@@ -61,7 +61,7 @@ export default function ResumeAILogin() {
         localStorage.setItem('refreshToken', res.refreshToken);
 
         toast.success('Login successful!');
-        navigate('/home', { replace: true });
+        navigate('/', { replace: true });
       })
       .catch((error) => {
         if (
@@ -93,7 +93,7 @@ export default function ResumeAILogin() {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
 
-        navigate('/home', { replace: true });
+        navigate('/', { replace: true });
       }
     } catch (err) {
       if (
@@ -134,7 +134,7 @@ export default function ResumeAILogin() {
 
       toast.success('Login successful!');
 
-      navigate('/home', { replace: true });
+      navigate('/', { replace: true });
 
     } catch (error) {
       console.error('Google Sign-in error:', error);
