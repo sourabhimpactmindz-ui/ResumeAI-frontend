@@ -3,10 +3,9 @@ import { Camera, X } from "lucide-react";
 import { toast } from "react-toastify";
 import "../styles/PhotoUpload.css";
 
-const MAX_SIZE = 400;          // the photo is shrunk to 400px so it stays light
+const MAX_SIZE = 400;         
 const MAX_FILE_MB = 5;
 
-/* Reads the file, shrinks it, and gives back a base64 string (works in preview and PDF) */
 function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
