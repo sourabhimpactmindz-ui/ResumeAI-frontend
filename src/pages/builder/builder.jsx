@@ -67,7 +67,8 @@ const handlePrint = useReactToPrint({
   pageStyle: `
     @page { size: A4; margin: 0; }
     body { margin: 0; }
-    .print-spacer { height: 14mm; }
+    .print-spacer { height: 14mm !important; }
+    .rc { width: auto !important; min-height: 0 !important; padding: 0 16mm !important; }
   `,
 });
 
