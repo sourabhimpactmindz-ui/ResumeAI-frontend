@@ -347,7 +347,7 @@ export default function Homee() {
       <section className="lp-steps" id="how">
         <div className="lp-stack">
           {steps.map((s, i) => {
-            const Icon = s.icon; // capital letter is required for a component
+            const Icon = s.icon; 
             return (
               <div key={s.t} className="lp-stack__card">
                 <span className="lp-stack__icon" aria-hidden="true">
