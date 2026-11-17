@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import { templates } from "./templates";
-import "./tools.css";
+import "./tools.css"; 
 
 const sample = {
   name: "Your Name",
