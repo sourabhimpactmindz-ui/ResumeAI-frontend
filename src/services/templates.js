@@ -15,5 +15,5 @@ export const templates = [
   {  id: "executive", name: "Executive", component: ExecutiveTemplate , supportsPhoto: true },
   // {  id: "elegant", name: "Elegant", component: ElegantTemplate , supportsPhoto: true },
   {  id: "creative", name: "Creative", component: CreativeTemplate , supportsPhoto: true },
-  {  id: "warm", name: "Warm", component: WarmTemplate , supportsPhoto: true }
+  {  id: "warm", name: "Warm", component: WarmTemplate }
 ];
