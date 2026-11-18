@@ -25,15 +25,15 @@
 .bd-page > footer { margin-top: auto; }
 .bd-page h1 { font-family: "Fraunces", Georgia, serif; letter-spacing: -0.02em; line-height: 1.1; margin: 0; }
 .bd-page p { margin: 0; }
-.bd-hand { font-family: "Caveat", cursive; font-size: 1.5em; color: var(--sand); }
+.bd-hand { font-family: "Caveat", cursive; font-size: 1.5em; color: #b99d6c; }
 
 /* header */
 .bd-hero {
   display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
-  padding: 44px 5vw 52px; background: var(--ink); color: var(--cream);
+  padding: 21px 0 30px;
 }
 .bd-hero h1 { font-size: clamp(28px, 5vw, 50px); font-weight: 700; }
-.bd-hero__sub { color: var(--muted); font-size: 17px; }
+.bd-hero__sub { font-size: 17px; }
 .bd-back {
   display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px; padding: 6px 14px; border-radius: 999px;
   font-size: 13px; font-weight: 600; color: var(--cream); text-decoration: none;

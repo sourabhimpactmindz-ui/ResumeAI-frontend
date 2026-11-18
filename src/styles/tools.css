@@ -38,7 +38,7 @@
 .tl-hero__sub { max-width: 52ch; font-size: 18px; }
 
 /* grid */
-.tl-main { width: 100%; max-width: 1150px; margin: 0 auto; padding: 56px 5vw 90px; }
+.tl-main { width: 100%; margin: 0 auto; padding: 56px 5vw 90px; }
 .tl-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 300px));
