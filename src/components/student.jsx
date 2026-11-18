@@ -114,8 +114,9 @@ export default function StudentTemplate({ data = {} }) {
             {schools.map((e, i) => (
               <div className="st-item" key={i}>
                 {e.head[1] && <p className="st-item__org">{e.head[1]}</p>}
-                {e.head[0] && <p className="st-item__text">{e.head[0]}</p>}
-                {e.head[2] && <p className="st-item__text">{e.head[2]}</p>}
+                {(e.head[0] || e.head[2]) && (
+                  <p className="st-item__text">{[e.head[0], e.head[2]].filter(Boolean).join(" · ")}</p>
+                )}
               </div>
             ))}
           </section>

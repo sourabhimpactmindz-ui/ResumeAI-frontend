@@ -52,28 +52,28 @@
 .st-contact svg { flex-shrink: 0; margin-top: 2px; color: #fff; }
 
 /* ---------- right column ---------- */
-.st-main { position: relative; z-index: 1; padding: 140px 40px 40px 34px; }
+.st-main { position: relative; z-index: 1; padding: 140px 36px 30px 34px; }
 
-.st-head { height: 175px; }
+.st-head { height: 190px; }
 .st-head h1 {
   font-family: "Helvetica Neue", Arial, sans-serif; font-size: 38px; font-weight: 700; line-height: 1.12;
   letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink);
 }
 .st-title { margin-top: 10px; font-size: 15px; font-style: italic; letter-spacing: 0.04em; color: var(--ink); }
 
-.st-sec { margin-bottom: 26px; }
+.st-sec { margin-bottom: 20px; }
 .st-h2 {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
   font-family: "Helvetica Neue", Arial, sans-serif; font-size: 13px; font-weight: 700;
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
 }
 .st-arrow { flex-shrink: 0; color: var(--teal); }
 
-.st-item { margin-bottom: 14px; }
+.st-item { margin-bottom: 10px; }
 .st-item__org {
   margin-bottom: 2px;
   font-family: "Helvetica Neue", Arial, sans-serif; font-size: 11.5px; font-weight: 700;
   letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink);
 }
-.st-item__text { font-size: 12px; line-height: 1.6; color: var(--muted); }
+.st-item__text { font-size: 11.5px; line-height: 1.5; color: var(--muted); }
 .st-item__line { color: var(--ink); }
