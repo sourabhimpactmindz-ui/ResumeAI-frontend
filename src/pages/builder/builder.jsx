@@ -141,11 +141,9 @@ export default function Builder() {
             </button>
           </div>
 
-          <div className="bd-preview-scroll">
-            <ScaledPreview autoHeight showPageBreaks className="bd-preview">
-              <Template data={templateData} />
-            </ScaledPreview>
-          </div>
+          <ScaledPreview fitViewport reserve={225} showPageBreaks className="bd-preview">
+            <Template data={templateData} />
+          </ScaledPreview>
 
           <p className="bd-hint bd-hint--center">
             The PDF is a picture of your resume. If you need selectable text (better for ATS),{" "}

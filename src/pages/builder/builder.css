@@ -63,17 +63,10 @@
 .bd-area { resize: vertical; line-height: 1.55; }
 
 /* preview column */
-.bd-side { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; max-height: calc(100vh - 104px); }
-.bd-actions { display: flex; flex: none; gap: 10px; }
-.bd-hint--center { flex: none; }
-
-/* the whole resume is shown here. If it has more than one page, scroll inside this box. */
-.bd-preview-scroll {
-  flex: 1 1 auto; min-height: 0; overflow-y: auto; border-radius: 12px;
-  background: #fff; box-shadow: 0 14px 36px rgba(13, 27, 42, 0.18);
-  scrollbar-width: thin; scrollbar-color: var(--steel) transparent;
-}
-.bd-preview { border-radius: 0; }
+.bd-side { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; }
+.bd-actions { display: flex; gap: 10px; }
+/* the preview is sized by ScaledPreview so the whole resume fits the screen height (no scrolling) */
+.bd-preview { border-radius: 12px; box-shadow: 0 14px 36px rgba(13, 27, 42, 0.18); }
 
 /* buttons: no hover effect, only a soft press */
 .bd-btn {
@@ -118,8 +111,7 @@
 /* small tablet and phone: preview goes below the form */
 @media (max-width: 900px) {
   .bd-main { grid-template-columns: minmax(0, 1fr); padding: 32px 5vw 64px; }
-  .bd-side { position: static; max-height: none; max-width: 620px; width: 100%; margin: 0 auto; }
-  .bd-preview-scroll { overflow: visible; }
+  .bd-side { position: static; max-width: 620px; width: 100%; margin: 0 auto; }
 }
 @media (max-width: 560px) {
   .bd-hero { padding: 36px 5vw 40px; }
