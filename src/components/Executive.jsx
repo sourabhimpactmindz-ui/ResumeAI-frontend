@@ -1,8 +1,6 @@
-import "../styles/executive.css";
+import "../styles/Executive.css";
 
-/* ---------- helpers: turn the plain text fields into lists ---------- */
 
-// "Title | Company | Dates" on one line, "- bullet" lines below it
 function parseEntries(text = "") {
   const entries = [];
   let cur = null;
@@ -35,7 +33,6 @@ function Section({ title, children }) {
   );
 }
 
-/* ---------- template ---------- */
 export default function ExecutiveTemplate({ data = {} }) {
   const {
     name = "", title = "", email, phone, location, linkedin, github,
@@ -58,7 +55,6 @@ export default function ExecutiveTemplate({ data = {} }) {
 
   return (
     <div className="ex-resume">
-      {/* ---------- header: photo + name + contact ---------- */}
       <header className="ex-head">
         {photo && (
           <div className="ex-photo">
