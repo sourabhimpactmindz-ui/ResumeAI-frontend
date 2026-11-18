@@ -6,7 +6,6 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import { templates } from "../../services/templates";
 import { sampleData } from "../../services/simplerData";
-// import { downloadElementAsPdf } from "../../services/downloadPdf";
 import { downloadElementAsPdf } from "../../services/DownloadPdf";
 import ScaledPreview from "../../components/ScaledPreview";
 import PhotoUpload from "../../components/photoUpload";
@@ -142,9 +141,11 @@ export default function Builder() {
             </button>
           </div>
 
-          <ScaledPreview className="bd-preview">
-            <Template data={templateData} />
-          </ScaledPreview>
+          <div className="bd-preview-scroll">
+            <ScaledPreview autoHeight showPageBreaks className="bd-preview">
+              <Template data={templateData} />
+            </ScaledPreview>
+          </div>
 
           <p className="bd-hint bd-hint--center">
             The PDF is a picture of your resume. If you need selectable text (better for ATS),{" "}
@@ -165,7 +166,7 @@ export default function Builder() {
             </button>
           </div>
           <div className="bd-modal__sheet" onClick={(e) => e.stopPropagation()}>
-            <ScaledPreview autoHeight className="bd-modal__paper">
+            <ScaledPreview autoHeight showPageBreaks className="bd-modal__paper">
               <Template data={templateData} />
             </ScaledPreview>
           </div>
