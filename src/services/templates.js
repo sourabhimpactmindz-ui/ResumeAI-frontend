@@ -1,4 +1,5 @@
 import Classic from "../components/classic";
+import ElegantTemplate from "../components/Elegant";
 import ExecutiveTemplate from "../components/Executive";
 import ModernTemplate from "../components/modren";
 import ProfessionalTemplate from "../components/Professional";
@@ -9,5 +10,6 @@ export const templates = [
   { id: "professional", name: "professional", component: ProfessionalTemplate },
   { id: "modern",  name: "Modern",  component: ModernTemplate, preview: "/previews/modern.png", supportsPhoto: true },
   {  id: "student", name: "Student", component: StudentTemplate , supportsPhoto: true },
-  {  id: "executive", name: "Executive", component: ExecutiveTemplate , supportsPhoto: true }
+  {  id: "executive", name: "Executive", component: ExecutiveTemplate , supportsPhoto: true },
+  {  id: "elegant", name: "Elegant", component: ElegantTemplate , supportsPhoto: true }
 ];

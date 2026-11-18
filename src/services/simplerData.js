@@ -26,7 +26,7 @@ export const sampleData = {
     "ResumeAI | React, Node.js, MongoDB | resumeai.app\n" +
     "- Built an ATS resume scanner that scores resumes against any job description\n" +
     "- Used AI to find missing keywords and suggest stronger bullet points\n" +
-    "TaskFlow | React, Redux, Firebase | github.com/rohitsharma/taskflow\n" +
+    "TaskFlow | React, Redux, Firebase | github.com/sourabhthakur/taskflow\n" +
     "- Created a kanban task manager with drag and drop and real-time sync",
   education:
     "B.Tech in Computer Science | XYZ University, Delhi | 2017 – 2021\n" +

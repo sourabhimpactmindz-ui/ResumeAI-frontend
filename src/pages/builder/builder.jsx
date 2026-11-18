@@ -6,7 +6,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import { templates } from "../../services/templates";
 import { sampleData } from "../../services/simplerData";
-import { downloadElementAsPdf } from "../../services/DownloadPdf";
+import { downloadElementAsPdf } from "../../services/downloadPdf";
 import ScaledPreview from "../../components/ScaledPreview";
 import PhotoUpload from "../../components/photoUpload";
 import "./builder.css";
@@ -39,7 +39,6 @@ export default function Builder() {
   const [showFull, setShowFull] = useState(false);
   const captureRef = useRef(null);
 
-  // full preview: close with Esc, and stop the page behind from scrolling
   useEffect(() => {
     if (!showFull) return;
     const onKey = (e) => e.key === "Escape" && setShowFull(false);
@@ -67,7 +66,6 @@ export default function Builder() {
   }
 
   const Template = template.component;
-  // photo only goes to templates that allow it
   const templateData = template.supportsPhoto ? data : { ...data, photo: "" };
   const update = (key) => (e) => setData((d) => ({ ...d, [key]: e.target.value }));
 
@@ -97,7 +95,6 @@ export default function Builder() {
       </header>
 
       <main className="bd-main">
-        {/* ---------- form ---------- */}
         <section className="bd-form" aria-label="Resume details">
           {template.supportsPhoto && (
             <div className="bd-field">
@@ -113,7 +110,7 @@ export default function Builder() {
                 <input className="bd-input" value={data[f.key] || ""} onChange={update(f.key)} placeholder={f.placeholder} />
               </label>
             ))}
-            {template.supportsPhoto && (
+            {(template.supportsPhoto || template.supportsLanguages) && (
               <label className="bd-field">
                 <span className="bd-label">Languages</span>
                 <input className="bd-input" value={data.languages || ""} onChange={update("languages")} placeholder="English, Hindi" />
@@ -130,7 +127,6 @@ export default function Builder() {
           ))}
         </section>
 
-        {/* ---------- live preview ---------- */}
         <aside className="bd-side" aria-label="Preview">
           <div className="bd-actions">
             <button type="button" className="bd-btn" onClick={handleDownload} disabled={busy}>
@@ -154,7 +150,6 @@ export default function Builder() {
 
       <Footer />
 
-      {/* full preview (shows every page, big enough to read) */}
       {showFull && (
         <div className="bd-modal" role="dialog" aria-modal="true" aria-label="Full preview" onClick={() => setShowFull(false)}>
           <div className="bd-modal__bar" onClick={(e) => e.stopPropagation()}>
@@ -171,7 +166,6 @@ export default function Builder() {
         </div>
       )}
 
-      {/* full-size copy: used for the PDF download and for printing */}
       <div className="bd-print" ref={captureRef} aria-hidden="true">
         <Template data={templateData} />
       </div>
