@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* A4 page (794 x 1123). Change the two colours below to re-theme the template. */
+.st-resume {
+  --teal: #6E9B9D;   /* left column and arrows */
+  --peach: #ECCBBF;  /* top band */
+  --ink: #2a2a2a;
+  --muted: #55504d;
+
+  position: relative;
+  width: 794px;
+  min-height: 1123px;
+  display: grid;
+  grid-template-columns: 62px 273px 1fr;
+  background: #fff;
+  color: var(--ink);
+  font-family: "Lora", Georgia, serif;
+  font-size: 12.5px;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.st-resume *, .st-resume *::before, .st-resume *::after { box-sizing: border-box; }
+.st-resume h1, .st-resume h2, .st-resume h3, .st-resume p, .st-resume ul { margin: 0; padding: 0; }
+.st-resume ul { list-style: none; }
+
+/* peach band behind the photo and the name */
+.st-band { position: absolute; left: 19px; right: 19px; top: 63px; height: 252px; background: var(--peach); z-index: 0; }
+
+.st-gutter { position: relative; z-index: 1; }
+
+/* ---------- left column ---------- */
+.st-side { position: relative; z-index: 1; padding: 62px 0 40px; background: var(--teal); color: #fff; }
+
+.st-photo {
+  width: 241px; height: 241px; margin: 0 auto 70px; border-radius: 50%; overflow: hidden;
+  display: grid; place-items: center;
+  background: #e6eeee; border: 4px solid #fff;
+}
+.st-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.st-photo span { font-size: 70px; color: var(--teal); }
+
+.st-side__sec { padding: 0 32px; margin-bottom: 40px; }
+.st-side h3 {
+  margin-bottom: 14px;
+  font-family: "Helvetica Neue", Arial, sans-serif; font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: #fff;
+}
+.st-side__text { font-size: 12px; line-height: 1.65; color: rgba(255, 255, 255, 0.92); }
+
+.st-contact li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 11.5px; color: rgba(255, 255, 255, 0.92); word-break: break-word; }
+.st-contact svg { flex-shrink: 0; margin-top: 2px; color: #fff; }
+
+/* ---------- right column ---------- */
+.st-main { position: relative; z-index: 1; padding: 140px 40px 40px 34px; }
+
+.st-head { height: 175px; }
+.st-head h1 {
+  font-family: "Helvetica Neue", Arial, sans-serif; font-size: 38px; font-weight: 700; line-height: 1.12;
+  letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink);
+}
+.st-title { margin-top: 10px; font-size: 15px; font-style: italic; letter-spacing: 0.04em; color: var(--ink); }
+
+.st-sec { margin-bottom: 26px; }
+.st-h2 {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+  font-family: "Helvetica Neue", Arial, sans-serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
+}
+.st-arrow { flex-shrink: 0; color: var(--teal); }
+
+.st-item { margin-bottom: 14px; }
+.st-item__org {
+  margin-bottom: 2px;
+  font-family: "Helvetica Neue", Arial, sans-serif; font-size: 11.5px; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink);
+}
+.st-item__text { font-size: 12px; line-height: 1.6; color: var(--muted); }
+.st-item__line { color: var(--ink); }
