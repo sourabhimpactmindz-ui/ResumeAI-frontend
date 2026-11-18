@@ -1,6 +1,6 @@
 import Classic from "../components/classic";
 import CreativeTemplate from "../components/Creative";
-import ElegantTemplate from "../components/Elegant";
+// import ElegantTemplate from "../components/Elegant";
 import ExecutiveTemplate from "../components/Executive";
 import ModernTemplate from "../components/modren";
 import ProfessionalTemplate from "../components/Professional";
@@ -13,7 +13,7 @@ export const templates = [
   { id: "modern",  name: "Modern",  component: ModernTemplate, preview: "/previews/modern.png", supportsPhoto: true },
   {  id: "student", name: "Student", component: StudentTemplate , supportsPhoto: true },
   {  id: "executive", name: "Executive", component: ExecutiveTemplate , supportsPhoto: true },
-  {  id: "elegant", name: "Elegant", component: ElegantTemplate , supportsPhoto: true },
+  // {  id: "elegant", name: "Elegant", component: ElegantTemplate , supportsPhoto: true },
   {  id: "creative", name: "Creative", component: CreativeTemplate , supportsPhoto: true },
   {  id: "warm", name: "Warm", component: WarmTemplate , supportsPhoto: true }
 ];
