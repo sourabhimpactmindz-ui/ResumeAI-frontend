@@ -32,5 +32,5 @@ export const sampleData = {
     "B.Tech in Computer Science | XYZ University, Delhi | 2017 – 2021\n" +
     "Senior Secondary (CBSE), Science | ABC Public School, Delhi | 2015 – 2017",
   languages: "English, Hindi",
-  photo: "../public/classic.png",
+  photo: "../public/images.jpg",
 };
