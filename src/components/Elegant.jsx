@@ -1,7 +1,9 @@
 import { Phone, Mail, Globe, MapPin } from "lucide-react";
 import "../styles/elegant.css";
 
+/* ---------- helpers: turn the plain text fields into lists ---------- */
 
+// "Title | Company | Dates" on one line, "- bullet" lines below it
 function parseEntries(text = "") {
   const entries = [];
   let cur = null;
@@ -21,6 +23,7 @@ function parseEntries(text = "") {
   return entries;
 }
 
+// "Frontend: React, HTML" -> ["React", "HTML"]
 function parseSkills(text = "") {
   return text
     .split("\n")
@@ -28,7 +31,7 @@ function parseSkills(text = "") {
       const part = l.includes(":") ? l.split(":").slice(1).join(":") : l;
       return part.split(",").map((s) => s.trim()).filter(Boolean);
     })
-    .slice(0, 9);
+    .slice(0, 6);
 }
 
 function parseList(value) {
@@ -45,6 +48,7 @@ function MainSection({ title, children }) {
   );
 }
 
+/* ---------- template ---------- */
 export default function ElegantTemplate({ data = {} }) {
   const {
     name = "", title = "", email, phone, location, linkedin, github,
@@ -62,12 +66,14 @@ export default function ElegantTemplate({ data = {} }) {
       <div className="el-frame" aria-hidden="true" />
 
       <div className="el-inner">
+        {/* ---------- header ---------- */}
         <header className="el-head">
           <h1>{name || "Your Name"}</h1>
           {title && <p className="el-title">{title}</p>}
         </header>
 
         <div className="el-cols">
+          {/* ---------- navy sidebar ---------- */}
           <aside className="el-side">
             {summary && (
               <section className="el-side__sec">
@@ -106,6 +112,7 @@ export default function ElegantTemplate({ data = {} }) {
             )}
           </aside>
 
+          {/* ---------- main column ---------- */}
           <div className="el-main">
             {jobs.length > 0 && (
               <MainSection title="Work Experience">
