@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* A4 page (794 x 1123). Change --blue to re-theme the template. */
+.ex-resume {
+  --blue: #1B4A8A;
+  --ink: #1d1d1d;
+  --muted: #4a4a4a;
+
+  width: 794px;
+  min-height: 1123px;
+  padding: 48px 50px 44px;
+  background: #fff;
+  color: var(--ink);
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11.5px;
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.ex-resume *, .ex-resume *::before, .ex-resume *::after { box-sizing: border-box; }
+.ex-resume h1, .ex-resume h2, .ex-resume p, .ex-resume ul, .ex-resume dl, .ex-resume dd { margin: 0; padding: 0; }
+.ex-resume ul { list-style: none; }
+
+/* ---------- header ---------- */
+.ex-head { display: flex; align-items: center; gap: 26px; margin-bottom: 6px; }
+.ex-photo { flex-shrink: 0; width: 132px; height: 160px; overflow: hidden; border-radius: 4px; background: #e9eef5; }
+.ex-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.ex-head h1 { font-size: 29px; font-weight: 700; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase; color: var(--blue); }
+.ex-title { margin-top: 2px; font-size: 13px; font-weight: 600; color: var(--ink); }
+
+.ex-contact { margin-top: 10px; }
+.ex-contact > div { display: flex; gap: 12px; margin-bottom: 2px; font-size: 11.5px; }
+.ex-contact dt { flex-shrink: 0; width: 62px; font-weight: 700; }
+.ex-contact dd { color: var(--ink); }
+
+/* ---------- sections ---------- */
+.ex-sec { margin-top: 18px; }
+.ex-sec h2 {
+  margin-bottom: 8px; padding-bottom: 3px; border-bottom: 1px solid var(--blue);
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; color: var(--blue);
+}
+
+.ex-text { font-size: 11.5px; color: var(--ink); }
+
+.ex-entry { margin-bottom: 10px; }
+.ex-entry:last-child { margin-bottom: 0; }
+.ex-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; }
+.ex-row strong { font-size: 11.5px; font-weight: 700; color: var(--ink); }
+.ex-date { flex-shrink: 0; text-align: right; }
+
+.ex-list { margin-top: 3px; }
+.ex-list li { position: relative; margin-bottom: 2px; padding-left: 15px; font-size: 11.5px; color: var(--ink); }
+.ex-list li::before { content: ""; position: absolute; left: 3px; top: 7px; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); }
+.ex-list strong { font-weight: 700; }
