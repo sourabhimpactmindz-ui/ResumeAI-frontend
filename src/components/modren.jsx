@@ -40,7 +40,6 @@ function parseEntries(text = "") {
   return entries;
 }
 
-// "Frontend: React, HTML" -> ["React", "HTML"]
 function parseSkills(text = "") {
   return text
     .split("\n")

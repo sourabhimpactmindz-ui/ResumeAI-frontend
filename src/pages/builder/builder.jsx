@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Download, ArrowLeft } from "lucide-react";
+import { Download, ArrowLeft, Maximize2, X } from "lucide-react";
+import { toast } from "react-toastify";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import { templates } from "../../services/templates";
-import ScaledPreview from "../../components/ScaledPreview";
 import { sampleData } from "../../services/simplerData";
- import "./builder.css";
+// import { downloadElementAsPdf } from "../../services/downloadPdf";
+import { downloadElementAsPdf } from "../../services/DownloadPdf";
+import ScaledPreview from "../../components/ScaledPreview";
 import PhotoUpload from "../../components/photoUpload";
+import "./builder.css";
 
 const TEXT_FIELDS = [
   { key: "name", label: "Full name", placeholder: "Rohit Sharma" },
@@ -28,10 +31,27 @@ const AREA_FIELDS = [
 ];
 
 export default function Builder() {
-const params = useParams();
-const id = params.id ?? params.templateId ?? Object.values(params)[0];
-const template = templates.find((t) => String(t.id) === String(id));
+  const params = useParams();
+  const id = params.id ?? params.templateId ?? Object.values(params)[0];
+  const template = templates.find((t) => String(t.id) === String(id));
+
   const [data, setData] = useState({ ...sampleData });
+  const [busy, setBusy] = useState(false);
+  const [showFull, setShowFull] = useState(false);
+  const captureRef = useRef(null);
+
+  // full preview: close with Esc, and stop the page behind from scrolling
+  useEffect(() => {
+    if (!showFull) return;
+    const onKey = (e) => e.key === "Escape" && setShowFull(false);
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [showFull]);
 
   if (!template) {
     return (
@@ -51,6 +71,20 @@ const template = templates.find((t) => String(t.id) === String(id));
   // photo only goes to templates that allow it
   const templateData = template.supportsPhoto ? data : { ...data, photo: "" };
   const update = (key) => (e) => setData((d) => ({ ...d, [key]: e.target.value }));
+
+  const handleDownload = async () => {
+    setBusy(true);
+    try {
+      const fileName = `${(data.name || "resume").trim().replace(/\s+/g, "-")}-resume.pdf`;
+      await downloadElementAsPdf(captureRef.current, fileName);
+      toast.success("Your resume PDF is downloaded.");
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not create the PDF. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <div className="bd-page">
@@ -99,21 +133,47 @@ const template = templates.find((t) => String(t.id) === String(id));
 
         {/* ---------- live preview ---------- */}
         <aside className="bd-side" aria-label="Preview">
+          <div className="bd-actions">
+            <button type="button" className="bd-btn" onClick={handleDownload} disabled={busy}>
+              <Download size={17} /> {busy ? "Preparing PDF..." : "Download PDF"}
+            </button>
+            <button type="button" className="bd-btn bd-btn--outline" onClick={() => setShowFull(true)}>
+              <Maximize2 size={16} /> Full preview
+            </button>
+          </div>
+
           <ScaledPreview className="bd-preview">
             <Template data={templateData} />
           </ScaledPreview>
 
-          <button type="button" className="bd-btn" onClick={() => window.print()}>
-            <Download size={17} /> Download PDF
-          </button>
-          <p className="bd-hint bd-hint--center">In the print window, choose "Save as PDF".</p>
+          <p className="bd-hint bd-hint--center">
+            The PDF is a picture of your resume. If you need selectable text (better for ATS),{" "}
+            <button type="button" className="bd-link" onClick={() => window.print()}>use Print and Save as PDF</button>.
+          </p>
         </aside>
       </main>
 
       <Footer />
 
-      {/* full-size copy that is only used when printing */}
-      <div className="bd-print" aria-hidden="true">
+      {/* full preview (shows every page, big enough to read) */}
+      {showFull && (
+        <div className="bd-modal" role="dialog" aria-modal="true" aria-label="Full preview" onClick={() => setShowFull(false)}>
+          <div className="bd-modal__bar" onClick={(e) => e.stopPropagation()}>
+            <span>Full preview</span>
+            <button type="button" className="bd-modal__close" onClick={() => setShowFull(false)} aria-label="Close preview">
+              <X size={18} />
+            </button>
+          </div>
+          <div className="bd-modal__sheet" onClick={(e) => e.stopPropagation()}>
+            <ScaledPreview autoHeight className="bd-modal__paper">
+              <Template data={templateData} />
+            </ScaledPreview>
+          </div>
+        </div>
+      )}
+
+      {/* full-size copy: used for the PDF download and for printing */}
+      <div className="bd-print" ref={captureRef} aria-hidden="true">
         <Template data={templateData} />
       </div>
     </div>

@@ -40,10 +40,10 @@
   background: var(--navy); border: 1px solid var(--steel);
 }
 
-/* layout: form on the left, sticky preview on the right */
+/* layout: form on the left, a bigger sticky preview on the right */
 .bd-main {
-  width: 100%; max-width: 1200px; margin: 0 auto; padding: 44px 5vw 80px;
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 36px; align-items: start;
+  width: 100%; max-width: 1320px; margin: 0 auto; padding: 44px 4vw 80px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 580px); gap: 36px; align-items: start;
 }
 
 /* form */
@@ -64,40 +64,65 @@
 
 /* preview column */
 .bd-side { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; }
+.bd-actions { display: flex; gap: 10px; }
 .bd-preview { border-radius: 12px; box-shadow: 0 14px 36px rgba(13, 27, 42, 0.18); }
 
+/* buttons: no hover effect, only a soft press */
 .bd-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 10px; align-self: stretch;
-  padding: 14px 28px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; flex: 1;
+  padding: 13px 22px; border-radius: 999px; cursor: pointer; text-decoration: none;
   background: var(--ink); color: var(--cream); border: 1px solid var(--ink);
   font: 600 15px "Plus Jakarta Sans", system-ui, sans-serif;
   box-shadow: 0 6px 16px rgba(13, 27, 42, 0.18);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.bd-btn:active { transform: scale(0.98); box-shadow: 0 2px 6px rgba(13, 27, 42, 0.2); }
+.bd-btn:active:not(:disabled) { transform: scale(0.98); box-shadow: 0 2px 6px rgba(13, 27, 42, 0.2); }
+.bd-btn:disabled { opacity: 0.65; cursor: wait; }
+.bd-btn--outline { background: transparent; color: var(--ink); box-shadow: none; }
+
+.bd-link { padding: 0; background: none; border: 0; cursor: pointer; color: var(--ink); font: inherit; font-weight: 600; text-decoration: underline; }
 
 /* template not found */
 .bd-missing { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 90px 5vw; text-align: center; }
-.bd-missing .bd-btn { align-self: center; }
+.bd-missing .bd-btn { flex: none; }
 
-/* the print copy is hidden on screen */
-.bd-print { display: none; }
+/* full preview */
+.bd-modal { position: fixed; inset: 0; z-index: 200; overflow-y: auto; padding: 0 16px 40px; background: rgba(13, 27, 42, 0.9); }
+.bd-modal__bar {
+  position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between;
+  width: min(794px, 100%); margin: 0 auto; padding: 14px 4px; color: var(--cream); font-weight: 600;
+}
+.bd-modal__close {
+  display: grid; place-items: center; width: 36px; height: 36px; cursor: pointer;
+  border-radius: 50%; background: var(--cream); color: var(--ink); border: 0;
+}
+.bd-modal__sheet { width: min(794px, 100%); margin: 0 auto; }
+.bd-modal__paper { border-radius: 6px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
 
-/* tablet and phone: preview goes below the form */
+/* off-screen copy used for the PDF download. It is not visible on the page. */
+.bd-print { position: fixed; left: -10000px; top: 0; width: 794px; pointer-events: none; }
+
+/* tablet: slightly narrower preview */
+@media (max-width: 1100px) {
+  .bd-main { grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 28px; }
+}
+
+/* small tablet and phone: preview goes below the form */
 @media (max-width: 900px) {
   .bd-main { grid-template-columns: minmax(0, 1fr); padding: 32px 5vw 64px; }
-  .bd-side { position: static; max-width: 460px; width: 100%; margin: 0 auto; }
+  .bd-side { position: static; max-width: 620px; width: 100%; margin: 0 auto; }
 }
 @media (max-width: 560px) {
   .bd-hero { padding: 36px 5vw 40px; }
   .bd-form { padding: 20px 16px; border-radius: 24px; }
   .bd-row { grid-template-columns: 1fr; }
+  .bd-actions { flex-direction: column; }
 }
 
-/* print: show only the resume, at A4 size */
+/* print (fallback with selectable text): only the resume, at A4 size */
 @media print {
   @page { size: A4; margin: 0; }
   .bd-page { background: #fff; min-height: 0; }
   .bd-page > *:not(.bd-print) { display: none !important; }
-  .bd-print { display: block; width: 794px; }
+  .bd-print { position: static; left: auto; width: 794px; }
 }
