@@ -1,12 +1,12 @@
 
 export const sampleData = {
-  name: "Rohit Sharma",
+  name: "sourabh thakur",
   title: "Frontend Developer",
   email: "rohit.sharma@email.com",
   phone: "+91 98765 43210",
   location: "Delhi, India",
-  linkedin: "linkedin.com/in/rohitsharma",
-  github: "github.com/rohitsharma",
+  linkedin: "linkedin.com/in/sourabhthakur",
+  github: "github.com/sourabhthakur",
   summary:
     "Frontend developer with 3 years of experience building fast, responsive web apps using React and JavaScript. Skilled in performance optimization and clean component design.",
   skills:
