@@ -1,4 +1,4 @@
-import "../styles/professional.css";
+import "../styles/Professional.css";
 
 
 function parseEntries(text = "") {
