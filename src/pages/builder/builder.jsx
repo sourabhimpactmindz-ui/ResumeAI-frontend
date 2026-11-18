@@ -6,9 +6,9 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import { templates } from "../../services/templates";
 import { sampleData } from "../../services/simplerData";
-import { downloadElementAsPdf } from "../../services/downloadPdf";
 import ScaledPreview from "../../components/ScaledPreview";
 import PhotoUpload from "../../components/photoUpload";
+import { downloadElementAsPdf } from "../../services/DownloadPdf";
 import "./builder.css";
 
 const TEXT_FIELDS = [
