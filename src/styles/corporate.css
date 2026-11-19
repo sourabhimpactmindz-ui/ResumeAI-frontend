@@ -19,7 +19,7 @@
   print-color-adjust: exact;
 }
 .cp-resume *, .cp-resume *::before, .cp-resume *::after { box-sizing: border-box; }
-:where(.cp-resume) :where(h1, h2, p, ul) { margin: 0; padding: 0; }
+.cp-resume h1, .cp-resume h2, .cp-resume p, .cp-resume ul { margin: 0; padding: 0; }
 .cp-resume ul { list-style: none; }
 
 .cp-head h1 { font-size: 36px; font-weight: 800; line-height: 1.1; letter-spacing: 0.01em; text-transform: uppercase; color: var(--dark); }
