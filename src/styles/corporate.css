@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap");
+
+.cp-resume {
+  --dark: #1F3640;   
+  --ink: #1d1d1d;
+  --gray: #666;
+  --bar: #e4e4e4;
+
+  position: relative;
+  width: 794px;
+  min-height: 1123px;
+  padding: 44px 50px 80px;
+  background: #fff;
+  color: var(--ink);
+  font-family: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.5px;
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.cp-resume *, .cp-resume *::before, .cp-resume *::after { box-sizing: border-box; }
+.cp-resume h1, .cp-resume h2, .cp-resume p, .cp-resume ul { margin: 0; padding: 0; }
+.cp-resume ul { list-style: none; }
+
+.cp-head h1 { font-size: 36px; font-weight: 800; line-height: 1.1; letter-spacing: 0.01em; text-transform: uppercase; color: var(--dark); }
+.cp-title { margin-top: 4px; font-size: 14px; font-weight: 400; color: var(--ink); }
+
+.cp-contact {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin-top: 18px; padding: 8px 16px; background: var(--bar);
+  font-size: 10px; color: var(--ink);
+}
+.cp-contact li { display: flex; align-items: center; gap: 7px; }
+.cp-contact svg { flex-shrink: 0; }
+
+.cp-sec { margin-top: 26px; }
+.cp-sec h2 {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 10px;
+  font-size: 17px; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink);
+}
+.cp-sec h2::after { content: ""; flex: 1; height: 1.5px; background: #444; }
+
+.cp-text { font-size: 10.5px; line-height: 1.6; text-align: justify; color: var(--ink); }
+
+.cp-entry { margin-bottom: 12px; }
+.cp-entry:last-child { margin-bottom: 0; }
+.cp-company { font-size: 9.5px; color: var(--gray); }
+.cp-school { font-size: 9.5px; font-style: italic; color: var(--gray); }
+.cp-role { margin-top: 1px; font-size: 11px; font-weight: 700; font-style: italic; color: var(--dark); }
+
+.cp-list { margin-top: 4px; }
+.cp-list li { position: relative; margin-bottom: 3px; padding-left: 15px; font-size: 10.5px; color: var(--ink); }
+.cp-list li::before { content: ""; position: absolute; left: 4px; top: 7px; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); }
+
+.cp-foot { position: absolute; left: 0; right: 0; bottom: 0; height: 24px; background: var(--dark); }
