@@ -1,11 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@400;500;600&display=swap");
 
-/* A4 page (794 x 1123). Colours are variables: change them here to re-theme the template. */
 .wm-resume {
-  --side: #E9E1D8;   /* left column */
-  --paper: #FBF9F6;  /* right column */
-  --brown: #8A6A57;  /* headings */
-  --dot: #B8A495;    /* icons, dots */
+  --side: #E9E1D8;   
+  --paper: #FBF9F6; 
+  --brown: #8A6A57; 
+  --dot: #B8A495;   
   --ink: #2a2320;
   --text: #4b413b;
 
@@ -23,17 +22,15 @@
   print-color-adjust: exact;
 }
 .wm-resume *, .wm-resume *::before, .wm-resume *::after { box-sizing: border-box; }
-.wm-resume h1, .wm-resume h2, .wm-resume p, .wm-resume ul { margin: 0; padding: 0; }
+.wm-resume h1, .wm-resume h2, .wm-resume p, .wm-resume ul { margin: 0; padding: 0 0 10px; }
 .wm-resume ul { list-style: none; }
 
-/* section heading: small spaced capitals with a thin line after it */
 .wm-h {
   display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
   font-size: 11.5px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brown);
 }
 .wm-h::after { content: ""; flex: 1; height: 1px; background: #cdbfb4; }
 
-/* ---------- left column ---------- */
 .wm-side { padding: 40px 30px 40px; background: var(--side); }
 
 .wm-photo {
@@ -57,7 +54,6 @@
 .wm-bullets li { position: relative; margin-bottom: 7px; padding-left: 14px; font-size: 10px; color: var(--ink); }
 .wm-bullets li::before { content: ""; position: absolute; left: 3px; top: 6px; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); }
 
-/* ---------- right column ---------- */
 .wm-main { position: relative; padding: 52px 40px 50px 30px; }
 
 .wm-head { margin-bottom: 38px; }
@@ -82,12 +78,10 @@
 .wm-list li { position: relative; margin-bottom: 3px; padding-left: 16px; font-size: 10.5px; color: var(--text); }
 .wm-list li::before { content: ""; position: absolute; left: 3px; top: 6px; width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
 
-/* languages with dots */
 .wm-langs li { display: grid; grid-template-columns: 70px 110px 1fr; align-items: center; margin-bottom: 6px; font-size: 10px; color: var(--text); }
 .wm-dots { display: flex; gap: 6px; }
 .wm-dots b { width: 7px; height: 7px; border-radius: 50%; background: #e3d9d0; }
 .wm-dots b.on { background: var(--dot); }
 .wm-langs__level--wide { grid-column: 2 / 4; }
 
-/* leaf decoration */
 .wm-leaf { position: absolute; right: 28px; bottom: 26px; width: 58px; height: 80px; color: #d9cabd; pointer-events: none; }
