@@ -116,7 +116,7 @@ export default function AzureTemplate({ data = {} }) {
 
           {contact.length > 0 && (
             <section className="az-sec">
-              <Heading icon={<ContactIcon size={23} fill="currentColor" />}>Contact</Heading>
+              <Heading icon={<span className="az-badge"><ContactIcon size={15} strokeWidth={2.2} /></span>}>Contact</Heading>
               <ul className="az-contact">
                 {contact.map(([Icon, value, filled], i) => (
                   <li key={i}>
@@ -139,7 +139,7 @@ export default function AzureTemplate({ data = {} }) {
 
           {langList.length > 0 && (
             <section className="az-sec">
-              <Heading icon={<Languages size={21} />}>Language</Heading>
+              <Heading icon={<span className="az-badge"><Languages size={15} strokeWidth={2.2} /></span>}>Language</Heading>
               <ul className="az-bullets">
                 {langList.map((l, i) => <li key={i}>{l}</li>)}
               </ul>
