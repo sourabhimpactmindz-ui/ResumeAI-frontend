@@ -22,7 +22,7 @@
   print-color-adjust: exact;
 }
 .az-resume *, .az-resume *::before, .az-resume *::after { box-sizing: border-box; }
-.az-resume h1, .az-resume h2, .az-resume p, .az-resume ul { margin: 0; padding: 0; }
+.az-resume h1, .az-resume h2, .az-resume p, .az-resume ul { margin: 0; padding: 0 0 10px; }
 .az-resume ul { list-style: none; }
 
 /* ---------- decoration ---------- */
