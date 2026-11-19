@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap");
 
-/* A4 page (794 x 1123). Colours are variables: change them here to re-theme the template. */
 .az-resume {
   --navy: #0B2A59;
   --light: #CFE3FA;
@@ -25,7 +24,6 @@
 .az-resume h1, .az-resume h2, .az-resume p, .az-resume ul { margin: 0; padding: 0 0 10px; }
 .az-resume ul { list-style: none; }
 
-/* ---------- decoration ---------- */
 .az-deco { position: absolute; display: block; z-index: 0; }
 .az-deco--line { left: 0; top: 26px; width: 640px; height: 6px; background: var(--light); }
 .az-deco--blue-top { right: 82px; top: 0; width: 112px; height: 42px; background: var(--light); clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%); }
@@ -52,7 +50,7 @@
   display: grid; grid-template-columns: 264px 1fr; column-gap: 40px;
 }
 
-.az-sec { margin-bottom: 40px; }
+.az-sec { margin-bottom: 18px; }
 .az-sec:last-child { margin-bottom: 0; }
 
 .az-h { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-size: 16.5px; font-weight: 700; color: var(--ink); }
