@@ -30,31 +30,29 @@ const ATS_TIPS = [
 
 export default function Dashboard() {
   const [analysis, setAnalysis] = useState(null);
-  const [resumeId, setResumeId] = useState(null);
+  const [job, setJob] = useState(null); // { id, nonce }
   const [openFaq, setOpenFaq] = useState(0);
   const [UplodeResume, { isLoading: isUploading }] = useUplodeResumeMutation();
   const navigate = useNavigate();
 
-  const {
-    data: statusData,
-    error: statusError,
-    isFetching,
-  } = useGetResumeStatusQuery(resumeId, {
-    skip: !resumeId,
+  const { data: statusData, error: statusError } = useGetResumeStatusQuery(job, {
+    skip: !job,
     pollingInterval: 2000,
     refetchOnMountOrArgChange: true,
   });
 
   const jobStatus = statusData?.data?.status;
   const isProcessing =
-    isUploading || (!!resumeId && (isFetching || jobStatus === "pending" || jobStatus === "processing"));
+    isUploading ||
+    (!!job && jobStatus !== "completed" && jobStatus !== "failed");
 
+  // Status change par react karo
   useEffect(() => {
-    if (!resumeId || !statusData || isFetching) return;
+    if (!job || !statusData) return;
 
     if (jobStatus === "completed") {
       setAnalysis(statusData.data);
-      setResumeId(null); 
+      setJob(null); // polling band
       toast.success("Analysis complete! Review your ATS score below.");
 
       setTimeout(() => {
@@ -65,14 +63,15 @@ export default function Dashboard() {
     }
 
     if (jobStatus === "failed") {
-      setResumeId(null);
+      setJob(null);
       toast.error(statusData.data.errorMessage || "Analysis failed. Please try again.");
     }
-  }, [statusData, jobStatus, resumeId, isFetching]);
+  }, [statusData, jobStatus, job]);
 
+  // Status request fail ho to polling band karo
   useEffect(() => {
     if (statusError) {
-      setResumeId(null);
+      setJob(null);
       toast.error("Could not fetch analysis status. Please try again.");
       if (statusError.status === 401) {
         localStorage.removeItem("accessToken");
@@ -96,10 +95,12 @@ export default function Dashboard() {
       formData.append("resume", file);
       formData.append("jobDescription", jobDescription);
 
-      setAnalysis(null);
+      setAnalysis(null); // purana result hatao
+      setJob(null); // purana polling band
 
       const result = await UplodeResume(formData).unwrap();
-      setResumeId(result.data.resumeId); 
+      setJob({ id: result.data.resumeId, nonce: Date.now() }); // har baar naya cache key
+      toast.info("Resume received. Analyzing...");
     } catch (error) {
       console.error(error);
       toast.error(error?.data?.message || error?.error || "Upload failed. Please try again.");
@@ -134,7 +135,6 @@ export default function Dashboard() {
         </div>
 
         <UploadBox onAnalyze={handleAnalze} isLoading={isProcessing} />
-
       </section>
 
       {/* RESULTS */}
@@ -142,6 +142,7 @@ export default function Dashboard() {
         <section className="dash-results" id="analysis-results">
           <div className="dash-results__inner">
             <AnalysisPanel
+              key={`${analysis._id}-${analysis.updatedAt || analysis.atsScore}`}
               atsScore={analysis.atsScore}
               matchingSkills={analysis.matchingSkills || []}
               missingSkills={analysis.missingSkills || []}

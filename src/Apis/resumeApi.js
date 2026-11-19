@@ -15,6 +15,7 @@ export const ResumeApi = baseApi.injectEndpoints({
         url: `/resume/status/${id}`,
         method: "GET",
       }),
+       keepUnusedDataFor: 0,
     }),
   }),
 });
