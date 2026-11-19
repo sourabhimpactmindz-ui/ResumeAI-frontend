@@ -11,7 +11,7 @@ export const ResumeApi = baseApi.injectEndpoints({
     }),
 
   GetResumeStatus: builder.query({
-  query: ({ id }) => ({
+  query: ({id}) => ({
     url: `/resume/status/${id}`,
     method: "GET",
   }),
