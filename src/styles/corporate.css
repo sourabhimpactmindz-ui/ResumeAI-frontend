@@ -19,7 +19,7 @@
   print-color-adjust: exact;
 }
 .cp-resume *, .cp-resume *::before, .cp-resume *::after { box-sizing: border-box; }
-.cp-resume h1, .cp-resume h2, .cp-resume p, .cp-resume ul { margin: 0; padding: 0; }
+:where(.cp-resume) :where(h1, h2, p, ul) { margin: 0; padding: 0; }
 .cp-resume ul { list-style: none; }
 
 .cp-head h1 { font-size: 36px; font-weight: 800; line-height: 1.1; letter-spacing: 0.01em; text-transform: uppercase; color: var(--dark); }
@@ -27,7 +27,7 @@
 
 .cp-contact {
   display: flex; align-items: center; justify-content: space-between; gap: 2px;
-  margin: 10px; padding: 12px 8px 12px 8px; background: var(--bar);
+  margin: 18px 0 0; padding: 12px 8px; background: var(--bar);
   font-size: 10.5px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink);
 }
 .cp-contact li { display: flex; align-items: center; gap: 3px; }
