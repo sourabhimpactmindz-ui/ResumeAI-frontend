@@ -1,12 +1,14 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import { Sparkles } from "lucide-react";
 import { toast } from "react-toastify";
 import AnalysisPanel from "../../components/AnalysisPanel";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import UploadBox from "../../components/UploadBox";
-import { useUplodeResumeMutation  , useGetResumeStatusQuery} from "../../Apis/resumeApi";
+import {
+  useUplodeResumeMutation,
+  useGetResumeStatusQuery,
+} from "../../Apis/resumeApi";
 import "../../styles/Dashboard.css";
 
 const STEPS = ["Upload your PDF resume", "Paste the job description", "Get your ATS score"];
@@ -33,20 +35,28 @@ export default function Dashboard() {
   const [UplodeResume, { isLoading: isUploading }] = useUplodeResumeMutation();
   const navigate = useNavigate();
 
-  const { data: statusData, error: statusError } = useGetResumeStatusQuery(resumeId, {
+  const {
+    data: statusData,
+    error: statusError,
+    isFetching,
+  } = useGetResumeStatusQuery(resumeId, {
     skip: !resumeId,
     pollingInterval: 2000,
+    refetchOnMountOrArgChange: true,
   });
 
   const jobStatus = statusData?.data?.status;
-  // const isProcessing = isUploading || jobStatus === "pending" || jobStatus === "processing";
+  const isProcessing =
+    isUploading || (!!resumeId && (isFetching || jobStatus === "pending" || jobStatus === "processing"));
 
+  // React to status changes
   useEffect(() => {
-    if (!resumeId || !statusData) return;
+    // Ignore cached data while a fresh fetch is in flight (prevents showing an old result)
+    if (!resumeId || !statusData || isFetching) return;
 
     if (jobStatus === "completed") {
       setAnalysis(statusData.data);
-      setResumeId(null);
+      setResumeId(null); // stops polling
       toast.success("Analysis complete! Review your ATS score below.");
 
       setTimeout(() => {
@@ -60,9 +70,9 @@ export default function Dashboard() {
       setResumeId(null);
       toast.error(statusData.data.errorMessage || "Analysis failed. Please try again.");
     }
-  }, [statusData, jobStatus, resumeId]);
+  }, [statusData, jobStatus, resumeId, isFetching]);
 
- 
+  // Stop polling if the status request itself fails
   useEffect(() => {
     if (statusError) {
       setResumeId(null);
@@ -92,7 +102,7 @@ export default function Dashboard() {
       setAnalysis(null);
 
       const result = await UplodeResume(formData).unwrap();
-      setResumeId(result.data.resumeId); 
+      setResumeId(result.data.resumeId); // starts polling
       toast.info("Resume received. Analyzing...");
     } catch (error) {
       console.error(error);
@@ -106,13 +116,12 @@ export default function Dashboard() {
     }
   };
 
-
   return (
     <div className="dash-app">
       <Navbar />
 
+      {/* HERO + UPLOAD */}
       <section className="dash-hero">
-
         <h1 className="dash-hero__title">See your resume the way the ATS does.</h1>
 
         <p className="dash-hero__sub">
@@ -129,9 +138,16 @@ export default function Dashboard() {
           ))}
         </div>
 
-        <UploadBox onAnalyze={handleAnalze} isLoading={isLoading} />
+        <UploadBox onAnalyze={handleAnalze} isLoading={isProcessing} />
+
+        {isProcessing && (
+          <p className="dash-status-text">
+            {jobStatus === "processing" ? "Analyzing your resume..." : "Uploading..."}
+          </p>
+        )}
       </section>
 
+      {/* RESULTS */}
       {analysis && (
         <section className="dash-results" id="analysis-results">
           <div className="dash-results__inner">
@@ -146,6 +162,7 @@ export default function Dashboard() {
         </section>
       )}
 
+      {/* FAQ */}
       <section className="dash-faq-section">
         <div className="dash-precision-header">
           <h2 className="dash-section-title">ATS basics, in plain words</h2>
