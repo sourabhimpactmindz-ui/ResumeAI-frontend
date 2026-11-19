@@ -120,7 +120,6 @@ export default function Dashboard() {
     <div className="dash-app">
       <Navbar />
 
-      {/* HERO + UPLOAD */}
       <section className="dash-hero">
         <h1 className="dash-hero__title">See your resume the way the ATS does.</h1>
 
@@ -140,11 +139,11 @@ export default function Dashboard() {
 
         <UploadBox onAnalyze={handleAnalze} isLoading={isProcessing} />
 
-        {isProcessing && (
+        {/* {isProcessing && (
           <p className="dash-status-text">
             {jobStatus === "processing" ? "Analyzing your resume..." : "Uploading..."}
           </p>
-        )}
+        )} */}
       </section>
 
       {/* RESULTS */}
