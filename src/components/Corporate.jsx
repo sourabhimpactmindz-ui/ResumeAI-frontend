@@ -1,6 +1,9 @@
 import { Phone, Mail, MapPin, Globe } from "lucide-react";
 import "../styles/corporate.css";
 
+/* ---------- helpers: turn the plain text fields into lists ---------- */
+
+// "Title | Company | Dates" on one line, "- bullet" lines below it
 function parseEntries(text = "") {
   const entries = [];
   let cur = null;
@@ -20,6 +23,7 @@ function parseEntries(text = "") {
   return entries;
 }
 
+// "Frontend: React, HTML" -> ["React", "HTML"]
 function parseSkills(text = "") {
   return text
     .split("\n")
@@ -46,13 +50,16 @@ export default function CorporateTemplate({ data = {} }) {
     summary, skills, experience, projects, education,
   } = data;
 
-  const contact = [
+  // the gray bar holds 3 items (like the design). Anything extra goes in a small line under it.
+  const contactAll = [
     [Phone, phone, true],
     [Mail, email, false],
     [MapPin, location, true],
     [Globe, linkedin, false],
     [Globe, github, false],
   ].filter(([, value]) => value);
+  const contact = contactAll.slice(0, 3);
+  const extra = contactAll.slice(3);
 
   const jobs = parseEntries(experience);
   const projectList = parseEntries(projects);
@@ -70,11 +77,19 @@ export default function CorporateTemplate({ data = {} }) {
         <ul className="cp-contact">
           {contact.map(([Icon, value, solid], i) => (
             <li key={i}>
-              <Icon size={12} fill={solid ? "currentColor" : "none"} strokeWidth={2.2} />
+              <Icon size={13} fill={solid ? "currentColor" : "none"} strokeWidth={2.4} />
               <span>{value}</span>
             </li>
           ))}
         </ul>
+      )}
+
+      {extra.length > 0 && (
+        <p className="cp-links">
+          {extra.map(([Icon, value], i) => (
+            <span key={i}><Icon size={11} strokeWidth={2.2} />{value}</span>
+          ))}
+        </p>
       )}
 
       {summary && (
