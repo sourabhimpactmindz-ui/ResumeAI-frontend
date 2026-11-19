@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles } from "lucide-react";
+// import { Sparkles } from "lucide-react";
 import { toast } from "react-toastify";
 import AnalysisPanel from "../../components/AnalysisPanel";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import UploadBox from "../../components/UploadBox";
-import { useUplodeResumeMutation } from "../../Apis/resumeApi";
+import { useUplodeResumeMutation  , useGetResumeStatusQuery} from "../../Apis/resumeApi";
 import "../../styles/Dashboard.css";
 
 const STEPS = ["Upload your PDF resume", "Paste the job description", "Get your ATS score"];
@@ -28,9 +28,52 @@ const ATS_TIPS = [
 
 export default function Dashboard() {
   const [analysis, setAnalysis] = useState(null);
+  const [resumeId, setResumeId] = useState(null);
   const [openFaq, setOpenFaq] = useState(0);
-  const [UplodeResume, { isLoading }] = useUplodeResumeMutation();
+  const [UplodeResume, { isLoading: isUploading }] = useUplodeResumeMutation();
   const navigate = useNavigate();
+
+  const { data: statusData, error: statusError } = useGetResumeStatusQuery(resumeId, {
+    skip: !resumeId,
+    pollingInterval: 2000,
+  });
+
+  const jobStatus = statusData?.data?.status;
+  // const isProcessing = isUploading || jobStatus === "pending" || jobStatus === "processing";
+
+  useEffect(() => {
+    if (!resumeId || !statusData) return;
+
+    if (jobStatus === "completed") {
+      setAnalysis(statusData.data);
+      setResumeId(null);
+      toast.success("Analysis complete! Review your ATS score below.");
+
+      setTimeout(() => {
+        document
+          .getElementById("analysis-results")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 200);
+    }
+
+    if (jobStatus === "failed") {
+      setResumeId(null);
+      toast.error(statusData.data.errorMessage || "Analysis failed. Please try again.");
+    }
+  }, [statusData, jobStatus, resumeId]);
+
+ 
+  useEffect(() => {
+    if (statusError) {
+      setResumeId(null);
+      toast.error("Could not fetch analysis status. Please try again.");
+      if (statusError.status === 401) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        navigate("/login");
+      }
+    }
+  }, [statusError, navigate]);
 
   const handleAnalze = async (file, jobDescription) => {
     const token = localStorage.getItem("accessToken");
@@ -46,15 +89,11 @@ export default function Dashboard() {
       formData.append("resume", file);
       formData.append("jobDescription", jobDescription);
 
-      const result = await UplodeResume(formData).unwrap();
-      setAnalysis(result.data);
-      toast.success("Analysis complete! Review your ATS score below.");
+      setAnalysis(null);
 
-      setTimeout(() => {
-        document
-          .getElementById("analysis-results")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 200);
+      const result = await UplodeResume(formData).unwrap();
+      setResumeId(result.data.resumeId); 
+      toast.info("Resume received. Analyzing...");
     } catch (error) {
       console.error(error);
       toast.error(error?.data?.message || error?.error || "Upload failed. Please try again.");
@@ -67,16 +106,12 @@ export default function Dashboard() {
     }
   };
 
+
   return (
     <div className="dash-app">
       <Navbar />
 
-      {/* HERO + UPLOAD */}
       <section className="dash-hero">
-        {/* <div className="dash-hero__badge">
-          <Sparkles size={14} />
-          <span>Free ATS check, ready in 30 seconds</span>
-        </div> */}
 
         <h1 className="dash-hero__title">See your resume the way the ATS does.</h1>
 
@@ -97,7 +132,6 @@ export default function Dashboard() {
         <UploadBox onAnalyze={handleAnalze} isLoading={isLoading} />
       </section>
 
-      {/* RESULTS */}
       {analysis && (
         <section className="dash-results" id="analysis-results">
           <div className="dash-results__inner">
@@ -112,7 +146,6 @@ export default function Dashboard() {
         </section>
       )}
 
-      {/* FAQ */}
       <section className="dash-faq-section">
         <div className="dash-precision-header">
           <h2 className="dash-section-title">ATS basics, in plain words</h2>

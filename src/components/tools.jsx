@@ -2,11 +2,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./footer";
-// import { templates } from "./templates";
 import { templates } from "../services/templates";
-// import { sampleData } from "./sampleData";
 import { sampleData } from "../services/simplerData";
-// import ScaledPreview from "./ScaledPreview";
 import ScaledPreview from "./ScaledPreview";
 import "../styles/tools.css";
 
@@ -27,7 +24,6 @@ export default function Tools() {
         <div className="tl-grid">
           {templates.map((t) => {
             const Template = t.component;
-            // templates without photo support never get a photo in the preview
             const data = t.supportsPhoto ? sampleData : { ...sampleData, photo: "" };
 
             return (
