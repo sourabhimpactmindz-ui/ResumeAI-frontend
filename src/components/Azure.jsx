@@ -1,5 +1,5 @@
 import {
-  User, Contact, Lightbulb, Languages, GraduationCap, Briefcase, Phone, Mail, MapPin, Globe,
+  User, Lightbulb, Languages, GraduationCap, Briefcase, Phone, Mail, MapPin, Globe,
 } from "lucide-react";
 import "../styles/azure.css";
 
@@ -40,10 +40,10 @@ function parseList(value) {
 const initials = (name = "") =>
   name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
 
-function Heading({ icon: Icon, children }) {
+function Heading({ icon, children }) {
   return (
     <h2 className="az-h">
-      <Icon size={19} />
+      <span className="az-h__ic">{icon}</span>
       {children}
     </h2>
   );
@@ -94,17 +94,17 @@ export default function AzureTemplate({ data = {} }) {
         <div className="az-left">
           {summary && (
             <section className="az-sec">
-              <Heading icon={User}>About Me</Heading>
+              <Heading icon={<User size={21} fill="currentColor" />}>About Me</Heading>
               <p className="az-about">{summary}</p>
             </section>
           )}
 
           {contact.length > 0 && (
             <section className="az-sec">
-              <Heading icon={Contact}>Contact</Heading>
+              <Heading icon={<span className="az-icon"><User size={13} fill="currentColor" /></span>}>Contact</Heading>
               <ul className="az-contact">
                 {contact.map(([Icon, value], i) => (
-                  <li key={i}><Icon size={13} /><span>{value}</span></li>
+                  <li key={i}><Icon size={13} fill="currentColor" strokeWidth={2.2} /><span>{value}</span></li>
                 ))}
               </ul>
             </section>
@@ -112,7 +112,7 @@ export default function AzureTemplate({ data = {} }) {
 
           {skillList.length > 0 && (
             <section className="az-sec">
-              <Heading icon={Lightbulb}>Skills</Heading>
+              <Heading icon={<Lightbulb size={21} />}>Skills</Heading>
               <ul className="az-bullets">
                 {skillList.map((s, i) => <li key={i}>{s}</li>)}
               </ul>
@@ -121,7 +121,7 @@ export default function AzureTemplate({ data = {} }) {
 
           {langList.length > 0 && (
             <section className="az-sec">
-              <Heading icon={Languages}>Language</Heading>
+              <Heading icon={<span className="az-icon"><Languages size={14} /></span>}>Language</Heading>
               <ul className="az-bullets">
                 {langList.map((l, i) => <li key={i}>{l}</li>)}
               </ul>
@@ -132,7 +132,7 @@ export default function AzureTemplate({ data = {} }) {
         <div className="az-right">
           {schools.length > 0 && (
             <section className="az-sec">
-              <Heading icon={GraduationCap}>Education</Heading>
+              <Heading icon={<GraduationCap size={23} fill="currentColor" />}>Education</Heading>
               {schools.map((e, i) => (
                 <div className="az-entry" key={i}>
                   {e.head[2] && <p className="az-entry__date">({e.head[2]})</p>}
@@ -145,7 +145,7 @@ export default function AzureTemplate({ data = {} }) {
 
           {jobs.length > 0 && (
             <section className="az-sec">
-              <Heading icon={Briefcase}>Experience</Heading>
+              <Heading icon={<Briefcase size={21} />}>Experience</Heading>
               {jobs.map((j, i) => (
                 <div className="az-entry" key={i}>
                   {j.head[2] && <p className="az-entry__date">({j.head[2]})</p>}
