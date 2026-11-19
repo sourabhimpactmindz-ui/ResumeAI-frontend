@@ -49,14 +49,12 @@ export default function Dashboard() {
   const isProcessing =
     isUploading || (!!resumeId && (isFetching || jobStatus === "pending" || jobStatus === "processing"));
 
-  // React to status changes
   useEffect(() => {
-    // Ignore cached data while a fresh fetch is in flight (prevents showing an old result)
     if (!resumeId || !statusData || isFetching) return;
 
     if (jobStatus === "completed") {
       setAnalysis(statusData.data);
-      setResumeId(null); // stops polling
+      setResumeId(null); 
       toast.success("Analysis complete! Review your ATS score below.");
 
       setTimeout(() => {
@@ -72,7 +70,6 @@ export default function Dashboard() {
     }
   }, [statusData, jobStatus, resumeId, isFetching]);
 
-  // Stop polling if the status request itself fails
   useEffect(() => {
     if (statusError) {
       setResumeId(null);
@@ -102,7 +99,7 @@ export default function Dashboard() {
       setAnalysis(null);
 
       const result = await UplodeResume(formData).unwrap();
-      setResumeId(result.data.resumeId); // starts polling
+      setResumeId(result.data.resumeId); 
       toast.info("Resume received. Analyzing...");
     } catch (error) {
       console.error(error);
@@ -139,11 +136,6 @@ export default function Dashboard() {
 
         <UploadBox onAnalyze={handleAnalze} isLoading={isProcessing} />
 
-        {/* {isProcessing && (
-          <p className="dash-status-text">
-            {jobStatus === "processing" ? "Analyzing your resume..." : "Uploading..."}
-          </p>
-        )} */}
       </section>
 
       {/* RESULTS */}
