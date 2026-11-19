@@ -35,8 +35,12 @@ export default function Dashboard() {
   const [UplodeResume, { isLoading: isUploading }] = useUplodeResumeMutation();
   const navigate = useNavigate();
 
-  const { data: statusData, error: statusError } = useGetResumeStatusQuery(job, {
-    skip: !job,
+  const {
+    data: statusData,
+    error: statusError,
+    isFetching,
+  } = useGetResumeStatusQuery(job, {
+    skip: !job || !job.id,
     pollingInterval: 2000,
     refetchOnMountOrArgChange: true,
   });
@@ -44,11 +48,12 @@ export default function Dashboard() {
   const jobStatus = statusData?.data?.status;
   const isProcessing =
     isUploading ||
-    (!!job && jobStatus !== "completed" && jobStatus !== "failed");
+    (!!job && (isFetching || (jobStatus !== "completed" && jobStatus !== "failed")));
 
   // Status change par react karo
   useEffect(() => {
-    if (!job || !statusData) return;
+    // Fresh fetch in flight ho to purana cached data use mat karo
+    if (!job || !job.id || !statusData || isFetching) return;
 
     if (jobStatus === "completed") {
       setAnalysis(statusData.data);
@@ -64,9 +69,9 @@ export default function Dashboard() {
 
     if (jobStatus === "failed") {
       setJob(null);
-      toast.error(statusData.data.errorMessage || "Analysis failed. Please try again.");
+      toast.error(statusData.data?.errorMessage || "Analysis failed. Please try again.");
     }
-  }, [statusData, jobStatus, job]);
+  }, [statusData, jobStatus, job, isFetching]);
 
   // Status request fail ho to polling band karo
   useEffect(() => {
@@ -99,8 +104,27 @@ export default function Dashboard() {
       setJob(null); // purana polling band
 
       const result = await UplodeResume(formData).unwrap();
-      setJob({ id: result.data.resumeId, nonce: Date.now() }); // har baar naya cache key
-      toast.info("Resume received. Analyzing...");
+
+      // Agar backend synchronous response me already completed analysis return kar raha hai:
+      if (result?.data?.atsScore !== undefined && result?.data?.status !== "pending") {
+        setAnalysis(result.data);
+        toast.success("Analysis complete! Review your ATS score below.");
+        setTimeout(() => {
+          document
+            .getElementById("analysis-results")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 200);
+        return;
+      }
+
+      // Asynchronous background worker flow:
+      const resumeId = result?.data?.resumeId || result?.data?._id;
+      if (resumeId) {
+        setJob({ id: resumeId, nonce: Date.now() }); // har baar naya unique cache key
+        toast.info("Resume received. Analyzing with AI...");
+      } else {
+        toast.error("Invalid response from server. Please try again.");
+      }
     } catch (error) {
       console.error(error);
       toast.error(error?.data?.message || error?.error || "Upload failed. Please try again.");
