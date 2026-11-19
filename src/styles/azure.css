@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap");
+
+.az-resume {
+  --navy: #0B2A59;
+  --light: #CFE3FA;
+  --wash: #EAF3FC;
+  --band: #DCDCDC;
+  --ink: #2b2b2b;
+  --gray: #555;
+
+  position: relative;
+  width: 794px;
+  min-height: 1123px;
+  overflow: hidden;
+  background: #fff;
+  color: var(--ink);
+  font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.5px;
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.az-resume *, .az-resume *::before, .az-resume *::after { box-sizing: border-box; }
+.az-resume h1, .az-resume h2, .az-resume p, .az-resume ul { margin: 0; padding: 0; }
+.az-resume ul { list-style: none; }
+
+.az-deco { position: absolute; display: block; z-index: 0; }
+.az-deco--line { left: 0; top: 26px; width: 640px; height: 6px; background: var(--light); }
+.az-deco--blue-top { right: 82px; top: 0; width: 112px; height: 42px; background: var(--light); clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%); }
+.az-deco--navy-top { right: 0; top: 0; width: 92px; height: 76px; background: var(--navy); clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%); }
+.az-deco--wash { left: 0; bottom: 70px; width: 130px; height: 140px; background: var(--wash); clip-path: polygon(0 0, 100% 100%, 0 100%); }
+.az-deco--blue-bottom { left: 0; bottom: 8px; width: 430px; height: 26px; background: var(--light); clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%); }
+.az-deco--navy-bottom { left: 0; bottom: 36px; width: 250px; height: 46px; background: var(--navy); clip-path: polygon(0 0, 82% 0, 100% 100%, 0 100%); }
+
+.az-band { position: absolute; left: 0; right: 0; top: 78px; height: 192px; background: var(--band); z-index: 0; }
+
+.az-photo {
+  position: absolute; z-index: 2; left: 12px; top: 50px; width: 258px; height: 258px;
+  border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: #c4cfdc;
+}
+.az-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.az-photo span { font-size: 80px; font-weight: 700; color: #fff; }
+
+.az-head { position: absolute; z-index: 1; left: 364px; top: 104px; right: 40px; }
+.az-head h1 { font-size: 46px; font-weight: 900; line-height: 1.02; letter-spacing: -0.01em; color: var(--ink); }
+.az-title { margin-top: 10px; font-size: 15px; font-weight: 400; color: var(--gray); }
+
+.az-body {
+  position: relative; z-index: 1; padding: 337px 46px 80px 56px;
+  display: grid; grid-template-columns: 264px 1fr; column-gap: 40px;
+}
+
+.az-sec { margin-bottom: 38px; }
+.az-sec:last-child { margin-bottom: 0; }
+
+.az-h { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 16.5px; font-weight: 700; color: var(--ink); }
+
+.az-about { font-size: 9.5px; line-height: 1.6; text-align: justify; color: var(--ink); }
+
+.az-contact li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; font-size: 10px; word-break: break-word; }
+.az-contact li:last-child { margin-bottom: 0; }
+.az-contact svg { flex-shrink: 0; margin-top: 1px; }
+
+.az-bullets li { position: relative; margin-bottom: 13px; padding-left: 20px; font-size: 9.5px; font-weight: 700; }
+.az-bullets li:last-child { margin-bottom: 0; }
+.az-bullets li::before { content: ""; position: absolute; left: 6px; top: 6px; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); }
+
+.az-entry { position: relative; margin: 0 0 18px 17px; padding: 0 0 0 26px; border-left: 2px solid #3a3a3a; }
+.az-entry:last-child { margin-bottom: 0; }
+.az-entry::before, .az-entry::after {
+  content: ""; position: absolute; left: -6px; width: 8px; height: 8px; border-radius: 50%; background: #3a3a3a;
+}
+.az-entry::before { top: 3px; }
+.az-entry::after { bottom: 3px; }
+
+.az-entry__date { font-size: 11.5px; font-weight: 700; color: var(--ink); }
+.az-entry__org { margin-top: 2px; font-size: 9.5px; font-weight: 900; letter-spacing: 0.01em; text-transform: uppercase; color: var(--ink); }
+.az-entry__text { font-size: 10px; color: var(--ink); }
+
+.az-list { margin-top: 3px; }
+.az-list li { position: relative; margin-bottom: 2px; padding-left: 20px; font-size: 10px; color: var(--ink); }
+.az-list li::before { content: ""; position: absolute; left: 7px; top: 6px; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); }
