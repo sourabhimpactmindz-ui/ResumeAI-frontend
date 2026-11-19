@@ -28,7 +28,6 @@
 /* grid */
 .analysis-panel__grid { display: grid; grid-template-columns: 280px 1fr 1fr; gap: 20px; }
 
-/* score card (dark, so the score colour pops) */
 .analysis-panel__ats {
   grid-row: 1 / 3;
   display: flex; flex-direction: column; align-items: center; justify-content: center;

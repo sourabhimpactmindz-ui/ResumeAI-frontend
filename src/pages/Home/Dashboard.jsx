@@ -100,7 +100,6 @@ export default function Dashboard() {
 
       const result = await UplodeResume(formData).unwrap();
       setResumeId(result.data.resumeId); 
-      toast.info("Resume received. Analyzing...");
     } catch (error) {
       console.error(error);
       toast.error(error?.data?.message || error?.error || "Upload failed. Please try again.");
