@@ -10,13 +10,13 @@ export const ResumeApi = baseApi.injectEndpoints({
       }),
     }),
 
-    GetResumeStatus: builder.query({
-      query: (id) => ({
-        url: `/resume/status/${id}`,
-        method: "GET",
-      }),
-       keepUnusedDataFor: 0,
-    }),
+  GetResumeStatus: builder.query({
+  query: ({ id }) => ({
+    url: `/resume/status/${id}`,
+    method: "GET",
+  }),
+  keepUnusedDataFor: 0,
+}),
   }),
 });
 
