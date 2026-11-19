@@ -1,5 +1,6 @@
 import {
-  User, Lightbulb, Languages, GraduationCap, Briefcase, Phone, Mail, MapPin, Globe,
+  User, Lightbulb, Languages, GraduationCap, Briefcase,
+  Phone, Mail, MapPin, Linkedin, Github, Contact as ContactIcon,
 } from "lucide-react";
 import "../styles/azure.css";
 
@@ -61,12 +62,13 @@ export default function AzureTemplate({ data = {} }) {
   const skillList = parseSkills(skills);
   const langList = parseList(languages);
 
+  // [Icon, value, filled]
   const contact = [
-    [Phone, phone],
-    [Mail, email],
-    [MapPin, location],
-    [Globe, linkedin],
-    [Globe, github],
+    [Phone, phone, true],
+    [Mail, email, true],
+    [MapPin, location, true],
+    [Linkedin, linkedin, false],
+    [Github, github, false],
   ].filter(([, value]) => value);
 
   return (
@@ -101,10 +103,13 @@ export default function AzureTemplate({ data = {} }) {
 
           {contact.length > 0 && (
             <section className="az-sec">
-              <Heading icon={<span className="az-icon"><User size={13} fill="currentColor" /></span>}>Contact</Heading>
+              <Heading icon={<ContactIcon size={23} fill="currentColor" />}>Contact</Heading>
               <ul className="az-contact">
-                {contact.map(([Icon, value], i) => (
-                  <li key={i}><Icon size={13} fill="currentColor" strokeWidth={2.2} /><span>{value}</span></li>
+                {contact.map(([Icon, value, filled], i) => (
+                  <li key={i}>
+                    <Icon size={14} fill={filled ? "currentColor" : "none"} strokeWidth={2} />
+                    <span>{value}</span>
+                  </li>
                 ))}
               </ul>
             </section>
@@ -121,7 +126,7 @@ export default function AzureTemplate({ data = {} }) {
 
           {langList.length > 0 && (
             <section className="az-sec">
-              <Heading icon={<span className="az-icon"><Languages size={14} /></span>}>Language</Heading>
+              <Heading icon={<Languages size={21} />}>Language</Heading>
               <ul className="az-bullets">
                 {langList.map((l, i) => <li key={i}>{l}</li>)}
               </ul>
