@@ -1,5 +1,6 @@
 import AzureTemplate from "../components/Azure";
 import Classic from "../components/classic";
+import CorporateTemplate from "../components/Corporate";
 import CreativeTemplate from "../components/Creative";
 // import ElegantTemplate from "../components/Elegant";
 import ExecutiveTemplate from "../components/Executive";
@@ -10,7 +11,8 @@ import WarmTemplate from "../components/Warm";
 
 export const templates = [
   { id: "classic", name: "Classic", component: Classic, preview: "/previews/classic.png" },
-  { id: "professional", name: "professional", component: ProfessionalTemplate },
+  { id: "professional", name: "Professional", component: ProfessionalTemplate },
+  { id: "corporate", name: "Corporate", component: CorporateTemplate },
   { id: "modern",  name: "Modern",  component: ModernTemplate, preview: "/previews/modern.png", supportsPhoto: true },
   {  id: "student", name: "Student", component: StudentTemplate , supportsPhoto: true },
   {  id: "executive", name: "Executive", component: ExecutiveTemplate , supportsPhoto: true },
