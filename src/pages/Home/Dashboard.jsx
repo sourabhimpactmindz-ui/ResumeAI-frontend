@@ -30,7 +30,7 @@ const ATS_TIPS = [
 
 export default function Dashboard() {
   const [analysis, setAnalysis] = useState(null);
-  const [job, setJob] = useState(null); // { id, nonce }
+  const [job, setJob] = useState(null); 
   const [openFaq, setOpenFaq] = useState(0);
   const [UplodeResume, { isLoading: isUploading }] = useUplodeResumeMutation();
   const navigate = useNavigate();
@@ -50,14 +50,12 @@ export default function Dashboard() {
     isUploading ||
     (!!job && (isFetching || (jobStatus !== "completed" && jobStatus !== "failed")));
 
-  // Status change par react karo
   useEffect(() => {
-    // Fresh fetch in flight ho to purana cached data use mat karo
     if (!job || !job.id || !statusData || isFetching) return;
 
     if (jobStatus === "completed") {
       setAnalysis(statusData.data);
-      setJob(null); // polling band
+      setJob(null); 
       toast.success("Analysis complete! Review your ATS score below.");
 
       setTimeout(() => {
@@ -73,7 +71,6 @@ export default function Dashboard() {
     }
   }, [statusData, jobStatus, job, isFetching]);
 
-  // Status request fail ho to polling band karo
   useEffect(() => {
     if (statusError) {
       setJob(null);
@@ -100,12 +97,11 @@ export default function Dashboard() {
       formData.append("resume", file);
       formData.append("jobDescription", jobDescription);
 
-      setAnalysis(null); // purana result hatao
-      setJob(null); // purana polling band
+      setAnalysis(null); 
+      setJob(null); 
 
       const result = await UplodeResume(formData).unwrap();
 
-      // Agar backend synchronous response me already completed analysis return kar raha hai:
       if (result?.data?.atsScore !== undefined && result?.data?.status !== "pending") {
         setAnalysis(result.data);
         toast.success("Analysis complete! Review your ATS score below.");
@@ -117,11 +113,9 @@ export default function Dashboard() {
         return;
       }
 
-      // Asynchronous background worker flow:
       const resumeId = result?.data?.resumeId || result?.data?._id;
       if (resumeId) {
-        setJob({ id: resumeId, nonce: Date.now() }); // har baar naya unique cache key
-        toast.info("Resume received. Analyzing with AI...");
+        setJob({ id: resumeId, nonce: Date.now() }); 
       } else {
         toast.error("Invalid response from server. Please try again.");
       }
@@ -161,7 +155,6 @@ export default function Dashboard() {
         <UploadBox onAnalyze={handleAnalze} isLoading={isProcessing} />
       </section>
 
-      {/* RESULTS */}
       {analysis && (
         <section className="dash-results" id="analysis-results">
           <div className="dash-results__inner">
