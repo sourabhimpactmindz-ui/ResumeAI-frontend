@@ -22,21 +22,22 @@
 .cl-resume ul { list-style: none; }
 
 /* ---------- Header ---------- */
-.cl-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
-.cl-head h1 {
+.cl-resume .cl-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.cl-resume .cl-head h1 {
   font-size: 40px; font-weight: 600; line-height: 1.05;
   letter-spacing: 0.03em; text-transform: uppercase;
 }
-.cl-title { margin-top: 6px; font-size: 20px; color: var(--gray); }
-.cl-contact { text-align: right; font-size: 11.5px; line-height: 1.55; padding-top: 6px; }
+.cl-resume .cl-title { margin-top: 6px; font-size: 20px; color: var(--gray); }
+.cl-resume .cl-contact { text-align: right; font-size: 11.5px; line-height: 1.55; padding-top: 6px; }
 
-.cl-summary {
-  margin:20px 0 20px 0;
+.cl-resume .cl-summary {
+  margin-top: 30px; margin-bottom: 20px;
   font-size: 12px; line-height: 1.6; text-align: justify; color: #333;
 }
 
-.cl-sec { margin-bottom: 18px; }
-.cl-bar {
+/* ---------- Section bar ---------- */
+.cl-resume .cl-sec { margin-bottom: 18px; }
+.cl-resume .cl-bar {
   margin: 0 calc(var(--pad) * -1) 14px;
   padding: 7px var(--pad);
   background: var(--bar);
@@ -45,18 +46,20 @@
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
-.cl-item { margin-bottom: 14px; }
-.cl-item:last-child { margin-bottom: 0; }
-.cl-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
-.cl-strong { font-size: 12.5px; font-weight: 700; }
-.cl-date { flex: none; font-size: 12px; font-style: italic; color: var(--gray); }
-.cl-sub { margin-top: 2px; font-size: 12px; color: var(--gray); }
+/* ---------- Items ---------- */
+.cl-resume .cl-item { margin-bottom: 14px; }
+.cl-resume .cl-item:last-child { margin-bottom: 0; }
+.cl-resume .cl-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.cl-resume .cl-strong { font-size: 12.5px; font-weight: 700; }
+.cl-resume .cl-date { flex: none; font-size: 12px; font-style: italic; color: var(--gray); }
+.cl-resume .cl-sub { margin-top: 2px; font-size: 12px; color: var(--gray); }
 
-.cl-list { margin-top: 5px; }
-.cl-list li { position: relative; padding-left: 16px; margin-bottom: 2px; font-size: 12px; }
-.cl-list li::before {
+.cl-resume .cl-list { margin-top: 5px; }
+.cl-resume .cl-list li { position: relative; padding-left: 16px; margin-bottom: 2px; font-size: 12px; }
+.cl-resume .cl-list li::before {
   content: ""; position: absolute; left: 4px; top: 8px;
   width: 3.5px; height: 3.5px; border-radius: 50%; background: var(--ink);
 }
 
-.cl-skills { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 12px; }
+/* ---------- Skills (2 columns) ---------- */
+.cl-resume .cl-skills { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 12px; }
