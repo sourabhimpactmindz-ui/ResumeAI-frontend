@@ -80,7 +80,6 @@
 .az-contact li:last-child { margin-bottom: 0; }
 .az-contact svg { flex-shrink: 0; margin: 0; }
 
-/* ---------- Skills / Language bullets ---------- */
 .az-bullets li {
   position: relative; margin-bottom: 17px; padding-left: 20px;
   font-size: 12px; font-weight: 400; line-height: 1.5;
@@ -91,7 +90,6 @@
   width: 4px; height: 4px; border-radius: 50%; background: var(--ink);
 }
 
-/* ---------- Timeline entries ---------- */
 .az-entry {
   position: relative; margin: 0 0 36px 12px; padding: 0 0 0 28px;
   background: linear-gradient(#3a3a3a, #3a3a3a) 0 8px / 2px calc(100% - 16px) no-repeat;

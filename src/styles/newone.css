@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap");
+
+.cl-resume {
+  --ink: #222;
+  --gray: #666;
+  --bar: #f0f0f0;
+  --pad: 56px;
+
+  width: 794px;
+  min-height: 1123px;
+  padding: 56px var(--pad) 56px;
+  background: #fff;
+  color: var(--ink);
+  font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+  font-size: 12.5px;
+  line-height: 1.45;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.cl-resume *, .cl-resume *::before, .cl-resume *::after { box-sizing: border-box; }
+.cl-resume h1, .cl-resume h2, .cl-resume p, .cl-resume ul { margin: 0; padding: 0; }
+.cl-resume ul { list-style: none; }
+
+/* ---------- Header ---------- */
+.cl-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.cl-head h1 {
+  font-size: 40px; font-weight: 600; line-height: 1.05;
+  letter-spacing: 0.03em; text-transform: uppercase;
+}
+.cl-title { margin-top: 6px; font-size: 20px; color: var(--gray); }
+.cl-contact { text-align: right; font-size: 11.5px; line-height: 1.55; padding-top: 6px; }
+
+.cl-summary {
+  margin-top: 30px; margin-bottom: 20px;
+  font-size: 12px; line-height: 1.6; text-align: justify; color: #333;
+}
+
+/* ---------- Section bar ---------- */
+.cl-sec { margin-bottom: 18px; }
+.cl-bar {
+  margin: 0 calc(var(--pad) * -1) 14px;
+  padding: 7px var(--pad);
+  background: var(--bar);
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Items ---------- */
+.cl-item { margin-bottom: 14px; }
+.cl-item:last-child { margin-bottom: 0; }
+.cl-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.cl-strong { font-size: 12.5px; font-weight: 700; }
+.cl-date { flex: none; font-size: 12px; font-style: italic; color: var(--gray); }
+.cl-sub { margin-top: 2px; font-size: 12px; color: var(--gray); }
+
+.cl-list { margin-top: 5px; }
+.cl-list li { position: relative; padding-left: 16px; margin-bottom: 2px; font-size: 12px; }
+.cl-list li::before {
+  content: ""; position: absolute; left: 4px; top: 8px;
+  width: 3.5px; height: 3.5px; border-radius: 50%; background: var(--ink);
+}
+
+/* ---------- Skills (2 columns) ---------- */
+.cl-skills { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 12px; }
