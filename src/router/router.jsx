@@ -9,15 +9,25 @@ import Terms from "../pages/terms/terms";
 import Contact from "../pages/contact/contact";
 import Disclaimer from "../pages/Disclaimer/Disclaimer";
 import Blog from "../pages/blog/blog";
-import Homee from "../pages/simple/Homee";
+// import Homee from "../pages/simple/Homee";
 import Dashboard from "../pages/Home/Dashboard";
 import Tools from "../components/tools";
 import Builder from "../pages/builder/builder";
+import { lazy, Suspense } from "react";
+import PageLoader from "../components/pageLoder";
+
+const Homee = lazy(()=> import("../pages/simple/Homee"))
+
+const withSuspense = (Component) => (
+  <Suspense fallback={<PageLoader />}>
+    <Component />
+  </Suspense>
+)
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Homee />,
+    element: withSuspense(Homee),
   },
   {
     path: "/login",
