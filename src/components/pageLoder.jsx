@@ -4,7 +4,7 @@ const PageLoader = () => {
   return (
     <div className="page-loader">
       <div className="spinner"></div>
-      <p>please wait...</p>
+      <p>Loading page...</p>
     </div>
   );
 };
