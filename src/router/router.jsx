@@ -10,13 +10,16 @@ import Contact from "../pages/contact/contact";
 import Disclaimer from "../pages/Disclaimer/Disclaimer";
 import Blog from "../pages/blog/blog";
 // import Homee from "../pages/simple/Homee";
-import Dashboard from "../pages/Home/Dashboard";
-import Tools from "../components/tools";
-import Builder from "../pages/builder/builder";
+// import Dashboard from "../pages/Home/Dashboard";
+// import Tools from "../components/tools";
+// import Builder from "../pages/builder/builder";
 import { lazy, Suspense } from "react";
 import PageLoader from "../components/pageLoder";
 
 const Homee = lazy(()=> import("../pages/simple/Homee"))
+const Dashboard = lazy(() => import("../pages/Home/Dashboard"))
+const Tools = lazy(() => import("../components/tools"))
+const Builder = lazy(() => import("../pages/builder/builder"))
 
 const withSuspense = (Component) => (
   <Suspense fallback={<PageLoader />}>
@@ -70,13 +73,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: withSuspense(Dashboard),
       },
       {
         path: "/tools",
-        element: <Tools />
+        element: withSuspense(Tools)
       },
-    {path :"/tools/builder/:templateId" , element : <Builder /> }
+    {path :"/tools/builder/:templateId" , element : withSuspense(Builder) }
     ],
   },
 ]);
