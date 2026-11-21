@@ -1,4 +1,4 @@
-import "./PageLoader.css";
+import "../styles/PageLoader.css";
 
 const PageLoader = () => {
   return (
