@@ -79,7 +79,10 @@ export default function ResumeAISignUp() {
     try {
       const res = await SignupUser(data).unwrap();
       if (res?.status) {
-        toast.success('OTP sent successfully');
+        toast.success(res.message || 'OTP sent successfully');
+        if (data?.email) {
+          localStorage.setItem('pendingVerificationEmail', data.email.trim().toLowerCase());
+        }
         navigate('/verifyOTP', {
           state: {
             email: data.email,

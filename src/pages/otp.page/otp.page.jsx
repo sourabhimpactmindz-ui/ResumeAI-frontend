@@ -11,7 +11,7 @@ const OTPPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const email = location.state?.email;
+  const email = location.state?.email || localStorage.getItem("pendingVerificationEmail");
 
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
   const [ResendOtp] = useResendOtpMutation();
@@ -56,6 +56,10 @@ const OTPPage = () => {
   const handleVerify = async () => {
     const finalOtp = otp.join("");
 
+    if (!email) {
+      return toast.error("Email not found. Please sign up or log in first.");
+    }
+
     if (finalOtp.length !== 6) {
       return toast.error("Please enter all 6 digits");
     }
@@ -67,6 +71,7 @@ const OTPPage = () => {
       }).unwrap();
 
       toast.success(res.message || "OTP verified successfully!");
+      localStorage.removeItem("pendingVerificationEmail");
       if (res.accessToken) {
         localStorage.setItem("accessToken", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);
@@ -80,6 +85,10 @@ const OTPPage = () => {
   };
 
   const handleResend = async () => {
+    if (!email) {
+      return toast.error("Email not found. Please return to Signup.");
+    }
+
     try {
       const res = await ResendOtp({ email }).unwrap();
 
