@@ -71,8 +71,6 @@ export default function ResumeAILogin() {
           console.error('Redirect sign-in error:', error);
 
           toast.error(
-            error?.data?.message ||
-            error?.message ||
             'Google sign in failed.'
           );
         }
@@ -101,7 +99,7 @@ export default function ResumeAILogin() {
         err?.error?.includes('Failed to fetch')
       ) {
         toast.error(
-          'Unable to connect to the backend server. Please verify your backend server is running and reachable.'
+          'Login failed. Please try again'
         );
       } else {
         toast.error(
@@ -163,7 +161,7 @@ export default function ResumeAILogin() {
         error?.error?.includes('Failed to fetch')
       ) {
         toast.error(
-          'Unable to connect to the backend server. Please verify your backend server is running and reachable.'
+          'Google sign in failed.'
         );
 
       } else {
