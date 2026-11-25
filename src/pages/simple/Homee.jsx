@@ -307,11 +307,10 @@ export default function Homee() {
         <h1>
           An ATS reads your resume
           <span className="lp-type" aria-hidden="true"><Typewriter lines={HEADLINES} /></span>
-          <span className="lp-sr-only"> Free ATS resume checker and AI resume analyzer for job seekers.</span>
         </h1>
         <p className="lp-lead">
-          Our AI matches your resume against the job description, gives you an ATS score
-          and shows exactly why a line might get you rejected.
+          Our free ATS resume checker and AI resume analyzer matches your resume against the job
+          description, gives you an ATS score and shows exactly why a line might get you rejected.
         </p>
         <div className="lp-actions">
           <Link className="lp-btn" to={token ? "/dashboard" : "/login"}>Check it free</Link>
@@ -358,7 +357,6 @@ export default function Homee() {
 
       {/* STEPS: CARD STACK */}
       <section className="lp-steps" id="how">
-        <h2 className="lp-sr-only">How the free ATS resume checker works</h2>
         <div className="lp-stack">
           {steps.map((s, i) => {
             const Icon = s.icon; 
