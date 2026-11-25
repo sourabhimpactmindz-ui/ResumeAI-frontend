@@ -136,10 +136,10 @@ function FeatureVisual({ type }) {
 
 /* ---------- content ---------- */
 const HEADLINES = [
-  "before any recruiter does.",
-  "in just 6 seconds.",
-  "so you don’t get rejected.",
-  "and shows exactly how to fix it.",
+  "See what an ATS sees before any recruiter does.",
+  "Get your resume score in just 6 seconds.",
+  "Fix every issue so you don’t get rejected.",
+  "Know exactly how to improve each line.",
 ];
 
 const steps = [
@@ -305,7 +305,7 @@ export default function Homee() {
       <section className="lp-hero" id="top">
         <p className="lp-hand">Hi, quick question: will a robot read your resume?</p>
         <h1>
-          An ATS reads your resume
+          Free ATS resume checker and AI resume analyzer for job seekers
           <span className="lp-type" aria-hidden="true"><Typewriter lines={HEADLINES} /></span>
         </h1>
         <p className="lp-lead">
