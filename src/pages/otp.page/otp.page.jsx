@@ -17,7 +17,7 @@ const OTPPage = () => {
   const [ResendOtp] = useResendOtpMutation();
 
   const [timer, setTimer] = useState(60);
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(true);                                                                                                                       
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 

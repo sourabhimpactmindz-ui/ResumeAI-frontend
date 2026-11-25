@@ -7,6 +7,8 @@ import { UploadCloud, Target, Sparkles } from "lucide-react";
 import "./simplepage.css";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
+import Seo from "../../components/seo";
+import { organizationSchema, websiteSchema, softwareSchema, faqSchema } from "../../seo/schema";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -186,6 +188,8 @@ const faqs = [
   { q: "Which file formats are supported?", a: "Both PDF and DOCX. A text-based PDF works best. Scanned image PDFs are harder to parse." },
   { q: "Is my resume safe?", a: "Yes. Your resume is used only for the scan, and you can delete it at any time." },
   { q: "Can freshers use this?", a: "Absolutely. Freshers get focused suggestions for the projects, skills and education sections." },
+  { q: "How does job description based resume analysis work?", a: "Paste the job post and the AI extracts its key skills, then checks which ones your resume covers and which are missing." },
+  { q: "Is this ATS resume checker free for freshers?", a: "Freshers can scan their resume for free and get suggestions for projects, skills and education sections." },
 ];
 
 /* ---------- page ---------- */
@@ -287,14 +291,23 @@ export default function Homee() {
 
   return (
     <div className="lp" ref={root}>
+      <Seo
+        title="Free ATS Resume Checker & AI Resume Analyzer | ResumeAI"
+        description="Check your ATS resume score online for free. Our AI resume analyzer matches your resume to any job description and shows exactly what to fix."
+        path="/"
+        jsonLd={[organizationSchema, websiteSchema, softwareSchema, faqSchema(faqs)]}
+      />
+
       <Navbar />
 
+      <main>
       {/* HERO */}
       <section className="lp-hero" id="top">
         <p className="lp-hand">Hi, quick question: will a robot read your resume?</p>
         <h1>
           An ATS reads your resume
-          <span className="lp-type"><Typewriter lines={HEADLINES} /></span>
+          <span className="lp-type" aria-hidden="true"><Typewriter lines={HEADLINES} /></span>
+          <span className="lp-sr-only"> Free ATS resume checker and AI resume analyzer for job seekers.</span>
         </h1>
         <p className="lp-lead">
           Our AI matches your resume against the job description, gives you an ATS score
@@ -345,6 +358,7 @@ export default function Homee() {
 
       {/* STEPS: CARD STACK */}
       <section className="lp-steps" id="how">
+        <h2 className="lp-sr-only">How the free ATS resume checker works</h2>
         <div className="lp-stack">
           {steps.map((s, i) => {
             const Icon = s.icon; 
@@ -365,7 +379,7 @@ export default function Homee() {
       {/* SCORE */}
       <section className="lp-band lp-band--cream" id="score">
         <div className="lp-wrap">
-          <Reveal><h2>A score that shows where to improve</h2></Reveal>
+          <Reveal><h2>A resume score checker that shows where to improve</h2></Reveal>
           <div className="lp-score">
             <div className="lp-ring" ref={scoreRef}>
               <svg viewBox="0 0 120 120">
@@ -394,7 +408,7 @@ export default function Homee() {
       {/* FEATURES: visual on the left, numbered list on the right */}
       <section className="lp-band lp-band--navy lp-feat" id="features">
         <div className="lp-wrap">
-          <Reveal><h2>Not just a score, the fixes too</h2></Reveal>
+          <Reveal><h2>AI resume improvement: not just a score, the fixes too</h2></Reveal>
 
           <div
             className="lp-feat__grid"
@@ -428,7 +442,7 @@ export default function Homee() {
       {/* BEFORE / AFTER */}
       <section className="lp-band lp-band--cream">
         <div className="lp-wrap">
-          <Reveal><h2>One line, two very different results</h2></Reveal>
+          <Reveal><h2>Resume optimization example: one line, two very different results</h2></Reveal>
           <div className="lp-compare">
             <Reveal className="lp-cmp lp-cmp--before">
               <h3>Before · Score 52</h3>
@@ -485,7 +499,7 @@ export default function Homee() {
       {/* FAQ */}
       <section className="lp-band lp-band--ink" id="faq">
         <div className="lp-wrap">
-          <Reveal><h2>Frequently asked questions</h2></Reveal>
+          <Reveal><h2>ATS resume checker FAQs</h2></Reveal>
           <div className="lp-faq">
             {faqs.map((f, i) => (
               <div key={f.q} className={`lp-faq__item ${open === i ? "open" : ""}`}>
@@ -504,6 +518,7 @@ export default function Homee() {
         <h2>Ready to get past the robot?</h2>
         <Link className="lp-btn" to={token ? "/home" : "/login"}>Check my resume</Link>
       </section> */}
+      </main>
 
       <Footer />
     </div>
